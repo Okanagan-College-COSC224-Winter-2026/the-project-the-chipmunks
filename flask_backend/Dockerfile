@@ -58,6 +58,9 @@ RUN sed -i 's/\r$//' /app/run_gunicorn.sh && chmod +x /app/run_gunicorn.sh
 # Ensure entrypoint script is executable
 RUN chmod +x /app/run_gunicorn.sh
 
+# Fix line endings and make executable
+RUN sed -i 's/\r$//' /app/run_gunicorn.sh && chmod +x /app/run_gunicorn.sh
+
 # Set ownership to non-root user
 RUN chown -R flask:flask /app
 
