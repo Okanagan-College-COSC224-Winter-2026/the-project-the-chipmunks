@@ -12,7 +12,7 @@ from .controllers import (
     class_controller,
     fake_api_controller,
     user_controller,
-    assignment_controller,
+    assignment_controller, ahmed_controller
 )
 from .models.db import db, ma
 
@@ -108,5 +108,6 @@ def create_app(test_config=None):
     app.register_blueprint(class_controller.bp)
     app.register_blueprint(assignment_controller.bp)
     app.register_blueprint(fake_api_controller.fake)
+    app.register_blueprint(ahmed_controller.bp) # Register Ahmed's controller
 
     return app
