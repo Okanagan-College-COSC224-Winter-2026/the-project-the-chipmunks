@@ -5,6 +5,8 @@ from api import create_app
 from api.models import User, Course, User_Course
 from api.models.db import db as _db
 
+
+
 base_url = "http://localhost:5000/assets"
 TEMP_PATH = "/tmp/sqlalchemy-media"
 
