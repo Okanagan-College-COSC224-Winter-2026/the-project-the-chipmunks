@@ -223,3 +223,21 @@ class SubmissionSchema(ma.SQLAlchemyAutoSchema):
         load_instance = True
         include_fk = False
         sqla_session = db.session
+# ============================================================
+# STUDENT GRADES (US20)
+# ============================================================
+
+
+class CourseGradeSchema(ma.Schema):
+    course_id = fields.Int(required=True)
+    course_name = fields.Str(required=True)
+    grade = fields.Float(allow_none=True)
+    max_score = fields.Float(allow_none=True)
+    graded_assignments = fields.Int(required=True)
+    total_assignments = fields.Int(required=True)
+    has_grades = fields.Bool(required=True)
+
+
+class StudentGradeSchema(ma.Schema):
+    student_id = fields.Int(required=True)
+    courses = fields.Nested(CourseGradeSchema, many=True, required=True)
