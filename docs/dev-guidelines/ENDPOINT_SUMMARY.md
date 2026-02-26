@@ -110,3 +110,34 @@ All endpoints in this section require the HTTPOnly JWT cookie. Frontend requests
 - `CourseGrade` response shape used by `/student/grades`:
   `{ course_id, course_name, grade, max_score, graded_assignments, total_assignments, has_grades }`
 
+---
+
+---
+
+## GET /student/assignments/<assignmentID>/feedback
+
+| Method | Path | Params | Response | Status | Notes |
+|--------|------|--------|----------|--------|-------|
+| GET | `/student/assignments/<assignmentID>/feedback` | `{ assignmentID: number }` | Feedback summary object | ✅ Implemented | Returns anonymous aggregated feedback for the student |
+
+Returns anonymous aggregated feedback for a student's assignment.
+
+### Response Example
+
+```json
+{
+  "assignment_name": "Example Assignment",
+  "total_reviews": 2,
+  "criteria_feedback": [
+    {
+      "question": "Quality of work",
+      "avg_score": 4.5,
+      "max_score": 5,
+      "comments": [
+        "Good work",
+        "Well done"
+      ]
+    }
+  ],
+  "overall_avg": 4.5
+}
