@@ -419,10 +419,17 @@ export const createCriterion = async (reviewID: number, criterionRowID: number, 
 }
 
 export const getReview = async (assignmentID: number, reviewerID: number, revieweeID: number) => {
+<<<<<<< Updated upstream
   const resp = await fetch(`${BASE_URL}/review?assignmentID=${assignmentID}&reviewerID=${reviewerID}&revieweeID=${revieweeID}`, {
     credentials: 'include'
   })
 
+=======
+  const resp = await fetch(
+    `${BASE_URL}/api/reviews/?assignmentID=${assignmentID}&reviewerID=${reviewerID}&revieweeID=${revieweeID}`,
+    { credentials: 'include' }
+  )
+>>>>>>> Stashed changes
   maybeHandleExpire(resp);
 
   if (!resp.ok) {
