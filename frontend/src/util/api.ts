@@ -389,18 +389,17 @@ export const getMyTrends = async (): Promise<Response> => {
 // ── Review file attachments ───────────────────────────────────────────────────
 
 export const uploadReviewFiles = async (reviewID: number, files: File[]) => {
-  const formData = new FormData();
-  files.forEach((file) => formData.append("files", file));
-  const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
-    method: "POST",
-    body: formData,
-    credentials: "include",
-  });
-  maybeHandleExpire(response);
-  if (!response.ok) {
-    throw new Error(`Response status: ${response.status}`);
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+    maybeHandleExpire(response);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
   }
-  return await response.json();
 };
 
 export const getReviewFiles = async (reviewId: number) => {
@@ -577,19 +576,7 @@ export const getRubricByAssignment = async (assignmentId: number) => {
 
 // ── Submit review ─────────────────────────────────────────────────────────────
 
-interface CriterionSubmission {
-  criteria_description_id: number;
-  grade: number;
-  comments: string;
-}
-
-interface ReviewSubmissionPayload {
-  assignment_id: number;
-  reviewee_id: number;
-  criteria: CriterionSubmission[];
-}
-
-export const submitReview = async (payload: ReviewSubmissionPayload) => {
+export const submitReview = async (payload: ReviewSubmission) => {
   const resp = await fetch(`${BASE_URL}/api/reviews/submit`, {
     method: 'POST',
     body: JSON.stringify(payload),
@@ -925,5 +912,20 @@ export const getTeamSubmissions = (assignmentId: number) =>
     credentials: 'include',
   }).then(res => { maybeHandleExpire(res); return res; });
 
-export const downloadTeamReviewFile = (fileId: number): string =>
-  `${BASE_URL}/student/review-file/${fileId}/download`;
+export const downloadTeamReviewFile = async (fileId: number) => {
+  const resp = await fetch(`${BASE_URL}/student/review-file/${fileId}/download`, {
+    method: 'GET',
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  const blob = await resp.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `review_file_${fileId}`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};

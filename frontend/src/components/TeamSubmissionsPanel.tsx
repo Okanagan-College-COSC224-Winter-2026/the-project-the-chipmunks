@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { getTeamSubmissions, downloadTeamReviewFile } from '../util/api';
+import { getTeamSubmissions, downloadTeamReviewFile, downloadConclusionFile } from '../util/api';
 import StatusMessage from './StatusMessage';
 import AvatarInitials from './AvatarInitials';
 import './TeamSubmissionsPanel.css';
@@ -81,8 +81,8 @@ export default function TeamSubmissionsPanel({ assignmentId }: Props) {
       });
   }, [assignmentId]);
 
-  if (loading) return <StatusMessage type="loading" message="Loading team submissions..." />;
-  if (error)   return <StatusMessage type="error"   message={error} />;
+  if (loading) return <p>Loading team submissions...</p>;
+  if (error) return <StatusMessage type="error" message={error} />;
 
   if (noGroup) {
     return (
@@ -118,7 +118,10 @@ export default function TeamSubmissionsPanel({ assignmentId }: Props) {
             return (
               <div key={member.member_id} className="tsub-card">
                 <div className="tsub-card-header">
-                  <AvatarInitials name={member.member_name} />
+                  <AvatarInitials
+                    firstName={member.member_name.split(' ')[0]}
+                    lastName={member.member_name.split(' ').slice(1).join(' ')}
+                  />
                   <div className="tsub-card-info">
                     <span className="tsub-member-name">{member.member_name}</span>
                     <span className="tsub-file-count">
@@ -140,14 +143,12 @@ export default function TeamSubmissionsPanel({ assignmentId }: Props) {
                             {formatBytes(file.size_bytes)}
                           </span>
                         </div>
-                        <a
+                        <button
                           className="tsub-download-btn"
-                          href={downloadTeamReviewFile(file.file_id)}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={() => downloadTeamReviewFile(file.file_id)}
                         >
                           Download
-                        </a>
+                        </button>
                       </div>
                     ))}
 
@@ -159,14 +160,12 @@ export default function TeamSubmissionsPanel({ assignmentId }: Props) {
                             {formatDate(file.uploaded_at)} &middot; Conclusion
                           </span>
                         </div>
-                        <a
+                        <button
                           className="tsub-download-btn"
-                          href={downloadTeamReviewFile(file.file_id)}
-                          target="_blank"
-                          rel="noopener noreferrer"
+                          onClick={() => downloadConclusionFile(assignmentId, file.file_id)}
                         >
                           Download
-                        </a>
+                        </button>
                       </div>
                     ))}
                   </div>

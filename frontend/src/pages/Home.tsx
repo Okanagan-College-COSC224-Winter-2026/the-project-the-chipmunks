@@ -63,7 +63,7 @@ export default function Home() {
       try {
         const data = await getStudentGrades();
         const map = new Map<number, CourseGrade>();
-        data.courses.forEach((course) => {
+        data.courses.forEach((course: CourseGrade) => {
           map.set(course.course_id, course);
         });
         setGradeMap(map);

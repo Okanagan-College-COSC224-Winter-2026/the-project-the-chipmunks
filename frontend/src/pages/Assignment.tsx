@@ -8,6 +8,7 @@ import AssignmentAttachment from "../components/AssignmentAttachment";
 import ConclusionSection from "../components/ConclusionSection";
 import RubricForm from "../components/RubricForm";
 import { isTeacher } from "../util/login";
+import ReviewFileUpload from '../components/ReviewFileUpload';
 
 import {
   listStuGroup,
@@ -17,9 +18,11 @@ import {
   listCourseMembers,
   submitReview,
   getRubricByAssignment,
+  uploadReviewFiles,
 } from "../util/api";
 
 export default function Assignment() {
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const { id } = useParams();
   const [stuGroup, setStuGroup] = useState<StudentGroups[]>([]);
   const [revieweeID, setRevieweeID] = useState<number>(0);
@@ -105,7 +108,13 @@ export default function Assignment() {
         grade: scores[c.id] ?? 0,
         comments: comments[c.id] ?? "",
       }));
-      await submitReview({ assignment_id: Number(id), reviewee_id: revieweeID, criteria });
+      const data = await submitReview({ assignment_id: Number(id), reviewee_id: revieweeID, criteria });
+
+      if (attachedFiles.length > 0) {
+        await uploadReviewFiles(data.review_id, attachedFiles);
+        setAttachedFiles([]);
+      }
+
       setAlreadyReviewed(true);
       setJustSubmitted(true);
     } catch (error) {
@@ -186,10 +195,13 @@ export default function Assignment() {
                   : "✓ You have already submitted a review for this student."}
               </p>
             ) : rubricCriteria.length > 0 ? (
-              <RubricForm
-                criteria={rubricCriteria}
-                onSubmit={handleSubmitReview}
-              />
+              <>
+                <ReviewFileUpload files={attachedFiles} onChange={setAttachedFiles} />
+                <RubricForm
+                  criteria={rubricCriteria}
+                  onSubmit={handleSubmitReview}
+                />
+              </>
             ) : (
               <p style={{ color: "#888", marginTop: 12 }}>
                 No rubric assigned yet — the teacher hasn't created one.

@@ -81,7 +81,7 @@ interface RubricResponse {
 interface CriterionSubmission {
   criteria_description_id: number;
   grade: number;
-  comments?: string;
+  comments: string;
 }
 interface ReviewSubmission {
   assignment_id: number;
