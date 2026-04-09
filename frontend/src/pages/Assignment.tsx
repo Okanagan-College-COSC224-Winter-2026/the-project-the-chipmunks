@@ -9,9 +9,17 @@ import { isTeacher } from "../util/login";
 import { 
   listStuGroup,
   getUserId,
+<<<<<<< Updated upstream
   createReview,
   createCriterion,
   getReview
+=======
+  getReview,
+  getAssignment,
+  listCourseMembers,
+  submitReview,
+  getRubricByAssignment,
+>>>>>>> Stashed changes
 } from "../util/api";
 
 interface SelectedCriterion {
@@ -44,6 +52,7 @@ export default function Assignment() {
       })();
   }, [revieweeID, id, stuID]);
 
+<<<<<<< Updated upstream
   const handleCriterionSelect = (row: number, column: number) => {
     // Check if this criterion is already selected
     const existingIndex = selectedCriteria.findIndex(
@@ -63,6 +72,29 @@ export default function Assignment() {
         // Add the new selection
         return [...filteredCriteria, { row, column }];
       });
+=======
+  const handleRadioChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setRevieweeID(Number(event.target.value));
+    setSubmitStatus("");
+  };
+
+  const handleSubmitReview = async (
+    scores: Record<number, number>,
+    comments: Record<number, string>
+  ) => {
+    try {
+      setSubmitStatus("");
+      const criteria = rubricCriteria.map((c) => ({
+        criteria_description_id: c.id,
+        grade: scores[c.id] ?? 0,
+        comments: comments[c.id] ?? "",
+      }));
+      await submitReview({ assignment_id: Number(id), reviewee_id: revieweeID, criteria });
+      setAlreadyReviewed(true);
+      setJustSubmitted(true);
+    } catch (error) {
+      setSubmitStatus(error instanceof Error ? error.message : "Failed to submit review.");
+>>>>>>> Stashed changes
     }
   };
 
@@ -80,6 +112,7 @@ export default function Assignment() {
 
       <TabNavigation
         tabs={[
+<<<<<<< Updated upstream
           {
             label: "Home",
             path: `/assignment/${id}`,
@@ -88,6 +121,13 @@ export default function Assignment() {
             label: "Group",
             path: `/assignment/${id}/group`,
           }
+=======
+          { label: "Home",  path: `/assignments/${id}` },
+          { label: "Group", path: `/assignments/${id}/group` },
+          ...(isTeacher()
+            ? [{ label: "Reviews", path: `/assignments/${id}/reviews` }]
+            : []),
+>>>>>>> Stashed changes
         ]}
       />
 
@@ -101,6 +141,7 @@ export default function Assignment() {
           </div>
       }
 
+<<<<<<< Updated upstream
 {
       //List group members as radio buttons to select for given review
       !isTeacher() && <div className='groupMembers'>
@@ -114,6 +155,53 @@ export default function Assignment() {
                   </>
                 )
               }
+=======
+      {isTeacher() && (
+        <div className="assignmentRubric">
+          <RubricCreator id={Number(id)} />
+        </div>
+      )}
+
+      {!isTeacher() && (
+        <div className="groupMembers">
+          <h3>Select a group member to review</h3>
+
+          {stuGroup.length === 0 && (
+            <p style={{ color: "#888" }}>No group members found.</p>
+          )}
+
+          {stuGroup.map((stu) => (
+            <div key={stu.userID} style={{ margin: "4px 0" }}>
+              <input
+                type="radio"
+                id={`stu-${stu.userID}`}
+                value={stu.userID}
+                name="groupMembers"
+                onChange={handleRadioChange}
+              />
+              <label htmlFor={`stu-${stu.userID}`} style={{ marginLeft: 6 }}>
+                {memberNames[stu.userID] || `Student #${stu.userID}`}
+              </label>
+            </div>
+          ))}
+
+          {revieweeID > 0 && (
+            alreadyReviewed ? (
+              <p style={{ color: "#2e7d32", marginTop: 12 }}>
+                {justSubmitted
+                  ? "✓ Review submitted successfully!"
+                  : "✓ You have already submitted a review for this student."}
+              </p>
+            ) : rubricCriteria.length > 0 ? (
+              <RubricForm
+                criteria={rubricCriteria}
+                onSubmit={handleSubmitReview}
+              />
+            ) : (
+              <p style={{ color: "#888", marginTop: 12 }}>
+                No rubric assigned yet — the teacher hasn't created one.
+              </p>
+>>>>>>> Stashed changes
             )
           }
           <button className='submitReview' onClick={async () => {

@@ -57,4 +57,18 @@
     margin-bottom: 12px;
   
     width: 100%;
+<<<<<<< Updated upstream
   }
+=======
+  }
+
+.announcements-section {
+  padding: 12px;
+  margin-top: 8px;
+}
+
+.announcements-empty {
+  color: #a0aec0;
+  font-size: 0.9rem;
+}
+>>>>>>> Stashed changes

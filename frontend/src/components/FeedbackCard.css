@@ -1,0 +1,23 @@
+.FeedbackCard {
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  padding: 1rem;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.FeedbackCard__question {
+  margin: 0 0 12px 0;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.FeedbackCard__score {
+  margin-bottom: 8px;
+}
+
+.FeedbackCard__comments {
+  border-top: 1px solid var(--background-secondary);
+  padding-top: 8px;
+}

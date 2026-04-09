@@ -37,7 +37,20 @@ class Assignment(db.Model):
         "Group_Members", back_populates="assignment", cascade="all, delete-orphan", lazy="dynamic"
     )
 
+<<<<<<< Updated upstream
     def __init__(self, courseID, name, rubric_text, due_date=None):
+=======
+    def __init__(
+        self,
+        courseID,
+        name,
+        rubric_text,
+        due_date=None,
+        description_html=None,
+        attachment_filename=None,
+        attachment_path=None,
+    ):
+>>>>>>> Stashed changes
         self.courseID = courseID
         self.name = name
         self.rubric_text = rubric_text

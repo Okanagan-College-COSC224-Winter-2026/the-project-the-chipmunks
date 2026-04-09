@@ -1,0 +1,109 @@
+.AssignmentAnalytics {
+  margin: 1rem;
+  width: 100%;
+}
+
+.AssignmentAnalytics__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.AssignmentAnalytics__header h1 {
+  margin: 0 0 0.25rem;
+}
+
+.AssignmentAnalytics__subtitle {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.AssignmentAnalytics__headerActions {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.AssignmentAnalytics__csvBtn {
+  padding: 0.55rem 1.2rem;
+  background: #2e7d32;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+}
+
+.AssignmentAnalytics__csvBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.AssignmentAnalytics__backBtn {
+  padding: 0.55rem 1.2rem;
+  background: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font: inherit;
+}
+
+/* Summary row: ring + chart side by side */
+.AssignmentAnalytics__summary {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Criteria breakdown table */
+.AssignmentAnalytics__criteriaWrap {
+  margin-bottom: 1.5rem;
+}
+
+.AssignmentAnalytics__criteriaWrap h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.AssignmentAnalytics__criteriaTable {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+}
+
+.AssignmentAnalytics__criteriaTable th,
+.AssignmentAnalytics__criteriaTable td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000;
+}
+
+.AssignmentAnalytics__criteriaTable th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.AssignmentAnalytics__error {
+  color: #c33;
+  background: #fdecea;
+  padding: 0.75rem;
+  border-radius: 6px;
+}

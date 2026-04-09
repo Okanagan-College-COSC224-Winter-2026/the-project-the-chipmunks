@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import ClassCard from "../components/ClassCard";
+<<<<<<< Updated upstream
+=======
+import GradeBadge from "../components/GradeBadge";
+>>>>>>> Stashed changes
 
 import './Home.css'
 import { listClasses, listAssignments } from "../util/api";
@@ -9,6 +13,13 @@ export default function Home() {
   const [courses, setCourses] = useState<CourseWithAssignments[]>([]);
   const [loading, setLoading] = useState(true);
 
+<<<<<<< Updated upstream
+=======
+  // Dev 5 — grade state
+  const [gradeMap, setGradeMap] = useState<Map<number, CourseGrade>>(new Map());
+  const [gradesLoading, setGradesLoading] = useState(true);
+
+>>>>>>> Stashed changes
   useEffect(() => {
     ;(async () => {
       try {
@@ -44,6 +55,32 @@ export default function Home() {
     })();
   }, []);
 
+<<<<<<< Updated upstream
+=======
+  // Dev 5 — fetch grades for students only
+  useEffect(() => {
+    if (!isStudent()) {
+      setGradesLoading(false);
+      return;
+    }
+
+    ;(async () => {
+      try {
+        const data = await getStudentGrades();
+        const map = new Map<number, CourseGrade>();
+        data.courses.forEach((course) => {
+          map.set(course.course_id, course);
+        });
+        setGradeMap(map);
+      } catch (error) {
+        console.error("Error fetching grades:", error);
+      } finally {
+        setGradesLoading(false);
+      }
+    })();
+  }, []);
+
+>>>>>>> Stashed changes
   if (loading) {
     return (
       <div className="Home">
@@ -61,6 +98,7 @@ export default function Home() {
         {
           courses.map((course) => {
             const assignmentText = `${course.assignmentCount || 0} assignments`;
+<<<<<<< Updated upstream
             
             return (
               <ClassCard
@@ -72,6 +110,35 @@ export default function Home() {
                   window.location.href = `/classes/${course.id}/home`
                 }}
               />
+=======
+            // Dev 5 — look up grade for this course
+            const courseGrade = gradeMap.get(course.id);
+            
+            return (
+              <div key={course.id} className="CourseCardWrapper">
+                <ClassCard
+                  image="https://crc.losrios.edu//shared/img/social-1200-630/programs/general-science-social.jpg"
+                  name={course.name}
+                  subtitle={assignmentText}
+                  onclick={() => {
+                    window.location.href = `/classes/${course.id}/home`
+                  }}
+                />
+                {/* Dev 5 — show grade badge for students only */}
+                {isStudent() && (
+                  <div className="CourseGradeRow">
+                    <GradeBadge
+                      grade={courseGrade?.grade ?? null}
+                      maxScore={courseGrade?.max_score ?? null}
+                      hasGrades={courseGrade?.has_grades ?? false}
+                      gradedAssignments={courseGrade?.graded_assignments ?? 0}
+                      totalAssignments={courseGrade?.total_assignments ?? 0}
+                      loading={gradesLoading}
+                    />
+                  </div>
+                )}
+              </div>
+>>>>>>> Stashed changes
             )
           })
         }
