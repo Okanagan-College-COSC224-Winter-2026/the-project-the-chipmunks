@@ -1068,3 +1068,149 @@ export const markDirectMessagesRead = (otherUserId: number) =>
     credentials: 'include',
   }).then(res => { maybeHandleExpire(res); return res; });
 >>>>>>> Stashed changes
+import { didExpire, removeToken } from "./login";
+
+const BASE_URL = "http://localhost:5000";
+
+export const maybeHandleExpire = (response: Response) => {
+  if (didExpire(response)) {
+    removeToken();
+    window.location.href = "/";
+  }
+};
+
+export const tryLogin = async (email: string, password: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email: email, password: password }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    const json = await response.json();
+    localStorage.setItem("user", JSON.stringify(json));
+    return json;
+  } catch (error) {
+    console.error(error);
+  }
+
+  return false;
+};
+
+export const tryRegister = async (name: string, email: string, password: string) => {
+  try {
+    const response = await fetch(`${BASE_URL}/auth/register`, {
+      method: "POST",
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const createClass = async (name: string) => {
+  const response = await fetch(`${BASE_URL}/class/create_class`, {
+    method: "POST",
+    body: JSON.stringify({ name }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  maybeHandleExpire(response);
+
+  if (!response.ok) {
+    throw new Error(`Response status: ${response.status}`);
+  }
+
+  return response;
+};
+
+export const listClasses = async () => {
+  const resp = await fetch(`${BASE_URL}/class/classes`, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  maybeHandleExpire(resp);
+
+  if (!resp.ok) {
+    throw new Error(`Response status: ${resp.status}`);
+  }
+
+  return await resp.json();
+};
+
+export const listAssignments = async (classId: string) => {
+  const resp = await fetch(`${BASE_URL}/assignment/` + classId, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  maybeHandleExpire(resp);
+
+  if (!resp.ok) {
+    throw new Error(`Response status: ${resp.status}`);
+  }
+
+  const data = await resp.json();
+
+  // ✅ IMPORTANT: normalize due_date → dueDate
+  return data.map((assignment: any) => ({
+    ...assignment,
+    dueDate: assignment.due_date,
+  }));
+};
+
+export const createAssignment = async (courseID: number, name: string) => {
+  const response = await fetch(`${BASE_URL}/assignment/create_assignment`, {
+    method: "POST",
+    body: JSON.stringify({
+      courseID,
+      name,
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+
+  maybeHandleExpire(response);
+
+  if (!response.ok) {
+    throw new Error(`Response status: ${response.status}`);
+  }
+
+  const data = await response.json();
+
+  // ✅ normalize here too
+  if (data.assignment) {
+    data.assignment.dueDate = data.assignment.due_date;
+  }
+
+  return data;
+};

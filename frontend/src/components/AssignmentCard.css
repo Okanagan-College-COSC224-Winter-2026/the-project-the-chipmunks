@@ -1,14 +1,14 @@
-.A_Card{
+.A_Card {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
-  color: var(--text-primary);
+  gap: 12px;
 
-  padding: 4px;
+  color: var(--text-primary);
+  padding: 8px;
 
   width: 95%;
-  height:auto;
+  height: auto;
 
   border-radius: 6px;
 
@@ -22,8 +22,52 @@
   height: 40px;
 }
 
-/*TODO: add disabled functionality */
-.A_Card:hover{
+.A_Card:hover {
   cursor: pointer;
   background-color: var(--background-secondary);
+}
+
+/* ✅ Content container */
+.A_Card_Content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ✅ Title */
+.A_Card_Title {
+  font-weight: bold;
+}
+
+/* ✅ Due date (muted text) */
+.A_Card_Date {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-weight: normal;
+}
+
+/* ✅ Status badge base */
+.A_Card_Status {
+  margin-top: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  width: fit-content;
+}
+
+/* ✅ Status colors */
+.A_Card_Status.Active {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.A_Card_Status.Past_Due {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.A_Card_Status.No_Date {
+  background-color: #e2e3e5;
+  color: #383d41;
 }

@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 import AssignmentCard from "../components/AssignmentCard";
 import Button from "../components/Button";
 import "./ClassHome.css";
@@ -10,98 +9,63 @@ import { importCSV } from "../util/csv";
 import Textbox from "../components/Textbox";
 import StatusMessage from "../components/StatusMessage";
 import { isTeacher } from "../util/login";
-=======
-import AssignmentCard from "../components/AssignmentCard"
-import Button from "../components/Button"
-import "./ClassHome.css"
-import { useParams } from "react-router-dom"
-import { useState, useEffect } from "react"
-import { listAssignments, listClasses, createAssignment, getCourseAnnouncements, createAnnouncement, deleteAnnouncement } from "../util/api"
-import TabNavigation from "../components/TabNavigation"
-import { importCSV } from "../util/csv"
-import Textbox from "../components/Textbox"
-import StatusMessage from "../components/StatusMessage"
-import { isTeacher, isAdmin } from "../util/login"
-import RichTextEditor from "../components/RichTextEditor"
-import AnnouncementCard from "../components/AnnouncementCard"
-import AnnouncementForm from "../components/AnnouncementForm"
-
-interface Announcement {
-  id: number;
-  title: string;
-  content: string;
-  author_name: string;
-  created_at: string;
-}
->>>>>>> Stashed changes
 
 export default function ClassHome() {
   const { id } = useParams();
-  const idNew = Number(id)
-<<<<<<< Updated upstream
+  const idNew = Number(id);
+
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [newAssignmentName, setNewAssignmentName] = useState("");
   const [className, setClassName] = useState<string | null>(null);
-  const [statusMessage, setStatusMessage] = useState('');
-  const [statusType, setStatusType] = useState<'error' | 'success'>('error');
-=======
-  const [assignments, setAssignments] = useState<Assignment[]>([])
-  const [newAssignmentName, setNewAssignmentName] = useState("")
-  const [newAssignmentDescription, setNewAssignmentDescription] = useState("")
-  const [className, setClassName] = useState<string | null>(null)
-  const [statusMessage, setStatusMessage] = useState("")
-  const [statusType, setStatusType] = useState<"error" | "success">("error")
-  const [announcements, setAnnouncements] = useState<Announcement[]>([])
->>>>>>> Stashed changes
+  const [statusMessage, setStatusMessage] = useState("");
+  const [statusType, setStatusType] = useState<"error" | "success">("error");
 
   useEffect(() => {
     (async () => {
       const resp = await listAssignments(String(id));
       const classes = await listClasses();
       const currentClass = classes.find((c: { id: number }) => c.id === Number(id));
+
       setAssignments(resp);
       setClassName(currentClass?.name || null);
     })();
   }, []);
-    
-    const tryCreateAssingment = async () => {
-      try {
-        setStatusMessage('');
-        const response = await createAssignment(idNew, newAssignmentName);
-        const createdAssignment = response?.assignment;
 
-        if (!createdAssignment?.id) {
-          throw new Error('Failed to create assignment');
-        }
+  const tryCreateAssingment = async () => {
+    try {
+      setStatusMessage("");
 
-        setAssignments((prev) => [...prev, createdAssignment]);
-        setNewAssignmentName("");
-        setStatusType('success');
-        setStatusMessage('Assignment created successfully!');
-      } catch (error) {
-        console.error('Error creating assignment:', error);
-        setStatusType('error');
-        setStatusMessage('Error creating assignment.');
+      const response = await createAssignment(idNew, newAssignmentName);
+      const createdAssignment = response?.assignment;
+
+      if (!createdAssignment?.id) {
+        throw new Error("Failed to create assignment");
       }
-    };
-    
-    return (
-      <>
-        <div className="ClassHeader">
-          <div className="ClassHeaderLeft">
-            <h2>{className}</h2>
-          </div>
+
+      setAssignments((prev) => [...prev, createdAssignment]);
+      setNewAssignmentName("");
+      setStatusType("success");
+      setStatusMessage("Assignment created successfully!");
+    } catch (error) {
+      console.error("Error creating assignment:", error);
+      setStatusType("error");
+      setStatusMessage("Error creating assignment.");
+    }
+  };
+
+  return (
+    <>
+      <div className="ClassHeader">
+        <div className="ClassHeaderLeft">
+          <h2>{className}</h2>
+        </div>
 
         <div className="ClassHeaderRight">
           {isTeacher() ? (
             <Button onClick={() => importCSV(id as string)}>
               Add Students via CSV
             </Button>
-<<<<<<< Updated upstream
           ) : null}
-=======
-          )}
->>>>>>> Stashed changes
         </div>
       </div>
 
@@ -126,7 +90,10 @@ export default function ClassHome() {
             {assignments.map((assignment) => {
               return (
                 <li key={assignment.id}>
-                  <AssignmentCard id={assignment.id}>
+                  <AssignmentCard
+                    id={assignment.id}
+                    dueDate={assignment.dueDate || assignment.due_date}
+                  >
                     {assignment.name}
                   </AssignmentCard>
                 </li>
@@ -143,11 +110,7 @@ export default function ClassHome() {
               onInput={setNewAssignmentName}
               className="AssignmentInput"
             />
-            <Button
-              onClick={() =>
-                tryCreateAssingment()
-              }
-            >
+            <Button onClick={tryCreateAssingment}>
               Add
             </Button>
           </div>
