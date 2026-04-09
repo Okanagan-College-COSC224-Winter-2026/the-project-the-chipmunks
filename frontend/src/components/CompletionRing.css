@@ -1,0 +1,14 @@
+.CompletionRing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.CompletionRing__label {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #555;
+  font-weight: 600;
+}

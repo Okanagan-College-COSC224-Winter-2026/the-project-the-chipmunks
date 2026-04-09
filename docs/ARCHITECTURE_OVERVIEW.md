@@ -352,6 +352,26 @@ CourseGroup ───┼──── Group_Members (who's in this group)
 See [database-schema.md](schema/database-schema.md) for complete details.
 
 ---
+---
+
+## Assignment File Storage Architecture
+
+PDF files are stored on the backend server filesystem under:
+
+uploads/
+
+The Assignment model includes:
+- description_html (TEXT)
+- attachment_filename (STRING)
+- attachment_path (STRING)
+
+Security Considerations:
+- Files validated server-side (PDF only)
+- 10MB size limit enforced
+- JWT authentication required
+- HTML content sanitized using DOMPurify before rendering
+
+Frontend communicates using multipart/form-data with credentials: 'include'.
 
 ## Technology Stack
 

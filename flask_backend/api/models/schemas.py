@@ -1,225 +1,182 @@
-from marshmallow import fields, validate
-
-from .assignment_model import Assignment
-from .course_group_model import CourseGroup
-from .course_model import Course
-from .criteria_description_model import CriteriaDescription
-from .criterion_model import Criterion
-from .db import db, ma
-from .group_members_model import Group_Members
-from .review_model import Review
-from .rubric_model import Rubric
-from .submission_model import Submission
-from .user_course_model import User_Course
-from .user_model import User
-
-# ============================================================
-# USER SCHEMAS
-# ============================================================
+from marshmallow import Schema, fields
 
 
-class UserSchema(ma.SQLAlchemyAutoSchema):
+# ----------------------------
+# User schemas (must match auth_controller.py)
+# ----------------------------
+
+class UserSchema(Schema):
     """Full user schema for serialization (excludes password)"""
-
-    class Meta:
-        model = User
-        load_instance = True
-        include_fk = False  # Don't expose raw foreign keys
-        sqla_session = db.session
-        exclude = ("hash_pass",)
-
-    # Explicit fields for clarity and validation
     id = fields.Int(dump_only=True)
-    name = fields.Str(required=True, validate=validate.Length(min=1, max=255))
-    email = fields.Email(required=True)
-    role = fields.Str(
-        dump_default="student", validate=validate.OneOf(["student", "teacher", "admin"])
-    )
-    must_change_password = fields.Bool(dump_default=False)
+    name = fields.Str()
+    email = fields.Str()
+    role = fields.Str()
+    must_change_password = fields.Bool()
+    is_active = fields.Bool()
 
 
-class UserRegistrationSchema(ma.Schema):
-    """Schema for user registration input"""
-
-    name = fields.Str(required=True, validate=validate.Length(min=1, max=255))
-    email = fields.Email(required=True)
-    password = fields.Str(required=True, load_only=True, validate=validate.Length(min=6))
+class UserLoginSchema(Schema):
+    """Schema for login — auth_controller uses email + password"""
+    email = fields.Str(required=True)
+    password = fields.Str(required=True)
 
 
-class UserLoginSchema(ma.Schema):
-    """Schema for login credentials"""
-
-    email = fields.Email(required=True)
-    password = fields.Str(required=True, load_only=True)
-
-
-class UserListSchema(ma.SQLAlchemyAutoSchema):
-    """Lightweight user schema for lists (minimal fields)"""
-
-    class Meta:
-        model = User
-        fields = ("id", "name", "email", "role")
-        dump_only = ("id",)
+class UserRegistrationSchema(Schema):
+    """Schema for registration — auth_controller uses name + email + password"""
+    name = fields.Str(required=True)
+    email = fields.Str(required=True)
+    password = fields.Str(required=True)
 
 
-# ============================================================
-# COURSE SCHEMAS
-# ============================================================
+class UserListSchema(Schema):
+    """Lightweight user schema for lists"""
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    email = fields.Str()
+    role = fields.Str()
 
 
-class CourseSchema(ma.SQLAlchemyAutoSchema):
-    """Full course schema with nested teacher and students.
+# ----------------------------
+# Course schemas
+# ----------------------------
 
-    Note: To avoid N+1 queries, use Course.get_by_id_with_relations() or
-    Course.get_all_with_relations() when fetching courses for serialization.
-    """
-
-    class Meta:
-        model = Course
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
-
+class CourseSchema(Schema):
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    teacherID = fields.Int()
     teacher = fields.Nested(UserListSchema, dump_only=True)
     students = fields.List(fields.Nested(UserListSchema), dump_only=True)
 
 
-class CourseListSchema(ma.SQLAlchemyAutoSchema):
+class CourseListSchema(Schema):
     """Lightweight course schema for lists"""
-
-    class Meta:
-        model = Course
-        fields = ("id", "name", "teacherID")
-        dump_only = ("id",)
-        include_fk = True  # Allow teacherID to be serialized
+    id = fields.Int(dump_only=True)
+    name = fields.Str()
+    teacherID = fields.Int()
 
 
-# ============================================================
-# ASSIGNMENT SCHEMAS
-# ============================================================
+class CourseGroupSchema(Schema):
+    id = fields.Int(dump_only=True)
+    courseID = fields.Int(required=True)
+    name = fields.Str()
+    assignmentID = fields.Int()
 
 
-class AssignmentSchema(ma.SQLAlchemyAutoSchema):
-    """Full assignment schema"""
+# ----------------------------
+# Assignment
+# ----------------------------
 
-    class Meta:
-        model = Assignment
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
-
-    course = fields.Nested(CourseListSchema, dump_only=True)
-
-
-# ============================================================
-# RUBRIC & CRITERIA SCHEMAS
-# ============================================================
+class AssignmentSchema(Schema):
+    id = fields.Int(dump_only=True)
+    courseID = fields.Int(required=True)
+    name = fields.Str()
+    rubric = fields.Str(allow_none=True)
+    description_html = fields.Str(allow_none=True)
+    attachment_filename = fields.Str(allow_none=True)
+    has_attachment = fields.Bool(dump_only=True)
+    due_date = fields.DateTime(allow_none=True)
 
 
-class RubricSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Rubric
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+# ----------------------------
+# Rubric / criteria
+# ----------------------------
+
+class CriterionSchema(Schema):
+    id = fields.Int(dump_only=True)
+    reviewID = fields.Int(required=True)
+    criterionRowID = fields.Int(required=True)
+    grade = fields.Int()
+    comments = fields.Str(allow_none=True)
 
 
-class CriteriaDescriptionSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = CriteriaDescription
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+class CriteriaDescriptionSchema(Schema):
+    id = fields.Int(dump_only=True)
+    rubricID = fields.Int(required=True)
+    question = fields.Str(required=True)
+    scoreMax = fields.Int()
+    hasScore = fields.Bool()
+    canComment = fields.Bool()
 
 
-class CriterionSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Criterion
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+class RubricSchema(Schema):
+    id = fields.Int(dump_only=True)
+    assignmentID = fields.Int(required=True)
+    canComment = fields.Bool()
 
 
-# ============================================================
-# REVIEW SCHEMAS
-# ============================================================
+# ----------------------------
+# Reviews + attached review files
+# ----------------------------
 
-
-class ReviewSchema(ma.SQLAlchemyAutoSchema):
-    """Full review schema with nested relationships.
-
-    Note: To avoid N+1 queries, use Review.get_by_id_with_relations() or
-    Review.get_all_with_relations() when fetching reviews for serialization.
-    """
-
-    class Meta:
-        model = Review
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
-
+class ReviewSchema(Schema):
+    id = fields.Int(dump_only=True)
+    reviewerID = fields.Int(required=True)
+    revieweeID = fields.Int(required=True)
+    assignmentID = fields.Int(required=True)
     reviewer = fields.Nested(UserListSchema, dump_only=True)
     reviewee = fields.Nested(UserListSchema, dump_only=True)
     assignment = fields.Nested(AssignmentSchema, dump_only=True)
+    created_at = fields.DateTime(dump_only=True)
 
 
-class ReviewListSchema(ma.SQLAlchemyAutoSchema):
-    """Lightweight review schema for list endpoints.
-
-    Uses minimal nested data to reduce query complexity.
-    For list views, we don't need full assignment details with nested course.
-
-    Note: Only includes assignmentID as FK since reviewer/reviewee provide their own IDs.
-    This avoids redundancy while giving clients the assignment link they need.
-    """
-
-    class Meta:
-        model = Review
-        fields = ("id", "assignmentID", "reviewer", "reviewee")
-        dump_only = ("id",)
-        include_fk = True  # Allows assignmentID to be serialized
-
+class ReviewListSchema(Schema):
+    """Lightweight review schema for list endpoints — no nested assignment"""
+    id = fields.Int(dump_only=True)
+    assignmentID = fields.Int()
     reviewer = fields.Nested(UserListSchema, dump_only=True)
     reviewee = fields.Nested(UserListSchema, dump_only=True)
 
 
-# ============================================================
-# GROUP SCHEMAS
-# ============================================================
+class ReviewFileSchema(Schema):
+    id = fields.Int(dump_only=True)
+    reviewID = fields.Int(required=True)
+    filename = fields.Str(required=True)
+    file_path = fields.Str(required=True)
+    uploaded_at = fields.DateTime(dump_only=True)
+    uploaderID = fields.Int(required=True)
 
 
-class CourseGroupSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = CourseGroup
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+# ----------------------------
+# Submissions
+# ----------------------------
+
+class SubmissionSchema(Schema):
+    id = fields.Int(dump_only=True)
+    assignmentID = fields.Int(required=True)
+    userID = fields.Int(required=True)
+    submitted_at = fields.DateTime(dump_only=True)
 
 
-class GroupMembersSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Group_Members
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+class UserCourseSchema(Schema):
+    id = fields.Int(dump_only=True)
+    userID = fields.Int(required=True)
+    courseID = fields.Int(required=True)
 
 
-# ============================================================
-# JUNCTION TABLE SCHEMAS
-# ============================================================
+class GroupMembersSchema(Schema):
+    id = fields.Int(dump_only=True)
+    groupID = fields.Int(required=True)
+    userID = fields.Int(required=True)
+    assignmentID = fields.Int(required=True)
 
 
-class UserCourseSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = User_Course
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+# ----------------------------
+# Conclusion files (teacher uploads)
+# ----------------------------
+
+class ConclusionFileSchema(Schema):
+    id = fields.Int(dump_only=True)
+    assignmentID = fields.Int(required=True)
+    teacherID = fields.Int(required=True)
+    filename = fields.Str(required=True)
+    file_path = fields.Str(required=True)
+    uploaded_at = fields.DateTime(dump_only=True)
 
 
-class SubmissionSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        model = Submission
-        load_instance = True
-        include_fk = False
-        sqla_session = db.session
+# ----------------------------
+# Password change (Feature C)
+# ----------------------------
+
+class PasswordChangeSchema(Schema):
+    current_password = fields.Str(required=True)
+    new_password = fields.Str(required=True)

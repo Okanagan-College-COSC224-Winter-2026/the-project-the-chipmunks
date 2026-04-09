@@ -61,4 +61,10 @@
   justify-content: center;
 
   margin: 12px;
+  width: 240px;
+}
+
+.LoginInputChunk .Textbox,
+.LoginInputChunk .password-toggle-wrapper {
+  width: 100%;
 }

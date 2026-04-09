@@ -13,6 +13,8 @@ class Rubric(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     assignmentID = db.Column(db.Integer, db.ForeignKey("Assignment.id"), nullable=False, index=True)
     canComment = db.Column(db.Boolean, nullable=False, default=True)
+    is_template = db.Column(db.Boolean, default=False, nullable=False)
+    template_name = db.Column(db.String(200), nullable=True)
 
     # relationships
     assignment = db.relationship("Assignment", back_populates="rubrics")
@@ -31,6 +33,14 @@ class Rubric(db.Model):
     def get_by_id(cls, rubric_id):
         """Get rubric by ID"""
         return db.session.get(cls, int(rubric_id))
+
+    @classmethod
+    def get_rubric_by_assignment(cls, assignment_id: int):
+        """
+        Get the rubric for a given assignment ID.
+        Returns None if no rubric exists for that assignment.
+        """
+        return cls.query.filter_by(assignmentID=int(assignment_id)).first()
 
     @classmethod
     def create_rubric(cls, rubric):

@@ -3,8 +3,22 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import Textbox from '../components/Textbox';
 import StatusMessage from '../components/StatusMessage';
+import PasswordToggle from '../components/PasswordToggle';
 import { changePassword } from '../util/api';
 import './LoginPage.css';
+import './ChangePassword.css';
+
+interface CriterionRule {
+  label: string;
+  test: (pw: string) => boolean;
+}
+
+const CRITERIA: CriterionRule[] = [
+  { label: 'At least 8 characters',          test: pw => pw.length >= 8 },
+  { label: 'At least one uppercase letter',   test: pw => /[A-Z]/.test(pw) },
+  { label: 'At least one lowercase letter',   test: pw => /[a-z]/.test(pw) },
+  { label: 'At least one number',             test: pw => /[0-9]/.test(pw) },
+];
 
 export default function ChangePassword() {
   const navigate = useNavigate();
@@ -13,6 +27,10 @@ export default function ChangePassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+
+  const allCriteriaMet = CRITERIA.every(c => c.test(newPassword));
+  const passwordsMatch = newPassword.length > 0 && newPassword === confirmPassword;
+  const canSubmit = allCriteriaMet && passwordsMatch && currentPassword.length > 0;
 
   const handleChangePassword = async () => {
     try {
@@ -29,18 +47,9 @@ export default function ChangePassword() {
         return;
       }
 
-      if (newPassword.length < 6) {
-        setError('New password must be at least 6 characters');
-        return;
-      }
-
       await changePassword(currentPassword, newPassword);
       setSuccess(true);
-      
-      // Redirect to home after 2 seconds
-      setTimeout(() => {
-        navigate('/home');
-      }, 2000);
+      setTimeout(() => navigate('/home'), 2000);
     } catch (err: unknown) {
       if (err instanceof Error) {
         setError(err.message || 'Failed to change password');
@@ -58,11 +67,15 @@ export default function ChangePassword() {
           You must change your temporary password before continuing.
         </p>
 
-        <StatusMessage message={error} type="error" />
+        {error && (
+          <div className="Status-Message Status-Message--error" role="alert">
+            {error.split('\n').map((line, i) => <div key={i}>{line}</div>)}
+          </div>
+        )}
         {success && (
-          <StatusMessage 
-            message="Password changed successfully! Redirecting..." 
-            type="success" 
+          <StatusMessage
+            message="Password changed successfully! Redirecting..."
+            type="success"
           />
         )}
 
@@ -70,32 +83,63 @@ export default function ChangePassword() {
           <div className="LoginInputs">
             <div className="LoginInputChunk">
               <span>Current Password</span>
-              <Textbox
-                type='password'
-                placeholder='Current password...'
-                onInput={setCurrentPassword}
-                className='LoginInput'
-              />
+              <PasswordToggle>
+                {(inputType) => (
+                  <Textbox
+                    type={inputType}
+                    placeholder='Current password...'
+                    onInput={setCurrentPassword}
+                    className='LoginInput'
+                  />
+                )}
+              </PasswordToggle>
             </div>
 
             <div className="LoginInputChunk">
               <span>New Password</span>
-              <Textbox
-                type='password'
-                placeholder='New password...'
-                onInput={setNewPassword}
-                className='LoginInput'
-              />
+              <PasswordToggle>
+                {(inputType) => (
+                  <Textbox
+                    type={inputType}
+                    placeholder='New password...'
+                    onInput={setNewPassword}
+                    className='LoginInput'
+                  />
+                )}
+              </PasswordToggle>
             </div>
+
+            {/* Real-time criteria checklist */}
+            {newPassword.length > 0 && (
+              <ul className="pw-criteria-list">
+                {CRITERIA.map(({ label, test }) => {
+                  const met = test(newPassword);
+                  return (
+                    <li key={label} className={met ? 'pw-criterion met' : 'pw-criterion unmet'}>
+                      <span className="pw-criterion-icon">{met ? '✓' : '✗'}</span>
+                      {label}
+                    </li>
+                  );
+                })}
+                <li className={passwordsMatch ? 'pw-criterion met' : 'pw-criterion unmet'}>
+                  <span className="pw-criterion-icon">{passwordsMatch ? '✓' : '✗'}</span>
+                  Passwords match
+                </li>
+              </ul>
+            )}
 
             <div className="LoginInputChunk">
               <span>Confirm New Password</span>
-              <Textbox
-                type='password'
-                placeholder='Confirm new password...'
-                onInput={setConfirmPassword}
-                className='LoginInput'
-              />
+              <PasswordToggle>
+                {(inputType) => (
+                  <Textbox
+                    type={inputType}
+                    placeholder='Confirm new password...'
+                    onInput={setConfirmPassword}
+                    className='LoginInput'
+                  />
+                )}
+              </PasswordToggle>
             </div>
           </div>
         </div>
@@ -103,7 +147,7 @@ export default function ChangePassword() {
         <div>
           <Button
             onClick={handleChangePassword}
-            disabled={success}
+            disabled={success || !canSubmit}
           >
             Change Password
           </Button>

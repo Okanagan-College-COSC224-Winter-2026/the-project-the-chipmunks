@@ -1,0 +1,45 @@
+.OutlierTable {
+  margin-top: 1.5rem;
+}
+
+.OutlierTable h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  color: #333;
+}
+
+.OutlierTable__empty {
+  color: #2e7d32;
+  font-size: 0.9rem;
+}
+
+.OutlierTable__wrap {
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+}
+
+.OutlierTable__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.OutlierTable__table th,
+.OutlierTable__table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000;
+}
+
+.OutlierTable__table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.OutlierTable__row--low  { background: #fff8e1; }
+.OutlierTable__row--high { background: #fdecea; }
+
+.OutlierTable__neg { color: #7b3f00; font-weight: 600; }
+.OutlierTable__pos { color: #b71c1c; font-weight: 600; }

@@ -5,11 +5,12 @@ import {
   getUserId,
   listCourseMembers,
   listGroupMembers,
-  listGroups,
+  listAllGroups,
   listStuGroup,
   listUnassignedGroups,
   saveGroups,
   deleteGroup,
+  getAssignment,
 } from "../util/api";
 import { useParams } from "react-router-dom";
 import "./Group.css";
@@ -17,6 +18,7 @@ import TabNavigation from "../components/TabNavigation";
 import StatusMessage from "../components/StatusMessage";
 import { isTeacher } from "../util/login";
 import Textbox from "../components/Textbox";
+import GroupChat from "../components/GroupChat";
 
 function fisherYates<T>(array: T[]): T[] {
   let m = array.length, t, i;
@@ -43,37 +45,33 @@ export default function Group() {
   const [groupName, setGroupName] = useState('');
   const [statusMessage, setStatusMessage] = useState('');
   const [statusType, setStatusType] = useState<'error' | 'success'>('error');
+  const [stuId, setStuId] = useState<number>(0);
 
   const nameFromId = (id: number) => {
     return classMembers.find((mem) => mem.id === id)?.name || 'N/A';
   };
 
   const randomize = () => {
-    // remove every member from every group, save them
     const members = []
 
     for (const group of Object.values(groupTable)) {
       for (const member of group) {
         const n = { ...member }
         n.groupID = -1
-
         members.push(n)
       }
     }
 
-    // Also grab the members from the unassigned table
     if (memberTable[-1]) {
       for (const member of memberTable[-1]) {
         const n = { ...member }
         n.groupID = -1
-
         members.push(n)
       }
     }
 
     const membersPerGroup = members.length / Object.keys(groupTable).length
     const gIds = Object.keys(groupTable)
-    // Shuffle the array, then sequentially add them to groups
     const shuffled = fisherYates(members)
     const newTable: GroupTable = {}
 
@@ -84,7 +82,6 @@ export default function Group() {
         const member = shuffled[i]
         i++
 
-        // This will make a false entry if the amount of total people is uneven
         if (!member) break
 
         const n = { ...member }
@@ -101,12 +98,24 @@ export default function Group() {
 
   useEffect(() => {
     (async () => {
-      const classMembers = await listCourseMembers(String(id));
+      // Resolve the courseID from the assignment so we can fetch class members by class
+      let courseId: string = String(id); // fallback
+      try {
+        const assignment = await getAssignment(Number(id));
+        if (assignment && assignment.courseID) {
+          courseId = String(assignment.courseID);
+        }
+      } catch {
+        // If we can't resolve, members may be empty
+      }
+
+      const classMembers = await listCourseMembers(courseId);
       setclassMembers(classMembers);
-      const groups = await listGroups(Number(id));
+      const groups = await listAllGroups(Number(id));
       setGroups(groups);
       const ua = await listUnassignedGroups(Number(id));
       const stuId = await getUserId();
+      setStuId(stuId);
       const stus = await listStuGroup(Number(id), stuId);
       setStuGroup(stus);
 
@@ -119,7 +128,6 @@ export default function Group() {
       }
 
       const grLocal: GroupTable = {};
-      //build a table of group names and students
       for (const gr of groups) {
         grLocal[gr.id] = [];
         for (const stu of groupMembers[gr.id]) {
@@ -130,7 +138,6 @@ export default function Group() {
       }
       setGroupTable(grLocal);
 
-      //build a table for unassigned students
       const memLocal: GroupTable = {};
       memLocal[-1] = [];
       for (const stu of ua) {
@@ -138,7 +145,7 @@ export default function Group() {
       }
       setMemberTable(memLocal);
     })();
-  }, []);
+  }, [id]);
 
   return (
     <>
@@ -150,11 +157,11 @@ export default function Group() {
         tabs={[
           {
             label: "Home",
-            path: `/assignment/${id}`,
+            path: `/assignments/${id}`,
           },
           {
             label: "Group",
-            path: `/assignment/${id}/group`,
+            path: `/assignments/${id}/group`,
           }
         ]}
       />
@@ -166,17 +173,17 @@ export default function Group() {
           <>
             <div className="assignmentTables">
               <table className="table">
+                <tbody>
                 <tr>
                   <th>Unassigned</th>
                 </tr>
                 {memberTable[-1]
                   ? memberTable[-1].map((ua) => {
                       return (
-                        <tr>
+                        <tr key={ua.userID}>
                           <span className="StudentName">{nameFromId(ua.userID)}</span>
                           <button
                             onClick={() => {
-                              // These need to be deep copies, or it won't update properly
                               const localMember = { ...memberTable };
                               const localGroup = { ...groupTable };
                               const memObj = localMember[-1].find(
@@ -205,16 +212,18 @@ export default function Group() {
                       );
                     })
                   : null}
+                </tbody>
               </table>
 
               <table className="table">
+                <tbody>
                 <tr>
                   <th>Groups</th>
                 </tr>
                 {Object.keys(groupTable).map((gId) => {
                   return (
-                    <>
-                      <tr
+                    <tr key={gId}>
+                      <div
                         className={
                           "groupNames " +
                           (Number(gId) == selectedGroup ? "selected" : "")
@@ -225,18 +234,17 @@ export default function Group() {
                           <img src="/icons/arrow.svg" alt="arrow" />
                         </div>
                         {groups.find((gr) => gr.id === Number(gId))?.name}
-                      </tr>
+                      </div>
 
                       {selectedGroup !== -1 && selectedGroup == Number(gId)
                         ? groupTable[selectedGroup].map((stu) => {
                             return (
-                              <tr>
+                              <div key={stu.userID} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
                                 <span className="StudentName">
                                   {nameFromId(stu.userID)}
                                 </span>
                                 <button
                                   onClick={() => {
-                                    // These need to be deep copies, or it won't update properly
                                     const localMember = { ...memberTable };
                                     const localGroup = { ...groupTable };
                                     const memObj = localGroup[
@@ -259,13 +267,14 @@ export default function Group() {
                                 >
                                   Move
                                 </button>
-                              </tr>
+                              </div>
                             );
                           })
                         : null}
-                    </>
+                    </tr>
                   );
                 })}
+                </tbody>
               </table>
             </div>
             <div>
@@ -313,9 +322,18 @@ export default function Group() {
 
             <div>
               <button
-                onClick={() =>{
-                  const nextGid = Number(getNextGroupID) + 1 ;
-                  createGroup(Number(id), groupName, Number(nextGid))           
+                onClick={async () =>{
+                  const nextGid = await getNextGroupID(Number(id));
+                  const newId = Number(nextGid) + 1;
+                  await createGroup(Number(id), groupName, newId);
+                  // Reload groups
+                  const updatedGroups = await listAllGroups(Number(id));
+                  setGroups(updatedGroups);
+                  const grLocal: GroupTable = { ...groupTable };
+                  grLocal[newId] = [];
+                  setGroupTable(grLocal);
+                  setStatusType('success');
+                  setStatusMessage(`Group "${groupName}" created!`);
                 }}
                 >
                   Create New Group
@@ -331,13 +349,32 @@ export default function Group() {
         ) : (
           <div className="assignment">
             <table className="studentTable">
+              <tbody>
               <tr>
                 <th>My group</th>
               </tr>
               {stuGroup.map((stus) => {
-                return <tr>{stus.userID}</tr>;
+                return <tr key={stus.userID}><td>{nameFromId(stus.userID)}</td></tr>;
               })}
+              </tbody>
             </table>
+
+            {/* Group chat — only shown when student has a group */}
+            {stuGroup.length > 0 && (() => {
+              const myGroupId = stuGroup[0].groupID;
+              const otherMembers = stuGroup
+                .filter(s => s.userID !== stuId)
+                .map(s => ({ userId: s.userID, name: nameFromId(s.userID) }));
+              const groupName = groups.find(g => g.id === myGroupId)?.name ?? 'Group Chat';
+              return (
+                <GroupChat
+                  groupId={myGroupId}
+                  groupName={groupName}
+                  members={otherMembers}
+                  currentUserId={stuId}
+                />
+              );
+            })()}
           </div>
         )}
       </div>

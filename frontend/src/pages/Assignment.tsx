@@ -1,301 +1,238 @@
-import { useEffect, useState, ChangeEvent } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import RichTextEditor from "../components/RichTextEditor";
-import StatusMessage from "../components/StatusMessage";
-import "./Assignment.css";
-import RubricCreator from "../components/RubricCreator";
-import RubricDisplay from "../components/RubricDisplay";
-import TabNavigation from "../components/TabNavigation";
-import { isTeacher } from "../util/login";
-
-import { 
-  listStuGroup,
-  getUserId,
-<<<<<<< Updated upstream
-  createReview,
-  createCriterion,
-  getReview
-=======
-  getReview,
-  getAssignment,
-  listCourseMembers,
-  submitReview,
-  getRubricByAssignment,
-  uploadReviewFiles,
-  editAssignment,
-  deleteAssignment,
->>>>>>> Stashed changes
-} from "../util/api";
-
-interface SelectedCriterion {
-  row: number;
-  column: number;
+.assignmentTables {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+}
+.table {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid var(--background-secondary);
+    /* background-color: var(--background-secondary); */
+    margin: 0 10px;
+}
+.table .groupNames {
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  padding: 4px 0;
+}
+.AssignmentPage button {
+  padding: 8px;
+  border: none;
+  background-color: var(--button-primary);
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+.AssignmentPage button:hover {
+  filter: brightness(0.9);
+}
+.AssignmentPage  button,
+.table .StudentName {
+  margin: 10px;
+  margin-left: 20px;
+}
+.table tr {
+  width: 100%;
+  display:flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.1s ease-in-out;
+}
+.table tr:not(.groupNames):hover {
+  background-color: var(--background-secondary);
+}
+.table th {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid var(--background-secondary);
+}
+.groupNames {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+.GroupArrow {
+  position: absolute;
+  top: 4px;
+  left: 20px;
+  width: 20px;
+  height: 20px;
+}
+.GroupArrow img {
+  width: 100%;
+  height: 100%;
+}
+.groupNames.selected .GroupArrow {
+  transform: rotate(90deg);
+}
+.AssignmentHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+}
+.groupNameInput {
+  width: 15%;
 }
 
-export default function Assignment() {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const [stuGroup, setStuGroup] = useState<StudentGroups[]>([]);
-  const [revieweeID, setRevieweeID] = useState<number>(0);
-  const [stuID, setStuID] = useState<number>(0);
-<<<<<<< Updated upstream
-  const [selectedCriteria, setSelectedCriteria] = useState<SelectedCriterion[]>([]);
-  const [review, setReview] = useState<number[]>([]);
-=======
-  const [assignmentName, setAssignmentName] = useState<string>("");
-  const [descriptionHtml, setDescriptionHtml] = useState<string>("");
-  const [memberNames, setMemberNames] = useState<Record<number, string>>({});
-  const [rubricCriteria, setRubricCriteria] = useState<RubricCriteria[]>([]);
-  const [submitStatus, setSubmitStatus] = useState<string>("");
-  const [alreadyReviewed, setAlreadyReviewed] = useState(false);
-  const [justSubmitted, setJustSubmitted] = useState(false);
-  const [courseId, setCourseId] = useState<number | null>(null);
+.review-file-upload {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px dashed #ccc;
+  border-radius: 6px;
+  background: #fafafa;
+}
+.attached-files-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+.attached-files-list li {
+  margin: 0.3rem 0;
+}
 
-  // Edit form state
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [editName, setEditName] = useState("");
-  const [editDescription, setEditDescription] = useState("");
-  const [editStatus, setEditStatus] = useState<string>("");
-  const [editStatusType, setEditStatusType] = useState<"success" | "error">("error");
-  const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
->>>>>>> Stashed changes
-
-  useEffect(() => {
-<<<<<<< Updated upstream
-      (async () => {
-        const stuID = await getUserId();
-      setStuID(stuID);
-      const stus = await listStuGroup(Number(id), stuID);
-      setStuGroup(stus);
-        try {
-          const reviewResponse = await getReview(Number(id), stuID, revieweeID);
-          const reviewData = await reviewResponse.json();
-          setReview(reviewData.grades);
-          console.log("Review data:", reviewData);
-        } catch (error) {
-          console.error('Error fetching review:', error);
-=======
-    (async () => {
-      try {
-        const assignment = await getAssignment(Number(id));
-        setAssignmentName(assignment.name || `Assignment ${id}`);
-        setDescriptionHtml(assignment.description_html || "");
-
-        // Load course members for name lookup
-        setCourseId(assignment.courseID || null);
-        if (assignment.courseID) {
-          const members = await listCourseMembers(String(assignment.courseID));
-          const nameMap: Record<number, string> = {};
-          members.forEach((m: { id: number; name: string }) => {
-            nameMap[m.id] = m.name;
-          });
-          setMemberNames(nameMap);
->>>>>>> Stashed changes
-        }
-      })();
-  }, [revieweeID, id, stuID]);
-
-  const handleCriterionSelect = (row: number, column: number) => {
-    // Check if this criterion is already selected
-    const existingIndex = selectedCriteria.findIndex(
-      criterion => criterion.row === row && criterion.column === column
-    );
-    
-    if (existingIndex >= 0) {
-      // If already selected, remove it (toggle off)
-      setSelectedCriteria(prev => 
-        prev.filter((_, index) => index !== existingIndex)
-      );
-    } else {
-      // Add the new criterion, removing any other selection in the same row
-      setSelectedCriteria(prev => {
-        // Remove any existing selection for this row
-        const filteredCriteria = prev.filter(criterion => criterion.row !== row);
-        // Add the new selection
-        return [...filteredCriteria, { row, column }];
-      });
-    }
-  };
-
-<<<<<<< Updated upstream
-  function handleRadioChange(event: ChangeEvent<HTMLInputElement>): void {
-    const selectedID = Number(event.target.value);
-    setRevieweeID(selectedID);
-    console.log(`Selected group member ID: ${selectedID}`);
+/* ================= MOBILE ASSIGNMENT ================= */
+@media (max-width: 767px) {
+  .AssignmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
   }
-=======
-
-  const handleOpenEdit = () => {
-    setEditName(assignmentName);
-    setEditDescription(descriptionHtml);
-    setEditStatus("");
-    setShowEditForm(true);
-  };
-
-  const handleCancelEdit = () => {
-    setShowEditForm(false);
-    setEditStatus("");
-  };
-
-  const handleSaveEdit = async () => {
-    setIsSaving(true);
-    setEditStatus("");
-    try {
-      await editAssignment(Number(id), {
-        name: editName,
-        description_html: editDescription,
-      });
-      setAssignmentName(editName);
-      setDescriptionHtml(editDescription);
-      setEditStatusType("success");
-      setEditStatus("Assignment updated successfully.");
-      setShowEditForm(false);
-    } catch (error) {
-      setEditStatusType("error");
-      setEditStatus(error instanceof Error ? error.message : "Failed to save changes.");
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
-  const handleDeleteAssignment = async () => {
-    const confirmed = window.confirm(
-      `Are you sure you want to delete "${assignmentName}"? This cannot be undone.`
-    );
-    if (!confirmed) return;
-    setIsDeleting(true);
-    try {
-      await deleteAssignment(Number(id));
-      navigate(`/classes/${courseId}/home`);
-    } catch (error) {
-      setEditStatusType("error");
-      setEditStatus(error instanceof Error ? error.message : "Failed to delete assignment.");
-      setIsDeleting(false);
-    }
-  };
->>>>>>> Stashed changes
-
-  return (
-    <>
-      <div className="AssignmentHeader">
-<<<<<<< Updated upstream
-        <h2>Assignment {id}</h2>
-=======
-        <h2>{assignmentName || `Assignment ${id}`}</h2>
-        {isTeacher() && (
-          <div className="assignment-header-actions">
-            <button className="btn-edit-assignment" onClick={handleOpenEdit}>
-              Edit Assignment
-            </button>
-            <button
-              className="btn-delete-assignment"
-              onClick={handleDeleteAssignment}
-              disabled={isDeleting}
-            >
-              {isDeleting ? "Deleting..." : "Delete Assignment"}
-            </button>
-          </div>
-        )}
->>>>>>> Stashed changes
-      </div>
-
-
-      {/* Edit form — teachers only, toggled by Edit Assignment button */}
-      {isTeacher() && showEditForm && (
-        <div className="assignment-edit-form">
-          <h3>Edit Assignment</h3>
-          <label className="assignment-edit-label">Assignment Name</label>
-          <input
-            className="assignment-edit-input"
-            type="text"
-            value={editName}
-            onChange={e => setEditName(e.target.value)}
-          />
-          <label className="assignment-edit-label">Description</label>
-          <RichTextEditor value={editDescription} onChange={setEditDescription} />
-          <div className="assignment-edit-actions">
-            <button onClick={handleSaveEdit} disabled={isSaving}>
-              {isSaving ? "Saving..." : "Save Changes"}
-            </button>
-            <button className="btn-secondary" onClick={handleCancelEdit}>
-              Cancel
-            </button>
-          </div>
-          {editStatus && (
-            <StatusMessage message={editStatus} type={editStatusType} />
-          )}
-        </div>
-      )}
-
-      {/* Feedback after a successful edit (form closed) */}
-      {isTeacher() && !showEditForm && editStatus && (
-        <StatusMessage message={editStatus} type={editStatusType} />
-      )}
-
-      <TabNavigation
-        tabs={[
-<<<<<<< Updated upstream
-          {
-            label: "Home",
-            path: `/assignment/${id}`,
-          },
-          {
-            label: "Group",
-            path: `/assignment/${id}/group`,
-          }
-=======
-          { label: "Home", path: `/assignments/${id}` },
-          { label: "Group", path: `/assignments/${id}/group` },
-          ...(isTeacher()
-            ? [{ label: "Reviews", path: `/assignments/${id}/reviews` }]
-            : [{ label: "Team Submissions", path: `/assignments/${id}/team-submissions` }]
-          ),
->>>>>>> Stashed changes
-        ]}
-      />
-
-      <div className='assignmentRubricDisplay'>
-        <RubricDisplay rubricId={Number(id)} onCriterionSelect={handleCriterionSelect} grades={review} />
-      </div>
-      {
-        isTeacher() && 
-          <div className='assignmentRubric'>
-            <RubricCreator id={Number(id)}/>
-          </div>
-      }
-
-{
-      //List group members as radio buttons to select for given review
-      !isTeacher() && <div className='groupMembers'>
-        <h3>Select a group member to review</h3>
-          {stuGroup.map((stus) => {
-                return (
-                  <>
-                  <input type='radio' id={stus.userID.toString()} value={stus.userID} name='groupMembers' onChange={handleRadioChange}></input>
-                  <label htmlFor={stus.userID.toString()}>{stus.userID}</label>
-                  <br></br>
-                  </>
-                )
-              }
-            )
-          }
-          <button className='submitReview' onClick={async () => {
-            console.log("Submitting review with selected criteria:", selectedCriteria);
-            try {
-              const reviewResponse = await createReview(Number(id), stuID, revieweeID);
-              const reviewData = await reviewResponse.json();
-              console.log("Review response:", reviewData);
-              for (const criterion of selectedCriteria) {
-                await createCriterion(reviewData.id, criterion.row, criterion.column, "");
-              }
-              console.log('Review submitted successfully');
-            } catch (error) {
-              console.error('Error submitting review:', error);
-            }
-          }}>Submit Review</button>
-      </div>}
-    </>
-  );
+  .assignmentTables,
+  .studentTable,
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .assignmentTables {
+    margin: 0;
+  }
+  .table {
+    min-width: 320px;
+    margin: 0 0 12px 0;
+  }
+  .groupNameInput {
+    width: 100%;
+  }
+  .AssignmentPage button {
+    min-height: 44px;
+  }
 }
 
+/* ── US9: Assignment Management (Edit / Delete) ─────────────────────────── */
+
+.assignment-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit-assignment,
+.btn-delete-assignment {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.1s ease-in-out;
+}
+
+.btn-edit-assignment {
+  background-color: var(--button-primary);
+  color: #fff;
+}
+
+.btn-delete-assignment {
+  background-color: var(--button-danger, #c0392b);
+  color: #fff;
+}
+
+.btn-edit-assignment:hover,
+.btn-delete-assignment:hover {
+  filter: brightness(0.88);
+}
+
+.btn-delete-assignment:disabled,
+.btn-edit-assignment:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.assignment-edit-form {
+  margin: 0 12px 16px;
+  padding: 16px;
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  background-color: var(--background-primary, #fff);
+}
+
+.assignment-edit-form h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.assignment-edit-label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.assignment-edit-input {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  margin-bottom: 14px;
+  border: 1px solid var(--background-secondary, #ccc);
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--input-background, #fff);
+  color: var(--text-primary, #111);
+}
+
+.assignment-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.assignment-edit-actions .btn-secondary {
+  background-color: var(--background-secondary, #e0e0e0);
+  color: var(--text-primary, #111);
+}
+
+@media (max-width: 767px) {
+  .assignment-header-actions {
+    flex-wrap: wrap;
+  }
+  .btn-edit-assignment,
+  .btn-delete-assignment {
+    min-height: 40px;
+    flex: 1;
+  }
+  .assignment-edit-form {
+    margin: 0 8px 12px;
+    padding: 12px;
+  }
+  .assignment-edit-actions {
+    flex-direction: column;
+  }
+}

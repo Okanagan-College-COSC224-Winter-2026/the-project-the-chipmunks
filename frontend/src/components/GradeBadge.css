@@ -1,0 +1,96 @@
+.GradeBadge {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  margin-top: 4px;
+}
+
+/* ── Score ── */
+
+.GradeBadge__score {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.GradeBadge__grade {
+  font-weight: 700;
+}
+
+.GradeBadge__separator {
+  font-weight: 400;
+  opacity: 0.6;
+}
+
+.GradeBadge__max {
+  font-weight: 400;
+  opacity: 0.7;
+}
+
+/* ── Color Variants ── */
+
+.GradeBadge--green {
+  background-color: #ecfdf5;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+
+.GradeBadge--yellow {
+  background-color: #fefce8;
+  border: 1px solid #fde047;
+  color: #854d0e;
+}
+
+.GradeBadge--red {
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #991b1b;
+}
+
+/* ── Empty State ── */
+
+.GradeBadge--empty {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-tertiary);
+  color: var(--text-secondary);
+}
+
+.GradeBadge__label {
+  font-size: 0.85rem;
+  font-style: italic;
+}
+
+/* ── Partial Note ── */
+
+.GradeBadge__partial {
+  font-size: 0.7rem;
+  opacity: 0.75;
+}
+
+/* ── Loading State ── */
+
+.GradeBadge--loading {
+  background-color: var(--background-secondary);
+  border: 1px solid var(--background-tertiary);
+}
+
+.GradeBadge__placeholder {
+  width: 70px;
+  height: 16px;
+  background: linear-gradient(
+    90deg,
+    var(--background-tertiary) 25%,
+    var(--background-secondary) 50%,
+    var(--background-tertiary) 75%
+  );
+  background-size: 200% 100%;
+  border-radius: 4px;
+  animation: gradeBadgeShimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes gradeBadgeShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
