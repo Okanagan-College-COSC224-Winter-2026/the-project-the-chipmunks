@@ -40,6 +40,14 @@
   padding: 4px 0 0 0;
 }
 
+/* ── US19: No enrollment empty state ── */
+.Home__noEnrollment {
+  text-align: center;
+  color: var(--text-secondary);
+  margin: 2rem auto;
+  font-size: 0.95rem;
+}
+
 /* ================= MOBILE HOME ================= */
 @media (max-width: 767px) {
   .Home {
