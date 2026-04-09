@@ -134,3 +134,105 @@
     min-height: 44px;
   }
 }
+
+/* ── US9: Assignment Management (Edit / Delete) ─────────────────────────── */
+
+.assignment-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit-assignment,
+.btn-delete-assignment {
+  padding: 7px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.1s ease-in-out;
+}
+
+.btn-edit-assignment {
+  background-color: var(--button-primary);
+  color: #fff;
+}
+
+.btn-delete-assignment {
+  background-color: var(--button-danger, #c0392b);
+  color: #fff;
+}
+
+.btn-edit-assignment:hover,
+.btn-delete-assignment:hover {
+  filter: brightness(0.88);
+}
+
+.btn-delete-assignment:disabled,
+.btn-edit-assignment:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.assignment-edit-form {
+  margin: 0 12px 16px;
+  padding: 16px;
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  background-color: var(--background-primary, #fff);
+}
+
+.assignment-edit-form h3 {
+  margin: 0 0 14px;
+  font-size: 16px;
+}
+
+.assignment-edit-label {
+  display: block;
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 4px;
+}
+
+.assignment-edit-input {
+  display: block;
+  width: 100%;
+  padding: 7px 10px;
+  margin-bottom: 14px;
+  border: 1px solid var(--background-secondary, #ccc);
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--input-background, #fff);
+  color: var(--text-primary, #111);
+}
+
+.assignment-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.assignment-edit-actions .btn-secondary {
+  background-color: var(--background-secondary, #e0e0e0);
+  color: var(--text-primary, #111);
+}
+
+@media (max-width: 767px) {
+  .assignment-header-actions {
+    flex-wrap: wrap;
+  }
+  .btn-edit-assignment,
+  .btn-delete-assignment {
+    min-height: 40px;
+    flex: 1;
+  }
+  .assignment-edit-form {
+    margin: 0 8px 12px;
+    padding: 12px;
+  }
+  .assignment-edit-actions {
+    flex-direction: column;
+  }
+}
