@@ -562,6 +562,43 @@ export const getAssignment = async (assignmentId: number) => {
   return await resp.json();
 };
 
+export const editAssignment = async (
+  assignmentId: number,
+  fields: { name?: string; description_html?: string }
+) => {
+  const resp = await fetch(`${BASE_URL}/assignment/edit_assignment/${assignmentId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(fields),
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) {
+    throw new Error('This assignment is past its due date and can no longer be edited.');
+  }
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    throw new Error(data.msg || `Response status: ${resp.status}`);
+  }
+  return await resp.json();
+};
+
+export const deleteAssignment = async (assignmentId: number) => {
+  const resp = await fetch(`${BASE_URL}/assignment/delete_assignment/${assignmentId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) {
+    throw new Error('This assignment is past its due date and can no longer be deleted.');
+  }
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    throw new Error(data.msg || `Response status: ${resp.status}`);
+  }
+  return await resp.json();
+};
+
 // ── Rubric by assignment ──────────────────────────────────────────────────────
 
 export const getRubricByAssignment = async (assignmentId: number) => {
