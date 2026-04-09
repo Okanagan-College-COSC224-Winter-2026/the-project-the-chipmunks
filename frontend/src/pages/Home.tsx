@@ -104,6 +104,13 @@ export default function Home() {
       {filteredCourses.length === 0 && searchQuery && (
         <p className="Home__empty">No courses match your search.</p>
       )}
+      
+      {/* US19 — Empty state for students with no enrolled courses */}
+{isStudent() && filteredCourses.length === 0 && !searchQuery && (
+  <p className="Home__noEnrollment">
+    You are not enrolled in any courses yet. Contact your teacher to get started.
+  </p>
+)}
 
       <div className="Classes">
         {
