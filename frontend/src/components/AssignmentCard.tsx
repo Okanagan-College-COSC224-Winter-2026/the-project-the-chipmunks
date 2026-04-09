@@ -33,7 +33,7 @@ export default function AssignmentCard(props: Props) {
   return (
     <div
       onClick={() => {
-        window.location.href = `/assignment/${props.id}`;
+        window.location.href = `/assignments/${props.id}`;
       }}
       className="A_Card"
     >
@@ -42,12 +42,12 @@ export default function AssignmentCard(props: Props) {
       <div className="A_Card_Content">
         <div className="A_Card_Title">{props.children}</div>
 
-        {/* ✅ Due Date */}
+        {/* Due Date */}
         {formattedDate && (
           <div className="A_Card_Date">Due {formattedDate}</div>
         )}
 
-        {/* ✅ Status Badge */}
+        {/* Status Badge */}
         <div className={`A_Card_Status ${status.replace(" ", "_")}`}>
           {status}
         </div>

@@ -109,3 +109,16 @@
   color: #991b1b;
   margin: 0;
 }
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .FeedbackView .summary-card,
+  .FeedbackView .summary-grid {
+    flex-direction: column;
+  }
+
+  .FeedbackView .summary-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

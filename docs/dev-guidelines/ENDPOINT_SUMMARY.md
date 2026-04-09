@@ -67,6 +67,7 @@ All endpoints in this section require the HTTPOnly JWT cookie. Frontend requests
 | GET | `/assignment/:class_id` | `{ class_id: number }` | — | — | `Array<Assignment>` | ✅Implemented |Returns all assignments for a course. |
 | POST | `/class/members` | — | — | `{ id: number }` | `Array<User { id, name, email }>` | ✅Implemented | Uses `User_Course` to look up members. |
 | GET | `/class/classes` | — | — | — | `Array<Course>` | ✅Implemented | Currently returns classes for student / Instructor |
+| GET | `/student/grades` | — | — | — | `{ student_id: number, courses: Array<CourseGrade> }` | ✅Implemented | Returns per-course grade averages for the authenticated student. |
 | GET | `/class/browse_classes` | — | — | — | `Array<Course>` | ✅Implemented | Returns all classes |
 | POST | `/assignment/create_assignment` | — | — | `{ courseID: number, name: string, rubric: string, due_date?: string }` | `{ msg: string, assignment: Assignment }` | ✅Implemented | Creates assignment and returns created id. |
 | PATCH | `/assignment/edit_assignment/:assignment_id` | `{ assignment_id: string }` | — | `{ name: string, rubric: string, due_date: string }` | `{ msg: string, assignment: Assignment }` | ✅Implemented | Edits assignment and returns updated assignment |
@@ -93,8 +94,192 @@ All endpoints in this section require the HTTPOnly JWT cookie. Frontend requests
 
 ---
 
+### CLI Commands
+
+| Command | Description |
+|---------|-------------|
+| `flask add_sample_reviews` | Seeds peer review data (reviewers, rubrics, criteria, scores) for testing the student grade display. Requires `flask add_users` and `flask add_sample_courses` first. |
+
+---
+### Peer Review Submission (US1/US11)
+
+| Method | URL | Auth | Description |
+|--------|-----|------|-------------|
+| POST | `/api/reviews/submit` | JWT (student) | Submit a rubric-based peer review. Body: `{ assignment_id: int, reviewee_id: int, criteria: [{ criteria_description_id: int, grade: int, comments: str }] }`. Validates against self-reviews, duplicates, and group membership. Returns `201 { review_id }`. |
+| GET | `/assignment/<assignment_id>/rubric` | JWT | Returns the rubric and its criteria for a given assignment. Response: `{ rubric_id: int, assignment_id: int, criteria: [{ id, question, score_max, has_score, can_comment }] }`. |
+
+### Student Feedback (US12)
+
+| Method | URL | Auth | Description |
+|--------|-----|------|-------------|
+| GET | `/student/assignments/<assignment_id>/feedback` | JWT (student) | Returns aggregated anonymous peer feedback for the logged-in student for a given assignment. Includes per-criterion average scores and anonymous comments. Response: `{ assignment_id, student_id, total_reviews_received, criteria: [{ criterion_id, criterion_name, average_score, score_max, review_count, comments }] }`. |
+
 ### Notes
 
 - Parameter types in curly braces are the expected types; some routes accept strings for numeric IDs and cast internally.
 - For stability, prefer sending numeric IDs as numbers where indicated.
 - If any discrepancy arises between this document and `endpoints.json`, treat `endpoints.json` as canonical.
+- `CourseGrade` response shape used by `/student/grades`:
+  `{ course_id, course_name, grade, max_score, graded_assignments, total_assignments, has_grades }`
+
+## Peer Review Submission (US1/US11)
+
+### POST /api/reviews/submit
+
+**Description:** Submit a peer review with rubric scores and optional comments.
+
+**Auth:** `@jwt_required()` — reviewer identified via `get_jwt_identity()`
+
+**Request Body:**
+```json
+{
+  "assignment_id": 1,
+  "reviewee_id": 2,
+  "criteria": [
+    {
+      "criteria_description_id": 1,
+      "grade": 4,
+      "comments": "Good work"
+    }
+  ]
+```
+
+**Responses:**
+- `201` — Review created successfully, returns `{ "review_id": int }`
+- `400` — Reviewer == reviewee (self-review blocked)
+- `401` — Not authenticated
+- `409` — Duplicate review (same reviewer + reviewee + assignment)
+
+---
+
+### GET /api/assignments/<assignment_id>/rubric
+
+**Description:** Get the rubric and criteria for an assignment.
+
+**Auth:** `@jwt_required()`
+
+**Response (200):**
+```json
+{
+  "rubric_id": 1,
+  "assignment_id": 1,
+  "criteria": [
+    {
+      "id": 1,
+      "question": "Communication",
+      "score_max": 5,
+      "has_score": true,
+      "can_comment": true
+    }
+  ]
+}
+```
+
+**Responses:**
+- `200` — Rubric found
+- `401` — Not authenticated
+- `404` — Assignment or rubric not found
+
+---
+
+## Student Feedback Viewing (US12)
+
+### GET /student/assignments/<assignment_id>/feedback
+
+**Description:** Get aggregated anonymous peer review feedback for the logged-in student on a specific assignment.
+
+**Auth:** `@jwt_required()` — student identified via `get_jwt_identity()`
+
+**Response (200 — with reviews):**
+```json
+{
+  "assignment_name": "Peer Review Assignment 1",
+  "total_reviews": 2,
+  "criteria_feedback": [
+    {
+      "question": "Communication",
+      "avg_score": 4.5,
+      "max_score": 5,
+      "comments": ["Good communicator", "Excellent communication"]
+    }
+  ],
+  "overall_avg": 4.0
+}
+```
+
+**Response (200 — no reviews yet):**
+```json
+{
+  "assignment_name": "Peer Review Assignment 1",
+  "total_reviews": 0,
+  "criteria_feedback": [],
+  "overall_avg": 0.0
+}
+```
+
+**Responses:**
+- `200` — Feedback returned (may be empty)
+- `401` — Not authenticated
+- `404` — Assignment not found
+
+**Privacy:** Reviewer identities are never included in the response.
+
+### Feature B: File Attachments on Reviews & Conclusions
+
+| Endpoint | Method | Auth | Description |
+|----------|--------|------|-------------|
+| /review/<id>/upload | POST | Student | Upload files with peer review submission |
+| /review/<id>/files | GET | Any | List files attached to a review |
+| /review/file/<file_id> | GET | Any | Download a review file |
+| /assignment/<id>/conclusion/upload | POST | Teacher | Upload conclusion file |
+| /assignment/<id>/conclusion/files | GET | Any | List conclusion files for assignment |
+---
+
+## Assignment File Attachment Endpoints
+
+### POST /assignment/<id>/upload
+**Description:** Upload a PDF attachment to an assignment.  
+**Authentication:** @jwt_required() – Teacher only  
+**Request Type:** multipart/form-data  
+**File Field:** file  
+
+**Validation:**
+- File must be PDF
+- Maximum size: 10MB
+
+**Response (200 OK):**
+```json
+{
+  "message": "File uploaded successfully",
+  "filename": "assignment_spec.pdf",
+  "size": "2.4MB"
+}
+
+---
+
+## Admin User Management (US26)
+
+| Method | URL | Auth | Description |
+|--------|-----|------|-------------|
+| GET | `/admin/users` | JWT (admin) | Paginated list of all users. Query params: `page` (default 1), `role` (filter by role), `search` (name/email substring). Returns `{ users, page, per_page, total, pages }`. |
+| POST | `/admin/users/create` | JWT (admin) | Create a new user. Body: `{ name, email, password, role, must_change_password? }`. Returns `201 { msg, user }` or `409` on duplicate email. |
+| PUT | `/admin/users/<id>` | JWT (admin) | Update user name, email, or role. Returns `200 { msg, user }` or `404`. Admins cannot demote themselves. |
+| PATCH | `/admin/users/<id>/deactivate` | JWT (admin) | Soft-deactivate a user (sets `is_active = false`). Admins cannot deactivate themselves. Returns `200 { msg }` or `400/404`. |
+| PATCH | `/admin/users/<id>/reactivate` | JWT (admin) | Reactivate a previously deactivated user. Returns `200 { msg }` or `404`. |
+
+---
+
+## Password Management (Feature C)
+
+### PUT /user/password
+
+**Description:** Change authenticated user's password.
+
+**Auth:** `@jwt_required()` — Any authenticated role
+
+**Request Body:**
+```json
+{
+  "current_password": "password123",
+  "new_password": "MySecure#1"
+}

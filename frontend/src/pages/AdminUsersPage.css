@@ -171,3 +171,27 @@
   color: #c33;
   background: #fdecea;
 }
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .AdminUsersPage .users-table-wrapper,
+  .AdminUsersPage table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .AdminUsersPage .filters,
+  .AdminUsersPage .filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .AdminUsersPage .filters input,
+  .AdminUsersPage .filters select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

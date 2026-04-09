@@ -12,7 +12,7 @@ export interface CriterionData {
 interface Props {
   criterion: CriterionData;
   index: number;
-  onChange: (index: number, field: keyof CriterionData, value: any) => void;
+  onChange: (index: number, field: keyof CriterionData, value: string | number) => void;
   onDelete: (index: number) => void;
   onMoveUp: (index: number) => void;
   onMoveDown: (index: number) => void;
@@ -33,7 +33,6 @@ export default function CriterionCard({
         </div>
         <button className="criterion-delete" onClick={() => onDelete(index)}>{'\u2715'}</button>
       </div>
-
       <div className="criterion-fields">
         <label>
           Name
@@ -43,7 +42,6 @@ export default function CriterionCard({
             placeholder="e.g. Communication"
           />
         </label>
-
         <label>
           Description
           <textarea
@@ -53,7 +51,6 @@ export default function CriterionCard({
             placeholder="Describe what this criterion evaluates..."
           />
         </label>
-
         <div className="criterion-row">
           <label>
             Max Score

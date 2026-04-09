@@ -29,11 +29,14 @@ from ..models import (
     Review,
     Rubric,
     User,
+    Course,
+    User_Course,
 )
 from ..models.conclusion_model import Conclusion
 from ..models.db import db
 from .auth_controller import jwt_teacher_required
 from ..services.pdf_report_service import generate_assignment_report
+from sqlalchemy import func
 
 teacher_bp = Blueprint("teacher", __name__, url_prefix="/teacher")
 
@@ -480,3 +483,130 @@ def export_assignment_pdf(assignment_id):
         as_attachment=True,
         download_name=f"{assignment.name.replace(' ', '_')}_Report.pdf",
     )
+
+# ============================================================
+# GET /teacher/classes/<course_id>/progress
+# Per-student, per-assignment progress across a course
+# ============================================================
+
+@teacher_bp.route("/classes/<int:course_id>/progress", methods=["GET"])
+@jwt_teacher_required
+def course_student_progress(course_id):
+    """
+    Return a per-student, per-assignment breakdown of group membership,
+    review submission counts, and average rubric score for every student
+    enrolled in the course.
+
+    Response 200:
+        {
+            "course_id":   int,
+            "course_name": str,
+            "assignments": [{ "id": int, "name": str }],
+            "students": [
+                {
+                    "user_id": int,
+                    "name":    str,
+                    "email":   str,
+                    "per_assignment": {
+                        "<assignment_id>": {
+                            "in_group":         bool,
+                            "reviews_given":    int,
+                            "reviews_received": int,
+                            "avg_score":        float | null
+                        }
+                    }
+                }
+            ]
+        }
+
+    Response 403: not a teacher/admin (handled by decorator)
+    Response 404: course not found
+    """
+    course = Course.get_by_id(course_id)
+    if course is None:
+        return jsonify({"msg": "Course not found"}), 404
+
+    # ── All assignments for this course ───────────────────────────────────────
+    assignments = Assignment.query.filter_by(courseID=course_id).all()
+    assignment_ids = [a.id for a in assignments]
+
+    # ── All students enrolled in the course ───────────────────────────────────
+    enrolled = (
+        db.session.query(User)
+        .join(User_Course, User_Course.userID == User.id)
+        .filter(User_Course.courseID == course_id)
+        .filter(User.role == "student")
+        .all()
+    )
+
+    # ── Pre-fetch group membership rows for this course's assignments ─────────
+    membership_set = set(
+        db.session.query(Group_Members.userID, Group_Members.assignmentID)
+        .filter(Group_Members.assignmentID.in_(assignment_ids))
+        .all()
+    ) if assignment_ids else set()
+
+    # ── Pre-fetch review given counts ─────────────────────────────────────────
+    given_rows = (
+        db.session.query(Review.reviewerID, Review.assignmentID, func.count(Review.id))
+        .filter(Review.assignmentID.in_(assignment_ids))
+        .group_by(Review.reviewerID, Review.assignmentID)
+        .all()
+    ) if assignment_ids else []
+    given_map = {(r, a): cnt for r, a, cnt in given_rows}
+
+    # ── Pre-fetch review received counts ──────────────────────────────────────
+    received_rows = (
+        db.session.query(Review.revieweeID, Review.assignmentID, func.count(Review.id))
+        .filter(Review.assignmentID.in_(assignment_ids))
+        .group_by(Review.revieweeID, Review.assignmentID)
+        .all()
+    ) if assignment_ids else []
+    received_map = {(r, a): cnt for r, a, cnt in received_rows}
+
+    # ── Pre-fetch avg_score per (revieweeID, assignmentID) ────────────────────
+    avg_rows = (
+        db.session.query(
+            Review.revieweeID,
+            Review.assignmentID,
+            func.avg(Criterion.grade),
+        )
+        .join(Criterion, Criterion.reviewID == Review.id)
+        .filter(Review.assignmentID.in_(assignment_ids))
+        .filter(Criterion.grade.isnot(None))
+        .group_by(Review.revieweeID, Review.assignmentID)
+        .all()
+    ) if assignment_ids else []
+    avg_map = {(r, a): avg for r, a, avg in avg_rows}
+
+    # ── Build student list ────────────────────────────────────────────────────
+    students_data = []
+    for student in enrolled:
+        per_assignment = {}
+        for a in assignments:
+            in_group = (student.id, a.id) in membership_set
+            reviews_given = given_map.get((student.id, a.id), 0)
+            reviews_received = received_map.get((student.id, a.id), 0)
+            raw_avg = avg_map.get((student.id, a.id))
+            avg_score = round(float(raw_avg), 2) if raw_avg is not None else None
+
+            per_assignment[str(a.id)] = {
+                "in_group":          in_group,
+                "reviews_given":     reviews_given,
+                "reviews_received":  reviews_received,
+                "avg_score":         avg_score,
+            }
+
+        students_data.append({
+            "user_id":        student.id,
+            "name":           student.name,
+            "email":          student.email,
+            "per_assignment": per_assignment,
+        })
+
+    return jsonify({
+        "course_id":   course.id,
+        "course_name": course.name,
+        "assignments": [{"id": a.id, "name": a.name} for a in assignments],
+        "students":    students_data,
+    }), 200

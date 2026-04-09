@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Route, Routes, useLocation, useParams } from "react-router-dom";
 import Home from "./pages/Home";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Sidebar from "./components/Sidebar";
@@ -14,8 +14,6 @@ import Group from "./pages/Group";
 import RegisterPage from "./pages/RegisterPage";
 import ChangePassword from "./pages/ChangePassword";
 import CreateTeacher from "./pages/CreateTeacher";
-<<<<<<< Updated upstream
-=======
 import ReviewHistoryPage from "./pages/ReviewHistoryPage";
 import TeacherReviewsPage from "./pages/TeacherReviewsPage";
 import AdminUsersPage from "./pages/AdminUsersPage";
@@ -23,7 +21,13 @@ import AssignmentAnalytics from "./pages/AssignmentAnalytics";
 import ActivityFeedPage from "./pages/ActivityFeedPage";
 import RubricBuilderPage from "./pages/RubricBuilderPage";
 import FeedbackView from "./pages/FeedbackView";
->>>>>>> Stashed changes
+import StudentProgressPage from './pages/StudentProgressPage';
+import TeamSubmissionsPanel from './components/TeamSubmissionsPanel';
+
+function TeamSubmissionsRoute() {
+  const { id } = useParams<{ id: string }>();
+  return <TeamSubmissionsPanel assignmentId={Number(id)} />;
+}
 
 function AppContent() {
   const location = useLocation();
@@ -38,55 +42,65 @@ function AppContent() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/change-password" element={<ChangePassword />} />
 
-          <Route path="/home" element={
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/home"
+            element={
+              <ProtectedRoute>
+                <Home />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/admin/create-teacher" element={
-            <ProtectedRoute>
-              <CreateTeacher />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/admin/create-teacher"
+            element={
+              <ProtectedRoute>
+                <CreateTeacher />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/classes/create" element={
-            <ProtectedRoute>
-              <CreateClass />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/classes/create"
+            element={
+              <ProtectedRoute>
+                <CreateClass />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/profile/:id" element={
-            <ProtectedRoute>
-              <Profile />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/profile/:id"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/classes/:id/home" element={
-            <ProtectedRoute>
-              <ClassHome />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/classes/:id/home"
+            element={
+              <ProtectedRoute>
+                <ClassHome />
+              </ProtectedRoute>
+            }
+          />
 
-          <Route path="/classes/:id/members" element={
-            <ProtectedRoute>
-              <ClassMembers />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="/classes/:id/members"
+            element={
+              <ProtectedRoute>
+                <ClassMembers />
+              </ProtectedRoute>
+            }
+          />
 
-<<<<<<< Updated upstream
-          <Route path="/assignments/:id" element={
-            <ProtectedRoute>
-              <Assignment />
-            </ProtectedRoute>
-          } />
+          <Route
+            path='/assignments/:id/team-submissions'
+            element={<ProtectedRoute><TeamSubmissionsRoute /></ProtectedRoute>}
+          />
 
-          <Route path="/assignments/:id/group" element={
-            <ProtectedRoute>
-              <Group />
-            </ProtectedRoute>
-          } />
-=======
           <Route
             path="/assignments/:id"
             element={
@@ -167,7 +181,13 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
->>>>>>> Stashed changes
+
+          <Route
+            path='/classes/:courseId/progress'
+            element={
+              <ProtectedRoute><StudentProgressPage /></ProtectedRoute>
+            }
+          />
         </Routes>
       </div>
     </div>

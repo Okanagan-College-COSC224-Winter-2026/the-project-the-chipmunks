@@ -4,7 +4,6 @@
     height: 100%;
     margin: 12px;
 }
-
 .Assignments{
     display: flex;
     flex-direction: row;
@@ -12,14 +11,12 @@
     align-items: left;
     width: 100%;
 }
-
 .Assignments ul {
     width: 100%;
     list-style: none;
     margin: 8px;
     padding: 0px;
 }
-
 .ClassHeader {
     display: flex;
     flex-direction: row;
@@ -27,7 +24,6 @@
     align-items: center;
     padding: 12px;
 }
-
 .ClassHeaderLeft {
     display: flex;
     flex-direction: row;
@@ -35,32 +31,18 @@
     align-items: center;
     padding: 12px;
 }
-
-
 .AssInputChunk {
-  
     margin: 8px;
-  
     width: 30%;
-  
     background-color: #fff;
-  
-    
-  }
-
-  
+}
 .AssInput {
     display: flex;
     flex-direction: column;
     align-items: center;
-  
     margin-bottom: 12px;
-  
     width: 100%;
-<<<<<<< Updated upstream
-  }
-=======
-  }
+}
 
 .announcements-section {
   padding: 12px;
@@ -71,4 +53,39 @@
   color: #a0aec0;
   font-size: 0.9rem;
 }
->>>>>>> Stashed changes
+
+/* ================= MOBILE CLASS HOME ================= */
+@media (max-width: 767px) {
+    .Class {
+        margin: 6px;
+    }
+    .Assignments {
+        flex-direction: column;
+        padding: 8px;
+    }
+    .ClassHeader {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    .ClassHeaderLeft {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 0;
+        width: 100%;
+    }
+    .AssInputChunk {
+        width: 100%;
+        margin: 4px 0;
+    }
+    .AssInput {
+        width: 100%;
+    }
+    .Assignments ul {
+        margin: 4px 0;
+    }
+    button {
+        width: 100%;
+        min-height: 44px;
+    }
+}

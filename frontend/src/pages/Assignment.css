@@ -13,15 +13,12 @@
     /* background-color: var(--background-secondary); */
     margin: 0 10px;
 }
-
 .table .groupNames {
   align-items: center;
   justify-content: center;
-
   background: #eee;
   padding: 4px 0;
 }
-
 .AssignmentPage button {
   padding: 8px;
   border: none;
@@ -29,54 +26,43 @@
   color: #fff;
   font-size: 16px;
   cursor: pointer;
-
   transition: all 0.1s ease-in-out;
 }
-
 .AssignmentPage button:hover {
   filter: brightness(0.9);
 }
-
 .AssignmentPage  button,
 .table .StudentName {
   margin: 10px;
   margin-left: 20px;
 }
-
 .table tr {
   width: 100%;
   display:flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
   transition: all 0.1s ease-in-out;
 }
-
 .table tr:not(.groupNames):hover {
   background-color: var(--background-secondary);
 }
-
 .table th {
     width: 100%;
     height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-
     border-bottom: 1px solid var(--background-secondary);
 }
-
 .groupNames {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     width: 100%;
-
     position: relative;
 }
-
 .GroupArrow {
   position: absolute;
   top: 4px;
@@ -84,16 +70,13 @@
   width: 20px;
   height: 20px;
 }
-
 .GroupArrow img {
   width: 100%;
   height: 100%;
 }
-
 .groupNames.selected .GroupArrow {
   transform: rotate(90deg);
 }
-
 .AssignmentHeader {
   display: flex;
   flex-direction: row;
@@ -101,13 +84,10 @@
   align-items: center;
   padding: 12px;
 }
-
-.groupNameInput{
+.groupNameInput {
   width: 15%;
-<<<<<<< Updated upstream
 }
-=======
-}
+
 .review-file-upload {
   margin: 1rem 0;
   padding: 1rem;
@@ -125,4 +105,34 @@
 .attached-files-list li {
   margin: 0.3rem 0;
 }
->>>>>>> Stashed changes
+
+/* ================= MOBILE ASSIGNMENT ================= */
+@media (max-width: 767px) {
+  .AssignmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+  }
+  .assignmentTables,
+  .studentTable,
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+  .assignmentTables {
+    margin: 0;
+  }
+  .table {
+    min-width: 320px;
+    margin: 0 0 12px 0;
+  }
+  .groupNameInput {
+    width: 100%;
+  }
+  .AssignmentPage button {
+    min-height: 44px;
+  }
+}

@@ -1,0 +1,35 @@
+.CommentList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.CommentList--empty p {
+  color: var(--text-secondary);
+  font-style: italic;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.CommentList__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px 12px;
+  background-color: var(--background-secondary);
+  border-radius: 6px;
+}
+
+.CommentList__icon {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.CommentList__item p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  line-height: 1.4;
+}

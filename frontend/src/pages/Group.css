@@ -1,0 +1,32 @@
+/* ================= MOBILE GROUP ================= */
+@media (max-width: 767px) {
+  .assignmentTables,
+  .studentTable,
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .table {
+    min-width: 320px;
+    margin-bottom: 12px;
+  }
+
+  .AssignmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .groupNameInput {
+    width: 100%;
+  }
+
+  .AssignmentPage button {
+    width: 100%;
+    min-height: 44px;
+  }
+}

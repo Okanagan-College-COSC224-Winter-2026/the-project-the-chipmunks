@@ -286,3 +286,20 @@
   background: var(--background-tertiary);
   cursor: not-allowed;
 }
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .gc-popup {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    width: 100%;
+    height: 75vh;
+    border-radius: 16px 16px 0 0;
+  }
+
+  .gc-fab {
+    bottom: 16px;
+    right: 16px;
+  }
+}

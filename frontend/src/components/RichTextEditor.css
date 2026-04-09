@@ -1,0 +1,18 @@
+.RichTextEditor {
+  margin-bottom: 1rem;
+}
+.RichTextEditor .ql-toolbar {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  background-color: #f9f9f9;
+}
+.RichTextEditor .ql-container {
+  min-height: 140px;
+  font-size: 1rem;
+  font-family: inherit;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.RichTextEditor .ql-editor {
+  min-height: 120px;
+}

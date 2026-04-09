@@ -4,6 +4,7 @@ import './LoginPage.css';
 import Textbox from '../components/Textbox';
 import Button from '../components/Button';
 import StatusMessage from '../components/StatusMessage';
+import PasswordToggle from '../components/PasswordToggle';
 import { tryLogin } from '../util/api';
 
 export default function LoginPage() {
@@ -14,19 +15,17 @@ export default function LoginPage() {
 
   const attemptLogin = async () => {
     try {
+      setError('');
       const result = await tryLogin(email, password);
-      if (result) {
-        // Check if user must change password
-        if (result.must_change_password) {
-          navigate('/change-password');
-        } else {
-          navigate('/home');
-        }
+      // Check if user must change password
+      if (result.must_change_password) {
+        navigate('/change-password');
       } else {
-        setError('Invalid email or password');
+        navigate('/home');
       }
-    } catch {
-      setError('Invalid email or password');
+    } catch (err) {
+      // Display the actual message from the backend (e.g. "Account is deactivated")
+      setError(err instanceof Error ? err.message : 'Invalid email or password');
     }
   }
 
@@ -49,12 +48,16 @@ export default function LoginPage() {
 
             <div className="LoginInputChunk">
               <span>Password</span>
-              <Textbox
-                type='password'
-                placeholder='Password...'
-                onInput={setPassword}
-                className='LoginInput'
-              />
+              <PasswordToggle>
+                {(inputType) => (
+                  <Textbox
+                    type={inputType}
+                    placeholder='Password...'
+                    onInput={setPassword}
+                    className='LoginInput'
+                  />
+                )}
+              </PasswordToggle>
             </div>
           </div>
 

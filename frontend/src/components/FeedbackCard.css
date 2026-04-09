@@ -21,3 +21,20 @@
   border-top: 1px solid var(--background-secondary);
   padding-top: 8px;
 }
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .FeedbackCard {
+    padding: 12px;
+  }
+
+  .FeedbackCard .score-bar {
+    width: 100%;
+  }
+
+  .FeedbackCard .criterion-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

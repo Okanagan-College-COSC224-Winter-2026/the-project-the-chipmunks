@@ -133,6 +133,14 @@ Use one of these test accounts (created by `flask add_users`):
 | **Teacher** | teacher@example.com | 123456 |
 | **Student** | student@example.com | 123456 |
 
+### Default Password
+
+All newly created accounts are initialized with:
+
+`password123`
+
+Users must change their password after first login using the **Change Password** option in their profile.
+
 ### 3. Verify Backend Health
 
 In a new terminal or browser, check:

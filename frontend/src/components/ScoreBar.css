@@ -1,0 +1,52 @@
+.ScoreBar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.ScoreBar__track {
+  flex: 1;
+  height: 10px;
+  background-color: var(--background-secondary);
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.ScoreBar__fill {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.4s ease-in-out;
+}
+
+.ScoreBar__fill--green {
+  background-color: #22c55e;
+}
+
+.ScoreBar__fill--yellow {
+  background-color: #eab308;
+}
+
+.ScoreBar__fill--red {
+  background-color: #ef4444;
+}
+
+.ScoreBar__text {
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  min-width: 70px;
+  text-align: right;
+}
+
+.ScoreBar__text--green {
+  color: #166534;
+}
+
+.ScoreBar__text--yellow {
+  color: #854d0e;
+}
+
+.ScoreBar__text--red {
+  color: #991b1b;
+}

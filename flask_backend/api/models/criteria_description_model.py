@@ -15,6 +15,9 @@ class CriteriaDescription(db.Model):
     question = db.Column(db.String(255), nullable=True)
     scoreMax = db.Column(db.Integer, nullable=True)
     hasScore = db.Column(db.Boolean, nullable=False, default=True)
+    description = db.Column(db.String(255), nullable=True, default="")
+    weight = db.Column(db.Float, nullable=True, default=0)
+    position = db.Column(db.Integer, default=0, nullable=False)
 
     # relationships
     rubric = db.relationship("Rubric", back_populates="criteria_descriptions")
@@ -35,6 +38,14 @@ class CriteriaDescription(db.Model):
     def get_by_id(cls, criteria_id):
         """Get criteria description by ID"""
         return db.session.get(cls, int(criteria_id))
+
+    @classmethod
+    def get_criteria_by_rubric(cls, rubric_id: int):
+        """
+        Get all criteria descriptions for a given rubric.
+        Returns an empty list if none exist.
+        """
+        return cls.query.filter_by(rubricID=int(rubric_id)).all()
 
     @classmethod
     def create_criteria_description(cls, criteria_description):

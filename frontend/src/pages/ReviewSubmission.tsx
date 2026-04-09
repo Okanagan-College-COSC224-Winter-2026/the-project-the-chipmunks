@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import RubricForm from '../components/RubricForm'
 import StatusMessage from '../components/StatusMessage'
-import { getRubricByAssignment, submitReview, listCourseMembers, getAssignment } from '../util/api'
+import { getRubricByAssignment, submitReview, listCourseMembers, getAssignment, uploadReviewFiles } from '../util/api'
 import './ReviewSubmission.css'
+import ReviewFileUpload from '../components/ReviewFileUpload'
 
 export default function ReviewSubmission() {
   const { id, revieweeId } = useParams();
@@ -13,6 +14,7 @@ export default function ReviewSubmission() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [submitting, setSubmitting] = useState(false);
+  const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
 
   useEffect(() => {
     (async () => {
@@ -52,11 +54,16 @@ export default function ReviewSubmission() {
     }));
 
     try {
-      await submitReview({
+      const data = await submitReview({
         assignment_id: Number(id),
         reviewee_id: Number(revieweeId),
         criteria,
       });
+
+      if (attachedFiles.length > 0) {
+        await uploadReviewFiles(data.review_id, attachedFiles);
+      }
+
       setSuccess('Review submitted successfully!');
       setTimeout(() => {
         window.location.href = `/assignments/${id}`;
@@ -93,11 +100,14 @@ export default function ReviewSubmission() {
       <StatusMessage message={success} type="success" />
 
       {rubric && rubric.criteria.length > 0 ? (
-        <RubricForm
-          criteria={rubric.criteria}
-          onSubmit={handleSubmit}
-          disabled={submitting}
-        />
+        <>
+          <ReviewFileUpload files={attachedFiles} onChange={setAttachedFiles} />
+          <RubricForm
+            criteria={rubric.criteria}
+            onSubmit={handleSubmit}
+            disabled={submitting}
+          />
+        </>
       ) : (
         <p>No rubric criteria available for this assignment.</p>
       )}

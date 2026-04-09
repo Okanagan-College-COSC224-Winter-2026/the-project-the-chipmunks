@@ -3,10 +3,11 @@ Student controller for the peer evaluation app.
 Provides endpoints for student-specific data like grades and feedback.
 """
 
-from flask import Blueprint, jsonify
+import os
+from flask import Blueprint, jsonify, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
-from api.models import User, User_Course, Assignment, Review, Criterion, CriteriaDescription, Rubric
+from api.models import User, User_Course, Assignment, Review, Criterion, CriteriaDescription, Rubric, Group_Members, ReviewFile, ConclusionFile
 
 student_bp = Blueprint("student", __name__, url_prefix="/student")
 
@@ -203,3 +204,145 @@ def assignment_feedback(assignment_id):
     feedback = get_assignment_feedback(assignment_id, user.id)
 
     return jsonify(feedback), 200
+
+@student_bp.route("/assignments/<int:assignment_id>/team-submissions", methods=["GET"])
+@jwt_required()
+def team_submissions(assignment_id):
+    """
+    Returns all submitted files from the logged-in student's group members
+    for the given assignment. The caller's own files are excluded.
+
+    Response 200: { assignment_id, assignment_name, group_members: [...] }
+    Response 403: student is not in a group for this assignment
+    Response 404: assignment not found
+    """
+    email = get_jwt_identity()
+    user = User.get_by_email(email)
+    if user is None:
+        return jsonify({"msg": "User not found"}), 404
+
+    assignment = Assignment.get_by_id(assignment_id)
+    if assignment is None:
+        return jsonify({"msg": "Assignment not found"}), 404
+
+    # Find the student's group membership for this assignment
+    membership = Group_Members.query.filter_by(
+        userID=user.id, assignmentID=assignment_id
+    ).first()
+    if membership is None:
+        return jsonify({"msg": "You are not in a group for this assignment"}), 403
+
+    # Get all members of the same group, excluding the current user
+    all_members = Group_Members.query.filter_by(
+        groupID=membership.groupID, assignmentID=assignment_id
+    ).all()
+    other_members = [m for m in all_members if m.userID != user.id]
+
+    # Conclusion files are assignment-level (not per-user), include once on first member
+    conclusion_files = ConclusionFile.get_by_assignment(assignment_id)
+
+    group_members_data = []
+    for idx, member in enumerate(other_members):
+        member_user = User.get_by_id(member.userID)
+        if member_user is None:
+            continue
+
+        # Review files: files attached to reviews where this member was the reviewer
+        review_files_query = (
+            ReviewFile.query
+            .join(Review, Review.id == ReviewFile.reviewID)
+            .filter(
+                Review.reviewerID == member.userID,
+                Review.assignmentID == assignment_id,
+            )
+            .all()
+        )
+
+        review_files_data = [
+            {
+                "file_id":     rf.id,
+                "filename":    rf.filename,
+                "uploaded_at": rf.uploaded_at.isoformat() if rf.uploaded_at else None,
+                "size_bytes":  os.path.getsize(rf.file_path) if os.path.isfile(rf.file_path) else 0,
+            }
+            for rf in review_files_query
+        ]
+
+        # Conclusion files attached to first member card only (they are assignment-level)
+        conclusion_files_data = []
+        if idx == 0:
+            conclusion_files_data = [
+                {
+                    "file_id":     cf.id,
+                    "filename":    cf.filename,
+                    "uploaded_at": cf.uploaded_at.isoformat() if cf.uploaded_at else None,
+                }
+                for cf in conclusion_files
+            ]
+
+        group_members_data.append({
+            "member_id":        member_user.id,
+            "member_name":      member_user.name,
+            "review_files":     review_files_data,
+            "conclusion_files": conclusion_files_data,
+        })
+
+    return jsonify({
+        "assignment_id":   assignment.id,
+        "assignment_name": assignment.name,
+        "group_members":   group_members_data,
+    }), 200
+
+
+# ============================================================
+# GET /student/review-file/<file_id>/download
+# Stream a review file — only if requester is in the same group
+# ============================================================
+
+@student_bp.route("/review-file/<int:file_id>/download", methods=["GET"])
+@jwt_required()
+def download_team_review_file(file_id):
+    """
+    Streams the file identified by file_id.
+    Returns 403 if the requesting student is not in the same group as the file owner.
+    Returns 404 if the file does not exist.
+    """
+    email = get_jwt_identity()
+    user = User.get_by_email(email)
+    if user is None:
+        return jsonify({"msg": "User not found"}), 404
+
+    review_file = ReviewFile.get_by_id(file_id)
+    if review_file is None:
+        return jsonify({"msg": "File not found"}), 404
+
+    # Security check: requester must be in the same group as the file owner
+    assignment_id = review_file.review.assignmentID
+    file_owner_id = review_file.uploaderID
+
+    requester_membership = Group_Members.query.filter_by(
+        userID=user.id, assignmentID=assignment_id
+    ).first()
+    owner_membership = Group_Members.query.filter_by(
+        userID=file_owner_id, assignmentID=assignment_id
+    ).first()
+
+    if (
+        requester_membership is None
+        or owner_membership is None
+        or requester_membership.groupID != owner_membership.groupID
+    ):
+        return jsonify({"msg": "You do not have permission to download this file"}), 403
+
+    if not os.path.isfile(review_file.file_path):
+        return jsonify({"msg": "File not found on server"}), 404
+
+    directory = os.path.dirname(review_file.file_path)
+    basename = os.path.basename(review_file.file_path)
+
+    return send_from_directory(
+        directory,
+        basename,
+        as_attachment=True,
+        download_name=review_file.filename,
+    )

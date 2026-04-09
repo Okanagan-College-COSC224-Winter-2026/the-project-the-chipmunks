@@ -14,13 +14,29 @@ interface TemplateOption {
   criteria: CriterionData[];
 }
 
+interface RubricCriterionPayload {
+  id?: number;
+  name: string;
+  description: string;
+  max_score: number;
+  weight: number;
+  position: number;
+}
+
+interface RubricPayload {
+  name: string;
+  criteria: RubricCriterionPayload[];
+  is_template?: boolean;
+  template_name?: string;
+}
+
 export default function RubricBuilderPage() {
   const { assignmentId } = useParams<{ assignmentId: string }>();
   const assignId = Number(assignmentId);
 
   const [rubricName, setRubricName] = useState('');
   const [criteria, setCriteria] = useState<CriterionData[]>([]);
-  const [rubricId, setRubricId] = useState<number | null>(null);
+  const [, setRubricId] = useState<number | null>(null);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState('');
@@ -29,7 +45,6 @@ export default function RubricBuilderPage() {
   const [templates, setTemplates] = useState<TemplateOption[]>([]);
   const [loadingTemplates, setLoadingTemplates] = useState(false);
 
-  // Load existing rubric on mount
   const loadRubric = useCallback(async () => {
     try {
       const resp = await getRubricBuilder(assignId);
@@ -51,7 +66,6 @@ export default function RubricBuilderPage() {
 
   useEffect(() => { loadRubric(); }, [loadRubric]);
 
-  // Load templates
   const loadTemplates = useCallback(async () => {
     setLoadingTemplates(true);
     try {
@@ -68,8 +82,7 @@ export default function RubricBuilderPage() {
 
   useEffect(() => { loadTemplates(); }, [loadTemplates]);
 
-  // Criterion CRUD handlers
-  const handleChange = (index: number, field: keyof CriterionData, value: any) => {
+  const handleChange = (index: number, field: keyof CriterionData, value: string | number) => {
     setCriteria(prev => prev.map((c, i) => (i === index ? { ...c, [field]: value } : c)));
   };
 
@@ -104,7 +117,6 @@ export default function RubricBuilderPage() {
     });
   };
 
-  // Save rubric
   const handleSave = async () => {
     setError(null);
     setSuccessMsg('');
@@ -133,7 +145,7 @@ export default function RubricBuilderPage() {
 
     setSaving(true);
     try {
-      const payload: any = {
+      const payload: RubricPayload = {
         name: rubricName,
         criteria: criteria.map((c, i) => ({
           ...(c.id ? { id: c.id } : {}),
@@ -150,7 +162,7 @@ export default function RubricBuilderPage() {
         payload.template_name = templateName.trim() || rubricName;
       }
 
-      const resp = await upsertRubric(assignId, payload);
+      const resp = await upsertRubric(assignId, payload as Record<string, unknown>);
       if (resp && resp.ok) {
         const data = await resp.json();
         if (data.rubric) {
@@ -173,7 +185,6 @@ export default function RubricBuilderPage() {
     setSaving(false);
   };
 
-  // Apply template
   const handleApplyTemplate = async (templateId: number) => {
     setError(null);
     setSuccessMsg('');
@@ -205,7 +216,6 @@ export default function RubricBuilderPage() {
     <div className="rubric-builder-page">
       <h1>Rubric Builder</h1>
 
-      {/* Template loader */}
       {templates.length > 0 && (
         <div className="rb-template-section">
           <label className="rb-template-label">Load from template:</label>
@@ -225,11 +235,9 @@ export default function RubricBuilderPage() {
         </div>
       )}
 
-      {/* Status messages */}
       {error && <StatusMessage message={error} type="error" />}
       {successMsg && <StatusMessage message={successMsg} type="success" />}
 
-      {/* Rubric name */}
       <div className="rb-name-section">
         <label>
           Rubric Name
@@ -241,10 +249,8 @@ export default function RubricBuilderPage() {
         </label>
       </div>
 
-      {/* Weight bar */}
       {criteria.length > 0 && <WeightBar segments={weightSegments} />}
 
-      {/* Criteria cards */}
       {criteria.map((c, i) => (
         <CriterionCard
           key={c.id ?? `new-${i}`}
@@ -263,7 +269,6 @@ export default function RubricBuilderPage() {
         <Button onClick={handleAdd}>+ Add Criterion</Button>
       </div>
 
-      {/* Save as template option */}
       <div className="rb-template-save">
         <label className="rb-checkbox-label">
           <input
@@ -283,7 +288,6 @@ export default function RubricBuilderPage() {
         )}
       </div>
 
-      {/* Save button */}
       <div className="rb-save-section">
         <Button onClick={handleSave}>
           {saving ? 'Saving...' : 'Save Rubric'}
