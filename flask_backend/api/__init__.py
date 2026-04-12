@@ -25,6 +25,7 @@ from .controllers import (
     review_history_controller,
     rubric_builder_controller,
     message_controller,
+    submission_controller,
 )
 from .models.db import db, ma
 
@@ -123,5 +124,6 @@ def create_app(test_config=None):
     app.register_blueprint(rubric_builder_controller.rubric_builder_bp)
     app.register_blueprint(message_controller.message_bp)
     app.register_blueprint(direct_message_controller.direct_message_bp)
+    app.register_blueprint(submission_controller.submission_bp)
 
     return app

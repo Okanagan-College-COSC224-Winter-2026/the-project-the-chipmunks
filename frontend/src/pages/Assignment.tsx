@@ -11,6 +11,7 @@ import ConclusionSection from "../components/ConclusionSection";
 import RubricForm from "../components/RubricForm";
 import { isTeacher } from "../util/login";
 import ReviewFileUpload from '../components/ReviewFileUpload';
+import SubmissionPanel from '../components/SubmissionPanel';
 
 import {
   listStuGroup,
@@ -245,7 +246,10 @@ export default function Assignment() {
           { label: "Group", path: `/assignments/${id}/group` },
           ...(isTeacher()
             ? [{ label: "Reviews", path: `/assignments/${id}/reviews` }]
-            : [{ label: "Team Submissions", path: `/assignments/${id}/team-submissions` }]
+            : [
+                { label: "Submit", path: `/assignments/${id}/submit` },
+                { label: "Team Submissions", path: `/assignments/${id}/team-submissions` },
+              ]
           ),
         ]}
       />

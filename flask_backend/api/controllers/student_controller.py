@@ -8,6 +8,7 @@ from flask import Blueprint, jsonify, send_from_directory
 from flask_jwt_extended import jwt_required, get_jwt_identity
 
 from api.models import User, User_Course, Assignment, Review, Criterion, CriteriaDescription, Rubric, Group_Members, ReviewFile, ConclusionFile
+from api.models.submission_model import Submission
 
 student_bp = Blueprint("student", __name__, url_prefix="/student")
 
@@ -232,65 +233,72 @@ def team_submissions(assignment_id):
     if membership is None:
         return jsonify({"msg": "You are not in a group for this assignment"}), 403
 
-    # Get all members of the same group, excluding the current user
+    # Get all members of the same group, including the current user
     all_members = Group_Members.query.filter_by(
         groupID=membership.groupID, assignmentID=assignment_id
     ).all()
-    other_members = [m for m in all_members if m.userID != user.id]
 
-    # Conclusion files are assignment-level (not per-user), include once on first member
+    # Conclusion files are assignment-level (uploaded by teacher) — returned separately
     conclusion_files = ConclusionFile.get_by_assignment(assignment_id)
+    conclusion_files_data = [
+        {
+            "file_id":     cf.id,
+            "filename":    cf.filename,
+            "uploaded_at": cf.uploaded_at.isoformat() if cf.uploaded_at else None,
+        }
+        for cf in conclusion_files
+    ]
+
+    # Group submissions for this group (mode='group')
+    group_submissions = Submission.get_by_group_assignment(membership.groupID, assignment_id)
+    group_submissions_data = [
+        {
+            "id":            s.id,
+            "filename":      s.filename,
+            "uploaded_at":   s.uploaded_at.isoformat() if s.uploaded_at else None,
+            "uploaded_by":   s.student.name if s.student else None,
+            "is_mine":       s.studentID == user.id,
+        }
+        for s in group_submissions
+    ]
+
+    # Put the current user first, then everyone else
+    sorted_members = (
+        [m for m in all_members if m.userID == user.id] +
+        [m for m in all_members if m.userID != user.id]
+    )
 
     group_members_data = []
-    for idx, member in enumerate(other_members):
+    for member in sorted_members:
         member_user = User.get_by_id(member.userID)
         if member_user is None:
             continue
 
-        # Review files: files attached to reviews where this member was the reviewer
-        review_files_query = (
-            ReviewFile.query
-            .join(Review, Review.id == ReviewFile.reviewID)
-            .filter(
-                Review.reviewerID == member.userID,
-                Review.assignmentID == assignment_id,
-            )
-            .all()
-        )
-
-        review_files_data = [
+        # Individual submissions by this member
+        individual_submissions = Submission.get_by_student_assignment(member.userID, assignment_id)
+        submissions_data = [
             {
-                "file_id":     rf.id,
-                "filename":    rf.filename,
-                "uploaded_at": rf.uploaded_at.isoformat() if rf.uploaded_at else None,
-                "size_bytes":  os.path.getsize(rf.file_path) if os.path.isfile(rf.file_path) else 0,
+                "id":          s.id,
+                "filename":    s.filename,
+                "uploaded_at": s.uploaded_at.isoformat() if s.uploaded_at else None,
+                "is_mine":     member.userID == user.id,
             }
-            for rf in review_files_query
+            for s in individual_submissions
         ]
 
-        # Conclusion files attached to first member card only (they are assignment-level)
-        conclusion_files_data = []
-        if idx == 0:
-            conclusion_files_data = [
-                {
-                    "file_id":     cf.id,
-                    "filename":    cf.filename,
-                    "uploaded_at": cf.uploaded_at.isoformat() if cf.uploaded_at else None,
-                }
-                for cf in conclusion_files
-            ]
-
         group_members_data.append({
-            "member_id":        member_user.id,
-            "member_name":      member_user.name,
-            "review_files":     review_files_data,
-            "conclusion_files": conclusion_files_data,
+            "member_id":             member_user.id,
+            "member_name":           member_user.name,
+            "is_self":               member.userID == user.id,
+            "individual_submissions": submissions_data,
         })
 
     return jsonify({
-        "assignment_id":   assignment.id,
-        "assignment_name": assignment.name,
-        "group_members":   group_members_data,
+        "assignment_id":      assignment.id,
+        "assignment_name":    assignment.name,
+        "group_members":      group_members_data,
+        "group_submissions":  group_submissions_data,
+        "conclusion_files":   conclusion_files_data,
     }), 200
 
 

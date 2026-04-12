@@ -23,6 +23,12 @@ import RubricBuilderPage from "./pages/RubricBuilderPage";
 import FeedbackView from "./pages/FeedbackView";
 import StudentProgressPage from './pages/StudentProgressPage';
 import TeamSubmissionsPanel from './components/TeamSubmissionsPanel';
+import SubmissionPanel from './components/SubmissionPanel';
+
+function SubmissionRoute() {
+  const { id } = useParams();
+  return <SubmissionPanel assignmentId={Number(id)} />;
+}
 
 function TeamSubmissionsRoute() {
   const { id } = useParams<{ id: string }>();
@@ -96,6 +102,10 @@ function AppContent() {
             }
           />
 
+          <Route
+            path='/assignments/:id/submit'
+            element={<ProtectedRoute><SubmissionRoute /></ProtectedRoute>}
+          />
           <Route
             path='/assignments/:id/team-submissions'
             element={<ProtectedRoute><TeamSubmissionsRoute /></ProtectedRoute>}
