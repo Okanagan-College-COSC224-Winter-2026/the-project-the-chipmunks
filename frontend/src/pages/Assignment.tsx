@@ -35,7 +35,6 @@ export default function Assignment() {
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
 
-  // Load assignment details + student list once on mount
   useEffect(() => {
     (async () => {
       try {
@@ -43,7 +42,6 @@ export default function Assignment() {
         setAssignmentName(assignment.name || `Assignment ${id}`);
         setDescriptionHtml(assignment.description_html || "");
 
-        // Load course members for name lookup
         if (assignment.courseID) {
           const members = await listCourseMembers(String(assignment.courseID));
           const nameMap: Record<number, string> = {};
@@ -56,7 +54,6 @@ export default function Assignment() {
         console.error("Failed to load assignment details:", e);
       }
 
-      // Load rubric criteria for RubricForm
       try {
         const rubricData = await getRubricByAssignment(Number(id));
         setRubricCriteria(rubricData.criteria || []);
@@ -64,7 +61,6 @@ export default function Assignment() {
         // No rubric yet
       }
 
-      // Load student's own group members
       try {
         const uid = await getUserId();
         setStuID(uid);
@@ -76,7 +72,6 @@ export default function Assignment() {
     })();
   }, [id]);
 
-  // Check if this reviewer already submitted a review for the selected reviewee
   useEffect(() => {
     setAlreadyReviewed(false);
     setJustSubmitted(false);
@@ -139,7 +134,6 @@ export default function Assignment() {
         ]}
       />
 
-      {/* Assignment description (rich text from teacher) */}
       {descriptionHtml && (
         <div
           className="assignmentDescription"
@@ -148,10 +142,7 @@ export default function Assignment() {
         />
       )}
 
-      {/* PDF attachment — teachers can upload, everyone can download */}
       <AssignmentAttachment assignmentId={Number(id)} />
-
-      {/* Conclusion files — teachers upload after review period, students download */}
       <ConclusionSection assignmentId={Number(id)} />
 
       <div className="assignmentRubricDisplay">
@@ -197,10 +188,7 @@ export default function Assignment() {
             ) : rubricCriteria.length > 0 ? (
               <>
                 <ReviewFileUpload files={attachedFiles} onChange={setAttachedFiles} />
-                <RubricForm
-                  criteria={rubricCriteria}
-                  onSubmit={handleSubmitReview}
-                />
+                <RubricForm criteria={rubricCriteria} onSubmit={handleSubmitReview} />
               </>
             ) : (
               <p style={{ color: "#888", marginTop: 12 }}>

@@ -563,6 +563,43 @@ export const getAssignment = async (assignmentId: number) => {
   return await resp.json();
 };
 
+export const editAssignment = async (
+  assignmentId: number,
+  fields: { name?: string; description_html?: string }
+) => {
+  const resp = await fetch(`${BASE_URL}/assignment/edit_assignment/${assignmentId}`, {
+    method: 'PATCH',
+    body: JSON.stringify(fields),
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) {
+    throw new Error('This assignment is past its due date and can no longer be edited.');
+  }
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    throw new Error(data.msg || `Response status: ${resp.status}`);
+  }
+  return await resp.json();
+};
+
+export const deleteAssignment = async (assignmentId: number) => {
+  const resp = await fetch(`${BASE_URL}/assignment/delete_assignment/${assignmentId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) {
+    throw new Error('This assignment is past its due date and can no longer be deleted.');
+  }
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    throw new Error(data.msg || `Response status: ${resp.status}`);
+  }
+  return await resp.json();
+};
+
 // ── Rubric by assignment ──────────────────────────────────────────────────────
 
 export const getRubricByAssignment = async (assignmentId: number) => {
@@ -912,6 +949,37 @@ export const getTeamSubmissions = (assignmentId: number) =>
   fetch(`${BASE_URL}/student/assignments/${assignmentId}/team-submissions`, {
     credentials: 'include',
   }).then(res => { maybeHandleExpire(res); return res; });
+
+// ── Assignment management (US9) ───────────────────────────────────────────────
+
+export const editAssignment = async (
+  assignmentId: number,
+  payload: { name?: string; description_html?: string }
+) => {
+  const resp = await fetch(`${BASE_URL}/assignment/edit_assignment/${assignmentId}`, {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'include',
+    body: JSON.stringify(payload),
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) throw new Error('Cannot edit an assignment past its due date.');
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
+};
+
+export const deleteAssignment = async (assignmentId: number) => {
+  const resp = await fetch(`${BASE_URL}/assignment/delete_assignment/${assignmentId}`, {
+    method: 'DELETE',
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (resp.status === 403) throw new Error('Cannot delete an assignment past its due date.');
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
+};
+
+// ── Team review file download ─────────────────────────────────────────────────
 
 export const downloadTeamReviewFile = async (fileId: number) => {
   const resp = await fetch(`${BASE_URL}/student/review-file/${fileId}/download`, {

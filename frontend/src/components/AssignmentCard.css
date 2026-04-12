@@ -3,71 +3,66 @@
   flex-direction: row;
   align-items: center;
   gap: 12px;
-
   color: var(--text-primary);
   padding: 8px;
-
   width: 95%;
   height: auto;
-
   border-radius: 6px;
-
   font-weight: bold;
   font-size: 1rem;
   text-align: left;
 }
-
 .A_Card img {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
 }
-
 .A_Card:hover {
   cursor: pointer;
   background-color: var(--background-secondary);
 }
 
-/* ✅ Content container */
-.A_Card_Content {
+/* ── Body: name + metadata stacked vertically ─────────────────────────────── */
+.A_Card__body {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 4px;
+  margin-left: 8px;
+  min-width: 0;
 }
-
-/* ✅ Title */
-.A_Card_Title {
+.A_Card__name {
   font-weight: bold;
+  font-size: 1rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* ✅ Due date (muted text) */
-.A_Card_Date {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
+/* ── Metadata row: due date + badge side by side ──────────────────────────── */
+.A_Card__meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.A_Card__due {
+  font-size: 0.8rem;
   font-weight: normal;
+  color: var(--text-secondary);
 }
 
-/* ✅ Status badge base */
-.A_Card_Status {
-  margin-top: 4px;
-  font-size: 0.75rem;
-  font-weight: bold;
-  padding: 2px 6px;
-  border-radius: 4px;
-  width: fit-content;
+/* ── Status badge ─────────────────────────────────────────────────────────── */
+.A_Card__badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
 }
-
-/* ✅ Status colors */
-.A_Card_Status.Active {
-  background-color: #d4edda;
-  color: #155724;
-}
-
-.A_Card_Status.Past_Due {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.A_Card_Status.No_Date {
-  background-color: #e2e3e5;
-  color: #383d41;
-}
+.A_Card__badge--upcoming  { background-color: #e3f2fd; color: #1565c0; }
+.A_Card__badge--active    { background-color: #e8f5e9; color: #2e7d32; }
+.A_Card__badge--past-due  { background-color: #fdecea; color: #c62828; }
+.A_Card__badge--no-date   { background-color: var(--background-secondary); color: var(--text-secondary); }
