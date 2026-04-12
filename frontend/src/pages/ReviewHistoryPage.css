@@ -67,3 +67,8 @@
   padding: 5px 10px;
   border-radius: 20px;
 }
+/* Anonymous reviewer label */
+.rh-anonymous {
+  color: var(--text-secondary, #888);
+  font-style: italic;
+}

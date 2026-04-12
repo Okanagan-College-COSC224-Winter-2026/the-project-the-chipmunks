@@ -80,17 +80,20 @@ def my_reviews():
     def serialize(review, role: str) -> dict:
         assignment = Assignment.get_by_id(review.assignmentID)
 
-        # For a review I gave, the "other" person is the reviewee; vice versa
+        # For reviews I gave, show who I reviewed (the reviewee's name is fine —
+        # the reviewer already knows who they reviewed).
+        # For reviews I received, NEVER expose the reviewer's identity — anonymous.
         if role == "given":
             other = User.get_by_id(review.revieweeID)
+            other_student = other.name if other else "Unknown"
         else:
-            other = User.get_by_id(review.reviewerID)
+            other_student = "Anonymous Peer"
 
         return {
             "id":              review.id,
             "assignment_id":   review.assignmentID,
             "assignment_name": assignment.name if assignment else "Unknown",
-            "other_student":   other.name if other else "Unknown",
+            "other_student":   other_student,
             "score":           _review_avg_score(review),
             "role":            role,
             "created_at":      None,   # Review model has no timestamp column

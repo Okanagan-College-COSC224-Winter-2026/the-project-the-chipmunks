@@ -610,3 +610,93 @@ def course_student_progress(course_id):
         "assignments": [{"id": a.id, "name": a.name} for a in assignments],
         "students":    students_data,
     }), 200
+
+
+# ============================================================
+# GET /teacher/assignments/<id>/completion
+# Per-student review completion status for an assignment
+# ============================================================
+
+@teacher_bp.route("/assignments/<int:assignment_id>/completion", methods=["GET"])
+@jwt_teacher_required
+def assignment_completion(assignment_id):
+    """
+    Return the review completion status for every student in the assignment's groups.
+
+    Response 200:
+        {
+            "assignment_id":   int,
+            "assignment_name": str,
+            "total":           int,
+            "submitted":       int,
+            "completion_pct":  float,
+            "students": [
+                {
+                    "user_id":       int,
+                    "name":          str,
+                    "status":        "Complete" | "Incomplete",
+                    "reviews_given": int,
+                    "reviewed":      [{ "reviewee_id": int, "reviewee_name": str }]
+                }
+            ]
+        }
+    """
+    assignment = Assignment.get_by_id(assignment_id)
+    if assignment is None:
+        return jsonify({"msg": "Assignment not found"}), 404
+
+    # All students in a group for this assignment
+    memberships = (
+        db.session.query(Group_Members.userID)
+        .join(CourseGroup, CourseGroup.id == Group_Members.groupID)
+        .filter(CourseGroup.assignmentID == assignment_id)
+        .distinct()
+        .all()
+    )
+    student_ids = [m.userID for m in memberships]
+
+    # All reviews for this assignment, keyed by reviewerID
+    all_reviews = Review.query.filter_by(assignmentID=assignment_id).all()
+    reviews_by_reviewer: dict = {}
+    for rev in all_reviews:
+        reviews_by_reviewer.setdefault(rev.reviewerID, []).append(rev)
+
+    # Build per-student data
+    students_data = []
+    for sid in student_ids:
+        student = User.get_by_id(sid)
+        if student is None:
+            continue
+
+        given = reviews_by_reviewer.get(sid, [])
+        reviewed_list = []
+        for rev in given:
+            reviewee = User.get_by_id(rev.revieweeID)
+            reviewed_list.append({
+                "reviewee_id":   rev.revieweeID,
+                "reviewee_name": reviewee.name if reviewee else f"#{rev.revieweeID}",
+            })
+
+        students_data.append({
+            "user_id":       student.id,
+            "name":          student.name,
+            "status":        "Complete" if given else "Incomplete",
+            "reviews_given": len(given),
+            "reviewed":      reviewed_list,
+        })
+
+    # Sort: incomplete first, then by name
+    students_data.sort(key=lambda s: (s["status"] == "Complete", s["name"]))
+
+    total = len(students_data)
+    submitted = sum(1 for s in students_data if s["status"] == "Complete")
+    completion_pct = round(submitted / total * 100, 1) if total else 0
+
+    return jsonify({
+        "assignment_id":  assignment_id,
+        "assignment_name": assignment.name,
+        "total":          total,
+        "submitted":      submitted,
+        "completion_pct": completion_pct,
+        "students":       students_data,
+    }), 200

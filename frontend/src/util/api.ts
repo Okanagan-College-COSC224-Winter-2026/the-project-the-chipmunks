@@ -1017,3 +1017,15 @@ export const downloadSubmission = async (assignmentId: number, submissionId: num
   a.remove();
   window.URL.revokeObjectURL(url);
 };
+
+// ── Review completion status (US3) ───────────────────────────────────────────
+
+export const getAssignmentCompletion = async (assignmentId: number) => {
+  const resp = await fetch(
+    `${BASE_URL}/teacher/assignments/${assignmentId}/completion`,
+    { credentials: 'include' }
+  );
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
+};
