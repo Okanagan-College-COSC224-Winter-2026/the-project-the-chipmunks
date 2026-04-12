@@ -4,6 +4,7 @@ import { importStudentsForCourse } from "./api";
     // Prompt the user to select a file
     const input = document.createElement("input");
     input.setAttribute("type", "file");
+    input.setAttribute("accept", ".csv");
 
     // Handle the file selection event
     input.addEventListener("change", async () => {
@@ -18,9 +19,12 @@ import { importStudentsForCourse } from "./api";
           return;
         }
 
-        await importStudentsForCourse(Number(id), text).catch((error) => {
-          alert("Error: " + error);
-        });
+        try {
+          await importStudentsForCourse(Number(id), text);
+          alert("Students enrolled successfully! Refresh the Members tab to see them.");
+        } catch (error) {
+          alert("Error enrolling students: " + error + "\n\nMake sure your CSV has columns: id, name, email");
+        }
       };
 
       if (!file) {

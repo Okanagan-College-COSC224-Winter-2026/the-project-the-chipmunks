@@ -1,0 +1,19 @@
+.activity-feed-page { max-width: 700px; margin: 0 auto; padding: 2rem 1rem; }
+.activity-feed-page h1 { margin: 0 0 1.25rem; font-size: 1.5rem; color: var(--text-primary, #000); }
+.activity-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 1.25rem; }
+.activity-filters button { padding: 6px 14px; border: 1px solid var(--background-tertiary, #b5b5b5); border-radius: 20px; background: var(--background-primary, #fff); color: var(--text-secondary, #4d4d4d); font-size: 0.8rem; cursor: pointer; transition: all 0.15s; }
+.activity-filters button:hover { background: var(--background-secondary, #dcdcdc); }
+.activity-filters button.active { background: var(--button-primary, #4bd530); color: #fff; border-color: var(--button-primary, #4bd530); }
+.activity-list { display: flex; flex-direction: column; gap: 1px; background: var(--background-secondary, #dcdcdc); border-radius: 8px; overflow: hidden; }
+.activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px 16px; background: var(--background-primary, #fff); cursor: pointer; transition: background 0.15s; border-left: 3px solid transparent; }
+.activity-item:hover { background: var(--background-secondary, #dcdcdc); }
+.activity-item.unread { border-left-color: var(--button-primary, #4bd530); background: #f0faf0; }
+.activity-icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
+.activity-main { flex: 1; min-width: 0; }
+.activity-title { margin: 0; font-size: 0.9rem; font-weight: 600; color: var(--text-primary, #000); }
+.activity-message { margin: 4px 0 0; font-size: 0.82rem; color: var(--text-secondary, #4d4d4d); line-height: 1.4; }
+.activity-time { flex-shrink: 0; font-size: 0.72rem; color: var(--text-secondary, #4d4d4d); white-space: nowrap; margin-top: 2px; }
+.activity-empty { text-align: center; padding: 2rem; color: var(--text-secondary, #4d4d4d); font-size: 0.9rem; background: var(--background-primary, #fff); margin: 0; }
+.activity-load-more { display: block; width: 100%; margin-top: 1rem; padding: 10px; border: 1px solid var(--background-tertiary, #b5b5b5); border-radius: 6px; background: var(--background-primary, #fff); color: var(--text-primary, #000); font-size: 0.85rem; font-weight: 500; cursor: pointer; transition: background 0.15s; }
+.activity-load-more:hover:not(:disabled) { background: var(--background-secondary, #dcdcdc); }
+.activity-load-more:disabled { color: var(--button-disabled, #4d4d4d); cursor: not-allowed; }

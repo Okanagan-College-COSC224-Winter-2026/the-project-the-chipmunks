@@ -1,0 +1,197 @@
+.AdminUsersPage {
+  margin: 1rem;
+  width: 100%;
+}
+
+.AdminUsersPage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.AdminUsersPage__header h1 {
+  margin: 0;
+}
+
+.AdminUsersPage__newBtn {
+  padding: 0.55rem 1.2rem;
+  background: #1976d2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font: inherit;
+}
+
+.AdminUsersPage__filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.AdminUsersPage__search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.AdminUsersPage__roleFilter {
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.AdminUsersPage__tableWrap {
+  overflow-x: auto;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+}
+
+.AdminUsersPage__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdminUsersPage__table th,
+.AdminUsersPage__table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+  color: #000;
+}
+
+.AdminUsersPage__table th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+/* Role badges */
+.AdminUsersPage__role {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.AdminUsersPage__role--student  { background: #e3f2fd; color: #1565c0; }
+.AdminUsersPage__role--teacher  { background: #e8f5e9; color: #2e7d32; }
+.AdminUsersPage__role--admin    { background: #fce4ec; color: #c62828; }
+
+/* Status chips */
+.AdminUsersPage__active {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.AdminUsersPage__inactive {
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: #f5f5f5;
+  color: #757575;
+}
+
+/* Action buttons */
+.AdminUsersPage__actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.AdminUsersPage__actions button {
+  padding: 0.35rem 0.75rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.AdminUsersPage__deactivateBtn {
+  background: #fff3e0 !important;
+  color: #e65100 !important;
+}
+
+.AdminUsersPage__reactivateBtn {
+  background: #e8f5e9 !important;
+  color: #2e7d32 !important;
+}
+
+/* Pagination */
+.AdminUsersPage__pagination {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.AdminUsersPage__pagination button {
+  padding: 0.4rem 0.9rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: white;
+  cursor: pointer;
+  font: inherit;
+}
+
+.AdminUsersPage__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.AdminUsersPage__total {
+  margin-left: auto;
+  color: #888;
+  font-size: 0.9rem;
+}
+
+.AdminUsersPage__loading,
+.AdminUsersPage__error {
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.AdminUsersPage__error {
+  color: #c33;
+  background: #fdecea;
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .AdminUsersPage .users-table-wrapper,
+  .AdminUsersPage table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .AdminUsersPage .filters,
+  .AdminUsersPage .filter-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .AdminUsersPage .filters input,
+  .AdminUsersPage .filters select {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

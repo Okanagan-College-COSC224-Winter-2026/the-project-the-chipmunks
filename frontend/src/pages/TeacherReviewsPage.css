@@ -1,0 +1,119 @@
+.TeacherReviewsPage {
+  margin: 1rem;
+  width: 100%;
+}
+
+.TeacherReviewsPage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.TeacherReviewsPage__header h1 {
+  margin-bottom: 0.25rem;
+}
+
+.TeacherReviewsPage__header p {
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.TeacherReviewsPage__filters {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.TeacherReviewsPage__filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  min-width: 180px;
+}
+
+.TeacherReviewsPage__filters input,
+.TeacherReviewsPage__filters select,
+.TeacherReviews__textarea {
+  padding: 0.65rem 0.75rem;
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  background: white;
+  color: #000;
+  font: inherit;
+}
+
+.TeacherReviews__tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--background-secondary);
+  border-radius: 8px;
+  background: white;
+}
+
+.TeacherReviews__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.TeacherReviews__table th,
+.TeacherReviews__table td {
+  padding: 0.85rem;
+  text-align: left;
+  border-bottom: 1px solid var(--background-secondary);
+  vertical-align: top;
+}
+
+.TeacherReviews__table th {
+  background: var(--background-secondary);
+}
+
+.TeacherReviews__modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  z-index: 1000;
+}
+
+.TeacherReviews__modal {
+  background: white;
+  width: min(900px, 100%);
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+}
+
+.TeacherReviews__modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.TeacherReviews__modalHeader h2 {
+  margin-bottom: 0.25rem;
+}
+
+.TeacherReviews__modalHeader p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.TeacherReviews__noteForm {
+  margin-top: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.TeacherReviews__noteActions {
+  display: flex;
+  gap: 0.75rem;
+}

@@ -1,29 +1,68 @@
-.A_Card{
+.A_Card {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
+  gap: 12px;
   color: var(--text-primary);
-
-  padding: 4px;
-
+  padding: 8px;
   width: 95%;
-  height:auto;
-
+  height: auto;
   border-radius: 6px;
-
   font-weight: bold;
   font-size: 1rem;
   text-align: left;
 }
-
 .A_Card img {
   width: 40px;
   height: 40px;
+  flex-shrink: 0;
 }
-
-/*TODO: add disabled functionality */
-.A_Card:hover{
+.A_Card:hover {
   cursor: pointer;
   background-color: var(--background-secondary);
 }
+
+/* ── Body: name + metadata stacked vertically ─────────────────────────────── */
+.A_Card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-left: 8px;
+  min-width: 0;
+}
+.A_Card__name {
+  font-weight: bold;
+  font-size: 1rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ── Metadata row: due date + badge side by side ──────────────────────────── */
+.A_Card__meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+.A_Card__due {
+  font-size: 0.8rem;
+  font-weight: normal;
+  color: var(--text-secondary);
+}
+
+/* ── Status badge ─────────────────────────────────────────────────────────── */
+.A_Card__badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.A_Card__badge--upcoming  { background-color: #e3f2fd; color: #1565c0; }
+.A_Card__badge--active    { background-color: #e8f5e9; color: #2e7d32; }
+.A_Card__badge--past-due  { background-color: #fdecea; color: #c62828; }
+.A_Card__badge--no-date   { background-color: var(--background-secondary); color: var(--text-secondary); }

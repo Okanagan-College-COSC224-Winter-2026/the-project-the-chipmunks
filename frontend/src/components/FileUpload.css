@@ -1,0 +1,193 @@
+/**
+ * FileUpload.css — Dev 5 (Feature A: Enhanced Assignment Management)
+ *
+ * Styles for the FileUpload component. Uses project CSS variables
+ * from index.css (--button-primary, --background-secondary, etc.)
+ *
+ * Place in: frontend/src/components/FileUpload.css
+ */
+
+.file-upload-wrapper {
+  margin: 12px 0;
+}
+
+.file-upload-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+  font-size: 14px;
+}
+
+.file-upload-dropzone {
+  border: 2px dashed var(--background-tertiary);
+  border-radius: 8px;
+  padding: 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  background-color: var(--background-primary);
+}
+
+.file-upload-dropzone:hover {
+  border-color: var(--button-primary);
+  background-color: #f9f9f9;
+}
+
+.file-upload-dropzone.drag-over {
+  border-color: var(--button-primary);
+  background-color: #e8f5e3;
+}
+
+.file-upload-dropzone.has-file {
+  border-style: solid;
+  border-color: var(--background-secondary);
+  cursor: default;
+}
+
+.file-upload-dropzone.uploading {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.file-upload-input {
+  display: none;
+}
+
+/* Placeholder state (no file selected) */
+.file-upload-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.file-upload-placeholder .file-upload-icon {
+  font-size: 28px;
+}
+
+.file-upload-hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* File selected state */
+.file-upload-selected {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.file-upload-selected .file-upload-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.file-upload-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1;
+  min-width: 0;
+}
+
+.file-upload-name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.file-upload-size {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.file-upload-remove {
+  background: none;
+  border: 1px solid var(--background-tertiary);
+  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  flex-shrink: 0;
+  transition: all 0.15s ease-in-out;
+}
+
+.file-upload-remove:hover {
+  background-color: #fee;
+  border-color: #c00;
+  color: #c00;
+}
+
+/* Loading spinner */
+.file-upload-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+}
+
+.file-upload-spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--background-secondary);
+  border-top-color: var(--button-primary);
+  border-radius: 50%;
+  animation: file-spin 0.8s linear infinite;
+}
+
+@keyframes file-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Status messages */
+.file-upload-error {
+  margin-top: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  color: #c00;
+  background-color: #fee;
+  border-radius: 4px;
+}
+
+.file-upload-status {
+  margin-top: 6px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.file-upload-status.success {
+  color: #2a6e2a;
+  background-color: #e8f5e3;
+}
+
+.file-upload-status.error {
+  color: #c00;
+  background-color: #fee;
+}
+
+/* Responsive — stack on small screens */
+@media (max-width: 480px) {
+  .file-upload-dropzone {
+    padding: 16px;
+  }
+
+  .file-upload-selected {
+    flex-wrap: wrap;
+  }
+}

@@ -1,12 +1,47 @@
 .RubricDisplay {
-    padding: 20px;
-    background-color: white;
+    padding: 16px 20px;
+    background-color: var(--background-primary);
+    border: 1px solid var(--background-secondary);
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin: 20px 0;
+    margin: 16px 0;
+    max-width: 700px;
 }
 
 .RubricDisplay h2 {
-    margin-bottom: 20px;
-    color: #333;
-} 
+    margin: 0 0 12px 0;
+    font-size: 1.1rem;
+    color: var(--text-primary);
+}
+
+.RubricDisplay__criteria {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.RubricDisplay__criterion {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background-color: var(--background-secondary);
+    border-radius: 4px;
+}
+
+.RubricDisplay__question {
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.RubricDisplay__score {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    margin-left: 12px;
+}
+
+.RubricDisplay__empty {
+    color: var(--text-secondary);
+    font-style: italic;
+    margin: 0;
+}

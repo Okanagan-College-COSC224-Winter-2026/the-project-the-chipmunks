@@ -1,0 +1,140 @@
+/**
+ * ConclusionSection.css — Dev 5 (Feature B)
+ *
+ * Styles for the ConclusionSection component.
+ * Uses project CSS variables from index.css.
+ *
+ * Place in: frontend/src/components/ConclusionSection.css
+ */
+
+.conclusion-section {
+  margin: 16px 12px;
+  padding: 16px;
+  border: 1px solid var(--background-secondary);
+  border-radius: 8px;
+  background-color: var(--background-primary);
+}
+
+.conclusion-section h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+/* Loading and empty states */
+.conclusion-loading,
+.conclusion-empty {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+}
+
+/* File list */
+.conclusion-file-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.conclusion-file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.conclusion-file-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.conclusion-file-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.conclusion-file-name {
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.conclusion-file-meta {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+.conclusion-download-btn,
+.conclusion-upload-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  flex-shrink: 0;
+}
+
+.conclusion-download-btn {
+  background-color: var(--button-primary);
+  color: #fff;
+}
+
+.conclusion-download-btn:hover {
+  filter: brightness(0.9);
+}
+
+.conclusion-download-btn:disabled {
+  background-color: var(--button-disabled);
+  cursor: not-allowed;
+}
+
+.conclusion-upload-section {
+  margin-top: 12px;
+}
+
+.conclusion-upload-btn {
+  margin-top: 10px;
+  background-color: var(--button-primary);
+  color: #fff;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+.conclusion-upload-btn:hover {
+  filter: brightness(0.9);
+}
+
+/* Status messages */
+.conclusion-status {
+  margin-top: 8px;
+  padding: 6px 10px;
+  font-size: 13px;
+  border-radius: 4px;
+}
+
+.conclusion-status.error {
+  color: #c00;
+  background-color: #fee;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .conclusion-file-row {
+    flex-wrap: wrap;
+  }
+
+  .conclusion-file-info {
+    width: 100%;
+  }
+}
