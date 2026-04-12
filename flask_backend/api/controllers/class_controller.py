@@ -87,7 +87,6 @@ def get_user_classes():
     return jsonify([{"id": c.id, "name": c.name} for c in courses]), 200
 
 
-
 @bp.route("/classes/members", methods=["POST"])
 @jwt_required()
 def get_class_members():
@@ -115,7 +114,6 @@ def get_class_members():
     return jsonify(result), 200
 
 
-
 REQUIRED_HEADERS = {"id", "name", "email"}
 def csv_to_list(csv_text):
     """Convert CSV text to a list of emails"""
@@ -123,19 +121,19 @@ def csv_to_list(csv_text):
     errors: List[str] = []
     if not csv_text or not csv_text.strip():
         return rows, ["CSV text empty"]
-    
+
     stream = io.StringIO(csv_text.strip())
     try:
         reader = csv.DictReader(stream)
     except Exception as e:
         return rows, [f"Failed to read CSV: {e}"]
-    
+
     headers = {h.strip() for h in reader.fieldnames or []}
     missing = REQUIRED_HEADERS - headers
     if missing:
         errors.append(f"Missing required headers: {', '.join(sorted(missing))}")
         return rows, errors
-    
+
     for line_num, row in enumerate(reader, start=2):
         if row is None:
             continue
@@ -174,7 +172,7 @@ def enroll_students():
     course = Course.get_by_id(class_id)
     if not course:
         return jsonify({"msg": "Class not found"}), 404
-    
+
     # check if the authenticated user is the teacher of the class
     email = get_jwt_identity()
     user = User.get_by_email(email)
@@ -193,7 +191,7 @@ def enroll_students():
         # validate email format with regex
         if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
             return jsonify({"msg": f"Invalid email format: {email}"}), 400
-        
+
         name = student_info["name"]
         student = User.get_by_email(email)
         if not student:

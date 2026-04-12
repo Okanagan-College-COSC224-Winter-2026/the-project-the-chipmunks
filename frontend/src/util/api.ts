@@ -389,17 +389,18 @@ export const getMyTrends = async (): Promise<Response> => {
 // ── Review file attachments ───────────────────────────────────────────────────
 
 export const uploadReviewFiles = async (reviewID: number, files: File[]) => {
-  for (const file of files) {
-    const formData = new FormData();
-    formData.append('file', file);
-    const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
-      method: 'POST',
-      body: formData,
-      credentials: 'include',
-    });
-    maybeHandleExpire(response);
-    if (!response.ok) throw new Error(`Response status: ${response.status}`);
+  const formData = new FormData();
+  files.forEach((file) => formData.append("files", file));
+  const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
+    method: "POST",
+    body: formData,
+    credentials: "include",
+  });
+  maybeHandleExpire(response);
+  if (!response.ok) {
+    throw new Error(`Response status: ${response.status}`);
   }
+  return await response.json();
 };
 
 export const getReviewFiles = async (reviewId: number) => {

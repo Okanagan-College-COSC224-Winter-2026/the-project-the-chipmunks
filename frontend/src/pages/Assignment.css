@@ -95,11 +95,13 @@
   border-radius: 6px;
   background: #fafafa;
 }
+
 .attached-files-list {
   list-style: none;
   padding: 0;
   margin-top: 0.5rem;
 }
+
 .attached-files-list li {
   margin: 0.3rem 0;
 }

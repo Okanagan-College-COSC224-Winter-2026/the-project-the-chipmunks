@@ -22,7 +22,7 @@ export default function Home() {
     ;(async () => {
       try {
         const coursesResp = await listClasses();
-        
+
         const coursesWithAssignments = await Promise.all(
           coursesResp.map(async (course: Course) => {
             try {
@@ -42,7 +42,7 @@ export default function Home() {
             }
           })
         );
-        
+
         setCourses(coursesWithAssignments);
       } catch (error) {
         console.error("Error fetching courses:", error);
@@ -117,7 +117,7 @@ export default function Home() {
           filteredCourses.map((course) => {
             const assignmentText = `${course.assignmentCount || 0} assignments`;
             const courseGrade = gradeMap.get(course.id);
-            
+
             return (
               <div key={course.id} className="CourseCardWrapper">
                 <ClassCard
@@ -148,7 +148,7 @@ export default function Home() {
         {isTeacher() && <div className="ClassCreateButton" onClick={() => window.location.href = '/classes/create'}>
           <h2>Create Class</h2>
         </div>}
-        
+
         {isAdmin() && <div className="ClassCreateButton" onClick={() => window.location.href = '/admin/create-teacher'}>
           <h2>Create Teacher</h2>
         </div>}

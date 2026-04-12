@@ -522,8 +522,6 @@ def course_student_progress(course_id):
     Response 403: not a teacher/admin (handled by decorator)
     Response 404: course not found
     """
-    from sqlalchemy import func
-
     course = Course.get_by_id(course_id)
     if course is None:
         return jsonify({"msg": "Course not found"}), 404

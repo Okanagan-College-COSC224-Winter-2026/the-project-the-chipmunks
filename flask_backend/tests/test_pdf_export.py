@@ -3,6 +3,7 @@ Tests for the PDF export endpoint.
 1. Teacher gets 200 with application/pdf
 2. Student gets 403
 """
+
 import pytest
 from werkzeug.security import generate_password_hash
 from api.models import User, Course, Assignment

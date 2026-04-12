@@ -162,7 +162,7 @@ export default function RubricBuilderPage() {
         payload.template_name = templateName.trim() || rubricName;
       }
 
-      const resp = await upsertRubric(assignId, payload);
+      const resp = await upsertRubric(assignId, payload as Record<string, unknown>);
       if (resp && resp.ok) {
         const data = await resp.json();
         if (data.rubric) {

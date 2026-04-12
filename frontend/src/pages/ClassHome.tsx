@@ -113,7 +113,7 @@ export default function ClassHome() {
       <ul style={{ listStyle: "none", padding: 0, margin: 0 }}>
         {assignments.map((assignment) => (
           <li key={assignment.id}>
-            <AssignmentCard id={assignment.id}>
+            <AssignmentCard id={assignment.id} dueDate={assignment.due_date}>
               {assignment.name}
             </AssignmentCard>
           </li>
