@@ -1,5 +1,7 @@
 import { useEffect, useState, ChangeEvent } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import RichTextEditor from "../components/RichTextEditor";
+import StatusMessage from "../components/StatusMessage";
 import "./Assignment.css";
 import RubricCreator from "../components/RubricCreator";
 import RubricDisplay from "../components/RubricDisplay";
@@ -19,11 +21,14 @@ import {
   submitReview,
   getRubricByAssignment,
   uploadReviewFiles,
+  editAssignment,
+  deleteAssignment,
 } from "../util/api";
 
 export default function Assignment() {
   const [attachedFiles, setAttachedFiles] = useState<File[]>([]);
   const { id } = useParams();
+  const navigate = useNavigate();
   const [stuGroup, setStuGroup] = useState<StudentGroups[]>([]);
   const [revieweeID, setRevieweeID] = useState<number>(0);
   const [stuID, setStuID] = useState<number>(0);
@@ -34,7 +39,18 @@ export default function Assignment() {
   const [submitStatus, setSubmitStatus] = useState<string>("");
   const [alreadyReviewed, setAlreadyReviewed] = useState(false);
   const [justSubmitted, setJustSubmitted] = useState(false);
+  const [courseId, setCourseId] = useState<number | null>(null);
 
+  // Edit form state
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editStatus, setEditStatus] = useState<string>("");
+  const [editStatusType, setEditStatusType] = useState<"success" | "error">("error");
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  // Load assignment details + student list once on mount
   useEffect(() => {
     (async () => {
       try {
@@ -42,6 +58,8 @@ export default function Assignment() {
         setAssignmentName(assignment.name || `Assignment ${id}`);
         setDescriptionHtml(assignment.description_html || "");
 
+        // Load course members for name lookup
+        setCourseId(assignment.courseID || null);
         if (assignment.courseID) {
           const members = await listCourseMembers(String(assignment.courseID));
           const nameMap: Record<number, string> = {};
@@ -54,6 +72,7 @@ export default function Assignment() {
         console.error("Failed to load assignment details:", e);
       }
 
+      // Load rubric criteria for RubricForm
       try {
         const rubricData = await getRubricByAssignment(Number(id));
         setRubricCriteria(rubricData.criteria || []);
@@ -61,6 +80,7 @@ export default function Assignment() {
         // No rubric yet
       }
 
+      // Load student's own group members
       try {
         const uid = await getUserId();
         setStuID(uid);
@@ -72,6 +92,7 @@ export default function Assignment() {
     })();
   }, [id]);
 
+  // Check if this reviewer already submitted a review for the selected reviewee
   useEffect(() => {
     setAlreadyReviewed(false);
     setJustSubmitted(false);
@@ -117,11 +138,106 @@ export default function Assignment() {
     }
   };
 
+  const handleOpenEdit = () => {
+    setEditName(assignmentName);
+    setEditDescription(descriptionHtml);
+    setEditStatus("");
+    setShowEditForm(true);
+  };
+
+  const handleCancelEdit = () => {
+    setShowEditForm(false);
+    setEditStatus("");
+  };
+
+  const handleSaveEdit = async () => {
+    setIsSaving(true);
+    setEditStatus("");
+    try {
+      await editAssignment(Number(id), {
+        name: editName,
+        description_html: editDescription,
+      });
+      setAssignmentName(editName);
+      setDescriptionHtml(editDescription);
+      setEditStatusType("success");
+      setEditStatus("Assignment updated successfully.");
+      setShowEditForm(false);
+    } catch (error) {
+      setEditStatusType("error");
+      setEditStatus(error instanceof Error ? error.message : "Failed to save changes.");
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleDeleteAssignment = async () => {
+    const confirmed = window.confirm(
+      `Are you sure you want to delete "${assignmentName}"? This cannot be undone.`
+    );
+    if (!confirmed) return;
+    setIsDeleting(true);
+    try {
+      await deleteAssignment(Number(id));
+      navigate(`/classes/${courseId}/home`);
+    } catch (error) {
+      setEditStatusType("error");
+      setEditStatus(error instanceof Error ? error.message : "Failed to delete assignment.");
+      setIsDeleting(false);
+    }
+  };
+
   return (
     <>
       <div className="AssignmentHeader">
         <h2>{assignmentName || `Assignment ${id}`}</h2>
+        {isTeacher() && (
+          <div className="assignment-header-actions">
+            <button className="btn-edit-assignment" onClick={handleOpenEdit}>
+              Edit Assignment
+            </button>
+            <button
+              className="btn-delete-assignment"
+              onClick={handleDeleteAssignment}
+              disabled={isDeleting}
+            >
+              {isDeleting ? "Deleting..." : "Delete Assignment"}
+            </button>
+          </div>
+        )}
       </div>
+
+      {/* Edit form — teachers only, toggled by Edit Assignment button */}
+      {isTeacher() && showEditForm && (
+        <div className="assignment-edit-form">
+          <h3>Edit Assignment</h3>
+          <label className="assignment-edit-label">Assignment Name</label>
+          <input
+            className="assignment-edit-input"
+            type="text"
+            value={editName}
+            onChange={e => setEditName(e.target.value)}
+          />
+          <label className="assignment-edit-label">Description</label>
+          <RichTextEditor value={editDescription} onChange={setEditDescription} />
+          <div className="assignment-edit-actions">
+            <button onClick={handleSaveEdit} disabled={isSaving}>
+              {isSaving ? "Saving..." : "Save Changes"}
+            </button>
+            <button className="btn-secondary" onClick={handleCancelEdit}>
+              Cancel
+            </button>
+          </div>
+          {editStatus && (
+            <StatusMessage message={editStatus} type={editStatusType} />
+          )}
+        </div>
+      )}
+
+      {/* Feedback after a successful edit (form closed) */}
+      {isTeacher() && !showEditForm && editStatus && (
+        <StatusMessage message={editStatus} type={editStatusType} />
+      )}
 
       <TabNavigation
         tabs={[
@@ -134,6 +250,7 @@ export default function Assignment() {
         ]}
       />
 
+      {/* Assignment description (rich text from teacher) */}
       {descriptionHtml && (
         <div
           className="assignmentDescription"
@@ -142,7 +259,10 @@ export default function Assignment() {
         />
       )}
 
+      {/* PDF attachment — teachers can upload, everyone can download */}
       <AssignmentAttachment assignmentId={Number(id)} />
+
+      {/* Conclusion files — teachers upload after review period, students download */}
       <ConclusionSection assignmentId={Number(id)} />
 
       <div className="assignmentRubricDisplay">
@@ -182,13 +302,16 @@ export default function Assignment() {
             alreadyReviewed ? (
               <p style={{ color: "#2e7d32", marginTop: 12 }}>
                 {justSubmitted
-                  ? "Review submitted successfully!"
-                  : "You have already submitted a review for this student."}
+                  ? "✓ Review submitted successfully!"
+                  : "✓ You have already submitted a review for this student."}
               </p>
             ) : rubricCriteria.length > 0 ? (
               <>
                 <ReviewFileUpload files={attachedFiles} onChange={setAttachedFiles} />
-                <RubricForm criteria={rubricCriteria} onSubmit={handleSubmitReview} />
+                <RubricForm
+                  criteria={rubricCriteria}
+                  onSubmit={handleSubmitReview}
+                />
               </>
             ) : (
               <p style={{ color: "#888", marginTop: 12 }}>

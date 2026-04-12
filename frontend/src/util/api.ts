@@ -389,18 +389,17 @@ export const getMyTrends = async (): Promise<Response> => {
 // ── Review file attachments ───────────────────────────────────────────────────
 
 export const uploadReviewFiles = async (reviewID: number, files: File[]) => {
-  const formData = new FormData();
-  files.forEach((file) => formData.append("files", file));
-  const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
-    method: "POST",
-    body: formData,
-    credentials: "include",
-  });
-  maybeHandleExpire(response);
-  if (!response.ok) {
-    throw new Error(`Response status: ${response.status}`);
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('file', file);
+    const response = await fetch(`${BASE_URL}/review/${reviewID}/upload`, {
+      method: 'POST',
+      body: formData,
+      credentials: 'include',
+    });
+    maybeHandleExpire(response);
+    if (!response.ok) throw new Error(`Response status: ${response.status}`);
   }
-  return await response.json();
 };
 
 export const getReviewFiles = async (reviewId: number) => {
@@ -560,43 +559,6 @@ export const getAssignment = async (assignmentId: number) => {
   });
   maybeHandleExpire(resp);
   if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
-  return await resp.json();
-};
-
-export const editAssignment = async (
-  assignmentId: number,
-  fields: { name?: string; description_html?: string }
-) => {
-  const resp = await fetch(`${BASE_URL}/assignment/edit_assignment/${assignmentId}`, {
-    method: 'PATCH',
-    body: JSON.stringify(fields),
-    headers: { 'Content-Type': 'application/json' },
-    credentials: 'include',
-  });
-  maybeHandleExpire(resp);
-  if (resp.status === 403) {
-    throw new Error('This assignment is past its due date and can no longer be edited.');
-  }
-  if (!resp.ok) {
-    const data = await resp.json().catch(() => ({}));
-    throw new Error(data.msg || `Response status: ${resp.status}`);
-  }
-  return await resp.json();
-};
-
-export const deleteAssignment = async (assignmentId: number) => {
-  const resp = await fetch(`${BASE_URL}/assignment/delete_assignment/${assignmentId}`, {
-    method: 'DELETE',
-    credentials: 'include',
-  });
-  maybeHandleExpire(resp);
-  if (resp.status === 403) {
-    throw new Error('This assignment is past its due date and can no longer be deleted.');
-  }
-  if (!resp.ok) {
-    const data = await resp.json().catch(() => ({}));
-    throw new Error(data.msg || `Response status: ${resp.status}`);
-  }
   return await resp.json();
 };
 
@@ -978,8 +940,6 @@ export const deleteAssignment = async (assignmentId: number) => {
   if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
   return await resp.json();
 };
-
-// ── Team review file download ─────────────────────────────────────────────────
 
 export const downloadTeamReviewFile = async (fileId: number) => {
   const resp = await fetch(`${BASE_URL}/student/review-file/${fileId}/download`, {
