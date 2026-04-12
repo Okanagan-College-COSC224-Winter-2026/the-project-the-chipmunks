@@ -144,3 +144,63 @@
 .tsub-download-btn:hover {
   background: var(--color-primary-dark, #4338ca);
 }
+
+/* ── "You" badge next to your own name ── */
+.tsub-you-badge {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--button-primary, #1976d2);
+  margin-left: 4px;
+}
+
+/* ── Teacher conclusion files section ── */
+.tsub-conclusion-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-secondary, #e0e0e0);
+}
+
+.tsub-conclusion-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--text-primary);
+}
+
+/* ── Group submission section ── */
+.tsub-group-section {
+  margin-bottom: 8px;
+}
+
+.tsub-section-heading {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: var(--text-primary);
+}
+
+.tsub-file-row--group {
+  border-left: 3px solid var(--button-primary, #1976d2);
+}
+
+/* ── "You" badge ── */
+.tsub-you-badge {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--button-primary, #1976d2);
+  margin-left: 4px;
+}
+
+/* ── Teacher conclusion files section ── */
+.tsub-conclusion-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--background-secondary, #e0e0e0);
+}
+
+.tsub-conclusion-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 12px;
+  color: var(--text-primary);
+}

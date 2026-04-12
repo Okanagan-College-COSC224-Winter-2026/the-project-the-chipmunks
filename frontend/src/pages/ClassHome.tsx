@@ -12,6 +12,8 @@ import { isTeacher, isAdmin } from "../util/login"
 import RichTextEditor from "../components/RichTextEditor"
 import AnnouncementCard from "../components/AnnouncementCard"
 import AnnouncementForm from "../components/AnnouncementForm"
+import DatePicker from "react-datepicker"
+import "react-datepicker/dist/react-datepicker.css"
 import { useNavigate } from 'react-router-dom'
 
 interface Announcement {
@@ -28,6 +30,7 @@ export default function ClassHome() {
   const [assignments, setAssignments] = useState<Assignment[]>([])
   const [newAssignmentName, setNewAssignmentName] = useState("")
   const [newAssignmentDescription, setNewAssignmentDescription] = useState("")
+  const [newAssignmentDueDate, setNewAssignmentDueDate] = useState<Date | null>(null)
   const [className, setClassName] = useState<string | null>(null)
   const [statusMessage, setStatusMessage] = useState("")
   const [statusType, setStatusType] = useState<"error" | "success">("error")
@@ -53,12 +56,13 @@ export default function ClassHome() {
   const tryCreateAssignment = async () => {
     try {
       setStatusMessage("")
-      const response = await createAssignment(idNew, newAssignmentName, newAssignmentDescription)
+      const response = await createAssignment(idNew, newAssignmentName, newAssignmentDescription, newAssignmentDueDate ? newAssignmentDueDate.toISOString() : undefined)
       const createdAssignment = response?.assignment
       if (!createdAssignment?.id) throw new Error("Failed to create assignment")
       setAssignments((prev) => [...prev, createdAssignment])
       setNewAssignmentName("")
       setNewAssignmentDescription("")
+      setNewAssignmentDueDate(null)
       setStatusType("success")
       setStatusMessage("Assignment created successfully!")
     } catch (error) {
@@ -127,6 +131,17 @@ export default function ClassHome() {
           <Textbox
             onInput={(val) => setNewAssignmentName(val)}
             placeholder="Assignment name"
+          />
+          <label>Due Date: <span style={{ fontWeight: "normal", fontSize: "0.85rem", color: "var(--text-secondary)" }}>(optional)</span></label>
+          <DatePicker
+            selected={newAssignmentDueDate}
+            onChange={(date) => setNewAssignmentDueDate(date)}
+            showTimeSelect
+            dateFormat="MMMM d, yyyy h:mm aa"
+            placeholderText="Select a due date..."
+            isClearable
+            className="assignment-due-date-input"
+            wrapperClassName="assignment-due-date-wrapper"
           />
           <label>Description:</label>
           <RichTextEditor

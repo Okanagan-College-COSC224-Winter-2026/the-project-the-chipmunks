@@ -89,3 +89,59 @@
         min-height: 44px;
     }
 }
+
+/* ── Due date DatePicker in New Assignment form ── */
+.assignment-due-date-wrapper {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.assignment-due-date-input {
+  width: 100%;
+  padding: 7px 10px;
+  border: 1px solid var(--background-secondary, #ccc);
+  border-radius: 4px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: var(--input-background, #fff);
+  color: var(--text-primary, #111);
+  cursor: pointer;
+}
+
+.assignment-due-date-input:focus {
+  outline: none;
+  border-color: var(--button-primary, #1976d2);
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.15);
+}
+
+/* Override react-datepicker theme to match app */
+.react-datepicker {
+  font-family: inherit;
+  border: 1px solid var(--background-secondary, #ccc);
+  border-radius: 6px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+}
+.react-datepicker__header {
+  background-color: var(--button-primary, #1976d2);
+  border-bottom: none;
+  border-radius: 6px 6px 0 0;
+}
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker-time__header {
+  color: #fff;
+}
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__time-list-item--selected {
+  background-color: var(--button-primary, #1976d2) !important;
+  color: #fff !important;
+}
+.react-datepicker__day:hover,
+.react-datepicker__time-list-item:hover {
+  background-color: var(--background-secondary, #e0e0e0);
+}
+.react-datepicker__close-icon::after {
+  background-color: var(--button-primary, #1976d2);
+}

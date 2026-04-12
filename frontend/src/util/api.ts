@@ -252,10 +252,10 @@ export const getRubric = async (rubricID: number) => {
   return await resp.json();
 }
 
-export const createAssignment = async (courseID: number, name: string, description_html = '') => {
+export const createAssignment = async (courseID: number, name: string, description_html = '', due_date?: string) => {
   const response = await fetch(`${BASE_URL}/assignment/create_assignment`, {
     method: 'POST',
-    body: JSON.stringify({ courseID, name, description_html }),
+    body: JSON.stringify({ courseID, name, description_html, ...(due_date ? { due_date } : {}) }),
     headers: {
       'Content-Type': 'application/json',
     },
@@ -957,4 +957,75 @@ export const downloadTeamReviewFile = async (fileId: number) => {
   a.click();
   a.remove();
   window.URL.revokeObjectURL(url);
+};
+// ── Assignment Submissions ────────────────────────────────────────────────────
+
+export const uploadSubmission = async (
+  assignmentId: number,
+  file: File,
+  mode: 'individual' | 'group'
+) => {
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('mode', mode);
+  const resp = await fetch(`${BASE_URL}/assignment/${assignmentId}/submission/upload`, {
+    method: 'POST',
+    body: formData,
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (!resp.ok) {
+    const data = await resp.json().catch(() => ({}));
+    throw new Error(data.msg || `Response status: ${resp.status}`);
+  }
+  return await resp.json();
+};
+
+export const getSubmissionStatus = async (assignmentId: number) => {
+  const resp = await fetch(`${BASE_URL}/assignment/${assignmentId}/submission/status`, {
+    credentials: 'include',
+  });
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
+};
+
+export const deleteSubmission = async (assignmentId: number, submissionId: number) => {
+  const resp = await fetch(
+    `${BASE_URL}/assignment/${assignmentId}/submission/${submissionId}`,
+    { method: 'DELETE', credentials: 'include' }
+  );
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
+};
+
+export const downloadSubmission = async (assignmentId: number, submissionId: number, filename: string) => {
+  const resp = await fetch(
+    `${BASE_URL}/assignment/${assignmentId}/submission/${submissionId}/download`,
+    { credentials: 'include' }
+  );
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error('Download failed');
+  const blob = await resp.blob();
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(url);
+};
+
+// ── Review completion status (US3) ───────────────────────────────────────────
+
+export const getAssignmentCompletion = async (assignmentId: number) => {
+  const resp = await fetch(
+    `${BASE_URL}/teacher/assignments/${assignmentId}/completion`,
+    { credentials: 'include' }
+  );
+  maybeHandleExpire(resp);
+  if (!resp.ok) throw new Error(`Response status: ${resp.status}`);
+  return await resp.json();
 };

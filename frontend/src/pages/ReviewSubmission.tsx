@@ -2,14 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import RubricForm from '../components/RubricForm'
 import StatusMessage from '../components/StatusMessage'
-import { getRubricByAssignment, submitReview, listCourseMembers, getAssignment, uploadReviewFiles } from '../util/api'
+import { getRubricByAssignment, submitReview, uploadReviewFiles } from '../util/api'
 import './ReviewSubmission.css'
 import ReviewFileUpload from '../components/ReviewFileUpload'
 
 export default function ReviewSubmission() {
   const { id, revieweeId } = useParams();
   const [rubric, setRubric] = useState<RubricResponse | null>(null);
-  const [revieweeName, setRevieweeName] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -25,17 +24,7 @@ export default function ReviewSubmission() {
         console.error(err);
         setError('Failed to load rubric. Please try again.');
       }
-      // Try to get reviewee's name
-      try {
-        const assignmentData = await getAssignment(Number(id));
-        if (assignmentData?.courseID) {
-          const members = await listCourseMembers(String(assignmentData.courseID));
-          const reviewee = members.find((m: User) => m.id === Number(revieweeId));
-          if (reviewee) setRevieweeName(reviewee.name);
-        }
-      } catch {
-        // Name lookup failed
-      }
+
       setLoading(false);
     })();
   }, [id, revieweeId]);
@@ -92,7 +81,7 @@ export default function ReviewSubmission() {
       <div className="ReviewSubmission-header">
         <h2>Peer Review</h2>
         <p className="ReviewSubmission-subtitle">
-          Reviewing: <strong>{revieweeName || `Student #${revieweeId}`}</strong>
+          Reviewing: <strong>Anonymous Peer</strong>
         </p>
       </div>
 

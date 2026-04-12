@@ -10,14 +10,17 @@ import {
 interface Props {
   assignmentId: number;
   reviewId: number;
+  memberNames: Record<number, string>;
   onClose: () => void;
 }
 
 export default function ReviewDetailModal({
   assignmentId,
   reviewId,
+  memberNames,
   onClose,
 }: Props) {
+  const nameOf = (id: number) => memberNames[id] || `#${id}`;
   const [detail, setDetail] = useState<TeacherReviewDetail | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,7 +53,7 @@ export default function ReviewDetailModal({
             <h2>Review #{reviewId}</h2>
             {detail && (
               <p>
-                Reviewer: {detail.reviewer_id} → Reviewee: {detail.reviewee_id}
+                {nameOf(detail.reviewer_id)} → {nameOf(detail.reviewee_id)}
               </p>
             )}
           </div>

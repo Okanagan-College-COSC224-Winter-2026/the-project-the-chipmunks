@@ -1,0 +1,198 @@
+.subpanel {
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+/* ── Status banner ─────────────────────────────────── */
+.subpanel__status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.subpanel__status--submitted {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.subpanel__status--pending {
+  background-color: #fff8e1;
+  color: #f57f17;
+}
+
+.subpanel__status-icon {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+/* ── Mode toggle ───────────────────────────────────── */
+.subpanel__toggle {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--background-secondary, #ccc);
+  border-radius: 6px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.subpanel__toggle-btn {
+  padding: 7px 20px;
+  border: none;
+  background-color: var(--background-primary, #fff);
+  color: var(--text-primary, #333);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.subpanel__toggle-btn:first-child {
+  border-right: 1px solid var(--background-secondary, #ccc);
+}
+
+.subpanel__toggle-btn--active {
+  background-color: var(--button-primary, #1976d2);
+  color: #fff;
+}
+
+.subpanel__toggle-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* ── Hint text ─────────────────────────────────────── */
+.subpanel__hint {
+  font-size: 0.8rem;
+  color: var(--text-secondary, #888);
+  margin: -8px 0 0;
+}
+
+/* ── Submitted file list ───────────────────────────── */
+.subpanel__files {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subpanel__file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid var(--background-secondary, #e0e0e0);
+  border-radius: 6px;
+  background-color: var(--background-primary, #fff);
+  gap: 12px;
+}
+
+.subpanel__file-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.subpanel__file-name {
+  font-weight: 500;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--text-primary, #111);
+}
+
+.subpanel__file-meta {
+  font-size: 0.78rem;
+  color: var(--text-secondary, #888);
+}
+
+.subpanel__file-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ───────────────────────────────────────── */
+.subpanel__btn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.83rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: filter 0.1s;
+}
+
+.subpanel__btn:hover { filter: brightness(0.88); }
+.subpanel__btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.subpanel__btn--submit {
+  background-color: var(--button-primary, #1976d2);
+  color: #fff;
+  padding: 7px 18px;
+  font-size: 0.9rem;
+}
+
+.subpanel__btn--download {
+  background-color: var(--background-secondary, #e0e0e0);
+  color: var(--text-primary, #333);
+}
+
+.subpanel__btn--remove {
+  background-color: var(--button-danger, #c0392b);
+  color: #fff;
+}
+
+/* ── Upload area ───────────────────────────────────── */
+.subpanel__upload {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.subpanel__upload-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-primary, #111);
+}
+
+.subpanel__upload-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.subpanel__file-input {
+  font-size: 0.875rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* ── Mobile ────────────────────────────────────────── */
+@media (max-width: 767px) {
+  .subpanel__file-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .subpanel__file-actions {
+    width: 100%;
+  }
+  .subpanel__btn {
+    flex: 1;
+    text-align: center;
+  }
+  .subpanel__upload-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .subpanel__btn--submit {
+    width: 100%;
+  }
+}

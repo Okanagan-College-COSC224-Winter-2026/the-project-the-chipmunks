@@ -27,10 +27,10 @@ export default function NotificationBell() {
     return () => document.removeEventListener('mousedown', handler);
   }, []);
 
-  const handleClick = (n: Notification) => {
-    if (!n.is_read) markRead(n.id);
-    if (n.link) window.location.href = n.link;
+  const handleClick = async (n: Notification) => {
+    if (!n.is_read) await markRead(n.id);
     setOpen(false);
+    if (n.link) window.location.href = n.link;
   };
 
   const typeIcon: Record<string, string> = {

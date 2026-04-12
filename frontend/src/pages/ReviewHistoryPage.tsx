@@ -102,7 +102,9 @@ export default function ReviewHistoryPage() {
               <div className="rh-review-main">
                 <p className="rh-assignment">{review.assignment_name}</p>
                 <p className="rh-student">
-                  {tab === 'received' ? `From: ${review.other_student}` : `To: ${review.other_student}`}
+                  {tab === 'received'
+                    ? <span className="rh-anonymous">From: Anonymous Peer</span>
+                    : `To: ${review.other_student}`}
                 </p>
               </div>
 
