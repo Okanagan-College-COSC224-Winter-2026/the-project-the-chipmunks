@@ -1,105 +1,109 @@
 """
 PDF report generation service using fpdf2.
-Generates a formatted PDF for assignment peer review results.
+Styled to match the Toodle project palette:
+  Crimson  #E10054  →  RGB(225, 0, 84)
+  Plum     #764D5D  →  RGB(118, 77, 93)
+  Rose     #BA7792  →  RGB(186, 119, 146)
+  Cream    #D2BAC3  →  RGB(210, 186, 195)
+  Light bg #FAF5F8  →  RGB(250, 245, 248)
 """
 
 from fpdf import FPDF
 from datetime import datetime
 
+CRIMSON  = (225,   0,  84)
+PLUM     = (118,  77,  93)
+ROSE     = (186, 119, 146)
+CREAM    = (210, 186, 195)
+BG_LIGHT = (250, 245, 248)
+WHITE    = (255, 255, 255)
+DARK     = ( 26,   8,  16)
+GRAY     = (120,  80,  96)
+
 
 def generate_assignment_report(assignment, students_data):
-    """
-    Generate a PDF report for an assignment.
-
-    Args:
-        assignment: dict with 'title' and 'course_name'
-        students_data: list of dicts, each with:
-            'name', 'avg_score', 'reviews_received',
-            'reviews_given', 'completion_status'
-
-    Returns:
-        bytes: PDF file content
-    """
     pdf = FPDF()
     pdf.set_auto_page_break(auto=True, margin=15)
     pdf.add_page()
 
-    # ── Header ──
+    # Crimson header band
+    pdf.set_fill_color(*CRIMSON)
+    pdf.rect(0, 0, 210, 28, style="F")
+    pdf.set_y(7)
     pdf.set_font("Helvetica", "B", 18)
+    pdf.set_text_color(*WHITE)
     pdf.cell(0, 12, "Peer Evaluation Report", ln=True, align="C")
+
+    # Meta info
+    pdf.set_y(34)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(*PLUM)
+    pdf.cell(0, 6, f"Assignment: {assignment['title']}", ln=True)
+    pdf.cell(0, 6, f"Course: {assignment['course_name']}", ln=True)
+    pdf.cell(0, 6, f"Generated: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}", ln=True)
     pdf.ln(4)
+    pdf.set_draw_color(*ROSE)
+    pdf.set_line_width(0.5)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(6)
 
-    pdf.set_font("Helvetica", "", 12)
-    pdf.cell(0, 8, f"Assignment: {assignment['title']}", ln=True)
-    pdf.cell(0, 8, f"Course: {assignment['course_name']}", ln=True)
-    pdf.cell(
-        0, 8,
-        f"Generated: {datetime.now().strftime('%B %d, %Y at %I:%M %p')}",
-        ln=True,
-    )
-    pdf.ln(8)
-
-    # ── Summary Stats ──
+    # Summary
     total = len(students_data)
-    completed = sum(
-        1 for s in students_data if s["completion_status"] == "Complete"
-    )
+    completed = sum(1 for s in students_data if s["completion_status"] == "Complete")
     scores_with_value = [s["avg_score"] for s in students_data if s["avg_score"]]
     avg_all = sum(scores_with_value) / max(1, len(scores_with_value))
 
-    pdf.set_font("Helvetica", "B", 14)
-    pdf.cell(0, 10, "Summary", ln=True)
-    pdf.set_font("Helvetica", "", 11)
-    pdf.cell(0, 7, f"Total Students: {total}", ln=True)
-    pdf.cell(
-        0, 7,
-        f"Completion Rate: {completed}/{total} ({round(completed / max(1, total) * 100)}%)",
-        ln=True,
-    )
-    pdf.cell(0, 7, f"Class Average Score: {avg_all:.1f}", ln=True)
-    pdf.ln(8)
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.set_text_color(*CRIMSON)
+    pdf.cell(0, 8, "Summary", ln=True)
+    pdf.set_font("Helvetica", "", 10)
+    pdf.set_text_color(*DARK)
+    pdf.cell(0, 6, f"Total Students: {total}", ln=True)
+    pdf.cell(0, 6, f"Completion Rate: {completed}/{total} ({round(completed / max(1, total) * 100)}%)", ln=True)
+    pdf.cell(0, 6, f"Class Average Score: {avg_all:.1f}", ln=True)
+    pdf.ln(6)
+    pdf.set_draw_color(*ROSE)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(6)
 
-    # ── Student Table ──
-    pdf.set_font("Helvetica", "B", 14)
-    pdf.cell(0, 10, "Student Breakdown", ln=True)
+    # Student table
+    pdf.set_font("Helvetica", "B", 12)
+    pdf.set_text_color(*CRIMSON)
+    pdf.cell(0, 8, "Student Breakdown", ln=True)
+    pdf.ln(2)
 
-    # Table header
-    pdf.set_font("Helvetica", "B", 10)
-    pdf.set_fill_color(31, 78, 121)
-    pdf.set_text_color(255, 255, 255)
-    col_widths = [55, 30, 30, 30, 45]
+    col_widths = [58, 28, 28, 30, 46]
     headers = ["Student", "Avg Score", "Reviews In", "Reviews Out", "Status"]
+
+    pdf.set_font("Helvetica", "B", 9)
+    pdf.set_fill_color(*PLUM)
+    pdf.set_text_color(*WHITE)
+    pdf.set_draw_color(*PLUM)
     for i, h in enumerate(headers):
         pdf.cell(col_widths[i], 8, h, border=1, fill=True, align="C")
     pdf.ln()
 
-    # Table rows
-    pdf.set_font("Helvetica", "", 10)
-    pdf.set_text_color(0, 0, 0)
+    pdf.set_font("Helvetica", "", 9)
+    pdf.set_draw_color(*CREAM)
     for j, s in enumerate(students_data):
-        if j % 2 == 0:
-            pdf.set_fill_color(242, 242, 242)
-        else:
-            pdf.set_fill_color(255, 255, 255)
-        pdf.cell(col_widths[0], 7, s["name"][:25], border=1, fill=True)
-        pdf.cell(
-            col_widths[1], 7,
-            f"{s['avg_score']:.1f}" if s["avg_score"] else "N/A",
-            border=1, fill=True, align="C",
-        )
+        pdf.set_fill_color(*BG_LIGHT if j % 2 == 0 else WHITE)
+        pdf.set_text_color(*DARK)
+        pdf.cell(col_widths[0], 7, s["name"][:28], border=1, fill=True)
+        pdf.cell(col_widths[1], 7, f"{s['avg_score']:.1f}" if s["avg_score"] else "N/A", border=1, fill=True, align="C")
         pdf.cell(col_widths[2], 7, str(s["reviews_received"]), border=1, fill=True, align="C")
-        pdf.cell(col_widths[3], 7, str(s["reviews_given"]), border=1, fill=True, align="C")
-        pdf.cell(col_widths[4], 7, s["completion_status"], border=1, fill=True, align="C")
+        pdf.cell(col_widths[3], 7, str(s["reviews_given"]),    border=1, fill=True, align="C")
+        status = s["completion_status"]
+        pdf.set_text_color(30, 100, 40) if status == "Complete" else pdf.set_text_color(*CRIMSON)
+        pdf.cell(col_widths[4], 7, status, border=1, fill=True, align="C")
         pdf.ln()
 
-    # ── Footer ──
-    pdf.ln(12)
-    pdf.set_font("Helvetica", "I", 9)
-    pdf.set_text_color(128, 128, 128)
-    pdf.cell(
-        0, 6,
-        "Generated by The Chipmunks Peer Evaluation App",
-        ln=True, align="C",
-    )
+    # Footer
+    pdf.ln(10)
+    pdf.set_draw_color(*CREAM)
+    pdf.line(10, pdf.get_y(), 200, pdf.get_y())
+    pdf.ln(4)
+    pdf.set_font("Helvetica", "I", 8)
+    pdf.set_text_color(*GRAY)
+    pdf.cell(0, 6, "Generated by The Chipmunks Peer Evaluation App", ln=True, align="C")
 
     return pdf.output()

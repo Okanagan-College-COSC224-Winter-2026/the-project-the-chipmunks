@@ -4,65 +4,92 @@
   align-items: center;
   gap: 12px;
   color: var(--text-primary);
-  padding: 8px;
+  padding: 14px 12px;       /* was 8px — more breathing room */
   width: 95%;
   height: auto;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
   font-weight: bold;
   font-size: 1rem;
   text-align: left;
+  transition: background 0.15s;
 }
+
 .A_Card img {
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   flex-shrink: 0;
+  opacity: 0.55;            /* tone down the generic document icon */
 }
+
 .A_Card:hover {
   cursor: pointer;
   background-color: var(--background-secondary);
 }
 
-/* ── Body: name + metadata stacked vertically ─────────────────────────────── */
+/* ── Body: name + metadata stacked vertically ── */
 .A_Card__body {
   display: flex;
   flex-direction: column;
   gap: 4px;
-  margin-left: 8px;
+  margin-left: 4px;
   min-width: 0;
 }
+
 .A_Card__name {
-  font-weight: bold;
-  font-size: 1rem;
+  font-weight: 600;
+  font-size: 0.975rem;
   color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ── Metadata row: due date + badge side by side ──────────────────────────── */
+/* ── Metadata row: due date + badge side by side ── */
 .A_Card__meta {
   display: flex;
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
+
 .A_Card__due {
-  font-size: 0.8rem;
-  font-weight: normal;
+  font-size: 0.78rem;
+  font-weight: 400;
   color: var(--text-secondary);
 }
 
-/* ── Status badge ─────────────────────────────────────────────────────────── */
+/* ── Status badges — all warm palette now ── */
 .A_Card__badge {
   display: inline-block;
-  padding: 2px 8px;
-  border-radius: 12px;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  padding: 2px 9px;
+  border-radius: 10px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
-.A_Card__badge--upcoming  { background-color: #e3f2fd; color: #1565c0; }
-.A_Card__badge--active    { background-color: #e8f5e9; color: #2e7d32; }
-.A_Card__badge--past-due  { background-color: #fdecea; color: #c62828; }
-.A_Card__badge--no-date   { background-color: var(--background-secondary); color: var(--text-secondary); }
+
+/* Upcoming: warm sienna tint */
+.A_Card__badge--upcoming {
+  background-color: rgba(160, 82, 45, 0.10);
+  color: var(--sienna);
+}
+
+/* Active: warm green — kept distinct but cohesive */
+.A_Card__badge--active {
+  background-color: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
+}
+
+/* Past due: crimson — most urgent, fits brand */
+.A_Card__badge--past-due {
+  background-color: rgba(178, 34, 52, 0.10);
+  color: var(--crimson);
+}
+
+/* No date: neutral cream */
+.A_Card__badge--no-date {
+  background-color: var(--background-secondary);
+  color: var(--text-secondary);
+}

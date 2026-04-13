@@ -1,14 +1,17 @@
 .App {
   display: flex;
   flex-direction: row;
+  min-height: 100vh;
+  background-color: var(--background-primary);
 }
 
 .inner {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
   width: 100%;
+  min-height: 100vh;
+  background-color: var(--background-primary);
 }
 
 h2 {

@@ -7,13 +7,11 @@ import { updateUserProfile } from '../util/api'
 
 const BASE_URL = 'http://localhost:5000'
 
-// Helper: split a single "First Last" name string into two parts for AvatarInitials
 function splitName(fullName: string): { first: string; last: string } {
   const parts = (fullName || '').trim().split(/\s+/);
   return { first: parts[0] || '', last: parts.slice(1).join(' ') || '' };
 }
 
-// Get the currently logged-in user's id from localStorage
 function getCurrentUserId(): number | null {
   try {
     const stored = JSON.parse(localStorage.getItem('user') || '{}');
@@ -40,9 +38,7 @@ export default function Profile() {
   useEffect(() => {
     ;(async () => {
       try {
-        const resp = await fetch(`${BASE_URL}/user/${id}`, {
-          credentials: 'include'
-        })
+        const resp = await fetch(`${BASE_URL}/user/${id}`, { credentials: 'include' })
         if (resp.ok) {
           const data = await resp.json()
           setProfile(data)
@@ -60,20 +56,16 @@ export default function Profile() {
     if (!form.name.trim()) { setError('Name cannot be empty'); return; }
     setSaving(true); setError(''); setSuccess(false);
     try {
-      // Send name directly — backend handles it as a single field
       const res = await updateUserProfile({ name: form.name.trim() });
       if (res && res.ok) {
         const updated = await res.json();
         const newName = updated.name || form.name;
-        // Update React state
         setProfile({ ...profile!, name: newName });
-        // Also update localStorage so the sidebar avatar reflects the new name
         try {
           const stored = JSON.parse(localStorage.getItem('user') || '{}');
           localStorage.setItem('user', JSON.stringify({ ...stored, name: newName }));
-        } catch { /* localStorage may be unavailable */ }
+        } catch { /* ignore */ }
         setEditing(false); setSuccess(true);
-        // Force sidebar to re-render by triggering a storage event
         window.dispatchEvent(new Event('storage'));
       } else {
         setError('Update failed');
@@ -90,55 +82,90 @@ export default function Profile() {
 
   return (
     <div className="Profile">
-      <div className="profile-image">
-        <AvatarInitials
-          firstName={first}
-          lastName={last}
-          userId={profile?.id || 0}
-          size={72}
-        />
-      </div>
-      <div className="profile-info">
-        {success && <p style={{ color: 'green' }}>Profile updated!</p>}
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        {!editing ? (<>
-          <h1>Full Name</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <span>{profile?.name || '—'}</span>
-            {/* Only show Edit button for own profile */}
-            {isOwnProfile && (
-              <button onClick={() => setEditing(true)}>Edit Name</button>
+      <div className="profile-card">
+
+        {/* ── Header band: avatar + name + role ── */}
+        <div className="profile-card__header">
+          <div className="profile-card__avatar">
+            <AvatarInitials
+              firstName={first}
+              lastName={last}
+              userId={profile?.id || 0}
+              size={96}
+            />
+          </div>
+          <div className="profile-card__name">{profile?.name || '—'}</div>
+          <span className="profile-card__role-badge">
+            {profile?.role ?? 'User'}
+          </span>
+        </div>
+
+        {/* ── Fields ── */}
+        <div className="profile-card__body">
+
+          {/* Status messages */}
+          {success && <p className="profile-msg profile-msg--success">Profile updated successfully.</p>}
+          {error   && <p className="profile-msg profile-msg--error">{error}</p>}
+
+          {/* Full Name */}
+          <div className="profile-field">
+            <span className="profile-field__label">Full Name</span>
+            {!editing ? (
+              <div className="profile-field__row">
+                <span className="profile-field__value">{profile?.name || '—'}</span>
+                {isOwnProfile && (
+                  <button className="profile-field__edit-btn" onClick={() => setEditing(true)}>
+                    Edit
+                  </button>
+                )}
+              </div>
+            ) : (
+              <div className="profile-field__edit-wrap">
+                <input
+                  className="profile-field__input"
+                  value={form.name}
+                  placeholder="Full name"
+                  onChange={e => setForm({ name: e.target.value })}
+                />
+                <button className="profile-field__save-btn" onClick={save} disabled={saving}>
+                  {saving ? 'Saving…' : 'Save'}
+                </button>
+                <button className="profile-field__cancel-btn" onClick={() => setEditing(false)}>
+                  Cancel
+                </button>
+              </div>
             )}
           </div>
-          <h1>Email</h1>
-          <span>{profile?.email ?? '—'}</span>
-          <h1>Role</h1>
-          <span style={{ textTransform: 'capitalize' }}>{profile?.role ?? '—'}</span>
-        </>) : (<>
-          <input value={form.name} placeholder='Full name'
-            onChange={e => setForm({ name: e.target.value })} />
-          <button onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
-          <button onClick={() => setEditing(false)}>Cancel</button>
-        </>)}
-      </div>
-      {/* Only show Change Password for own profile */}
-      {isOwnProfile && (
-        <div className="profile-actions" style={{ marginTop: "1.5rem" }}>
-          <button
-            onClick={() => navigate("/change-password")}
-            style={{
-              padding: "0.6rem 1.2rem",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-          >
-            Change Password
-          </button>
+
+          {/* Email */}
+          <div className="profile-field">
+            <span className="profile-field__label">Email</span>
+            <span className="profile-field__value">{profile?.email ?? '—'}</span>
+          </div>
+
+          {/* Role */}
+          <div className="profile-field">
+            <span className="profile-field__label">Role</span>
+            <span className="profile-field__value" style={{ textTransform: 'capitalize' }}>
+              {profile?.role ?? '—'}
+            </span>
+          </div>
+
         </div>
-      )}
+
+        {/* ── Footer: Change Password ── */}
+        {isOwnProfile && (
+          <div className="profile-card__footer">
+            <button
+              className="profile-change-password-btn"
+              onClick={() => navigate('/change-password')}
+            >
+              Change Password
+            </button>
+          </div>
+        )}
+
+      </div>
     </div>
   )
 }

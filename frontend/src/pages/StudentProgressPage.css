@@ -6,7 +6,7 @@
   margin: 0 auto;
 }
 
-/* Header */
+/* ── Header ── */
 .progress-header {
   display: flex;
   align-items: flex-start;
@@ -23,18 +23,19 @@
 }
 
 .progress-title {
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--color-text-primary, #1a1a2e);
+  font-size: 1.75rem;
+  font-weight: 400;
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: var(--text-primary);
   margin: 0;
 }
 
 .progress-course-name {
-  font-size: 0.95rem;
-  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
 }
 
-/* Completion badge */
+/* ── Completion badge — crimson instead of purple ── */
 .progress-badge-wrap {
   display: flex;
   align-items: center;
@@ -48,11 +49,11 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: var(--color-primary, #4f46e5);
+  background: var(--crimson);
   color: #fff;
   cursor: default;
   user-select: none;
-  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+  box-shadow: 0 4px 14px rgba(178, 34, 52, 0.35);
 }
 
 .progress-badge-pct {
@@ -62,13 +63,13 @@
 }
 
 .progress-badge-label {
-  font-size: 0.65rem;
-  letter-spacing: 0.04em;
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  opacity: 0.9;
+  opacity: 0.88;
 }
 
-/* Controls */
+/* ── Search / controls ── */
 .progress-controls {
   display: flex;
   align-items: center;
@@ -79,39 +80,43 @@
 .progress-search {
   flex: 1;
   max-width: 360px;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--color-border, #d1d5db);
-  border-radius: 6px;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
   font-size: 0.9rem;
-  background: var(--color-surface, #fff);
-  color: var(--color-text-primary, #1a1a2e);
+  font-family: 'DM Sans', Arial, sans-serif;
+  background: #fff;
+  color: var(--text-primary);
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .progress-search:focus {
-  border-color: var(--color-primary, #4f46e5);
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
 }
 
 .progress-count {
   font-size: 0.85rem;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
-/* Table wrapper */
+/* ── Table wrapper ── */
 .progress-table-wrap {
   overflow-x: auto;
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 8px;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: #fff;
 }
 
 .progress-empty {
   text-align: center;
   padding: 2rem;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
-/* Table */
+/* ── Table ── */
 .progress-table {
   width: 100%;
   border-collapse: collapse;
@@ -119,12 +124,15 @@
 }
 
 .progress-th {
-  background: var(--color-surface-alt, #f9fafb);
+  background: var(--background-secondary);
   padding: 0.75rem 1rem;
   text-align: left;
-  font-weight: 600;
-  color: var(--color-text-primary, #374151);
-  border-bottom: 2px solid var(--color-border, #e5e7eb);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--background-tertiary);
   white-space: nowrap;
 }
 
@@ -133,7 +141,7 @@
   position: sticky;
   left: 0;
   z-index: 2;
-  background: var(--color-surface-alt, #f9fafb);
+  background: var(--background-secondary);
 }
 
 .progress-th-assignment {
@@ -141,18 +149,23 @@
   text-align: center;
 }
 
-/* Rows */
+/* ── Rows ── */
 .progress-row:nth-child(even) {
-  background: var(--color-surface-alt, #f9fafb);
+  background: var(--background-primary);
+}
+
+.progress-row:nth-child(odd) {
+  background: #fff;
 }
 
 .progress-row:hover {
-  background: var(--color-hover, #eff6ff);
+  background: var(--background-secondary);
 }
 
+/* ── Cells ── */
 .progress-td {
   padding: 0.75rem 1rem;
-  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  border-bottom: 1px solid var(--background-secondary);
   vertical-align: top;
 }
 
@@ -168,12 +181,12 @@
 
 .progress-student-name {
   font-weight: 600;
-  color: var(--color-text-primary, #1a1a2e);
+  color: var(--text-primary);
 }
 
 .progress-student-email {
   font-size: 0.78rem;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
 .progress-td-cell {
@@ -181,17 +194,18 @@
 }
 
 .progress-td-missing {
-  color: var(--color-text-secondary, #9ca3af);
+  color: var(--text-secondary);
   text-align: center;
 }
 
 .progress-no-results {
   text-align: center;
   padding: 2rem;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
+  font-style: italic;
 }
 
-/* Cell content */
+/* ── Cell content ── */
 .progress-cell {
   display: flex;
   flex-direction: column;
@@ -199,43 +213,80 @@
   gap: 0.4rem;
 }
 
+/* ── Group badges ── */
 .progress-group-badge {
   display: inline-block;
-  padding: 0.15rem 0.5rem;
+  padding: 0.15rem 0.55rem;
   border-radius: 999px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   white-space: nowrap;
 }
 
+/* Grouped — warm green, kept semantic */
 .progress-group-badge--in {
-  background: #dcfce7;
-  color: #166534;
+  background: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
 }
 
+/* No group — crimson tint */
 .progress-group-badge--out {
-  background: #fee2e2;
-  color: #991b1b;
+  background: rgba(178, 34, 52, 0.09);
+  color: var(--crimson);
 }
 
+/* ── Stat chips ── */
 .progress-stats {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
   justify-content: center;
 }
 
 .progress-stat {
-  font-size: 0.78rem;
-  color: var(--color-text-secondary, #4b5563);
-  background: var(--color-surface, #f3f4f6);
-  padding: 0.1rem 0.35rem;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--background-secondary);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
   white-space: nowrap;
 }
 
+/* Score chip — crimson tint instead of purple */
 .progress-stat-score {
-  color: var(--color-primary, #4f46e5);
-  font-weight: 600;
-  background: var(--color-primary-light, #ede9fe);
+  color: var(--crimson-dark);
+  font-weight: 700;
+  background: rgba(178, 34, 52, 0.09);
+}
+
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .progress-page {
+    padding: 1rem;
+  }
+
+  .progress-title {
+    font-size: 1.4rem;
+  }
+
+  .progress-badge {
+    width: 68px;
+    height: 68px;
+  }
+
+  .progress-badge-pct {
+    font-size: 1.1rem;
+  }
+
+  .progress-controls {
+    flex-wrap: wrap;
+  }
+
+  .progress-search {
+    max-width: 100%;
+    width: 100%;
+  }
 }

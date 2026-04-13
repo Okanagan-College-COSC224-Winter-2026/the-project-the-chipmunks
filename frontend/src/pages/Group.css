@@ -1,5 +1,20 @@
+/* Group page shares most styles with Assignment.css.
+   This file only contains Group-specific overrides and mobile rules. */
+
+/* ── Student view: group card wrapper ── */
+.assignment {
+  padding: 0;
+}
+
+/* ── Group chat spacing ── */
+.assignment > div:last-child {
+  margin-top: 1.5rem;
+}
+
+
 /* ================= MOBILE GROUP ================= */
 @media (max-width: 767px) {
+
   .assignmentTables,
   .studentTable,
   .table {
@@ -29,4 +44,5 @@
     width: 100%;
     min-height: 44px;
   }
+
 }

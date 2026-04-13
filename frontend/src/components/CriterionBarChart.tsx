@@ -48,7 +48,7 @@ export default function CriterionBarChart({ criteria }: Props) {
           />
           <Bar dataKey="average" name="Avg Score" radius={[4, 4, 0, 0]}>
             {data.map((_, i) => (
-              <Cell key={i} fill="#2E75B6" />
+              <Cell key={i} fill="#E10054" />
             ))}
           </Bar>
         </BarChart>

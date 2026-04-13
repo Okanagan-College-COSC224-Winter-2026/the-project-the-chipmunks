@@ -40,20 +40,10 @@
   align-items: center;
   justify-content: center;
   background: var(--background-secondary);
-  padding: 9px 0 9px 36px;
+  padding: 8px 0;
   font-weight: 600;
-  font-size: 0.875rem;
-  color: var(--text-primary);
-  cursor: pointer;
-  user-select: none;
-  min-height: 38px;
-  display: flex;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.table .groupNames.selected {
-  background: var(--background-tertiary);
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
   color: var(--text-primary);
 }
 
@@ -457,19 +447,19 @@
   padding-left: 0.5rem;
 }
 
-/* Radio button rows — only target the raw wrapper divs (they have inline style, no class) */
-.groupMembers > div[style] {
+/* Radio button rows — target the div wrapper so input + label stay on one line */
+.groupMembers > div {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 9px 14px;
-  margin: 3px 0 !important;
+  margin: 3px 0;
   border-radius: var(--radius-sm);
   cursor: pointer;
   transition: background 0.12s;
 }
 
-.groupMembers > div[style]:hover {
+.groupMembers > div:hover {
   background: var(--background-secondary);
 }
 

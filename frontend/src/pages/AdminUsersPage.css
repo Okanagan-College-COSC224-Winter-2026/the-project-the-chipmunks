@@ -1,30 +1,45 @@
 .AdminUsersPage {
   margin: 1rem;
+  padding: 0 0.5rem;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .AdminUsersPage__header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1rem;
+  margin-bottom: 1.25rem;
 }
 
 .AdminUsersPage__header h1 {
   margin: 0;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.75rem;
 }
 
+/* "+ New User" button — crimson */
 .AdminUsersPage__newBtn {
-  padding: 0.55rem 1.2rem;
-  background: #1976d2;
-  color: white;
+  padding: 0.5rem 1.1rem;
+  background: var(--crimson);
+  color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   cursor: pointer;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.875rem;
   font-weight: 600;
-  font: inherit;
+  letter-spacing: 0.02em;
+  transition: filter 0.15s, transform 0.1s;
 }
 
+.AdminUsersPage__newBtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* ── Filters bar ── */
 .AdminUsersPage__filters {
   display: flex;
   gap: 0.75rem;
@@ -35,24 +50,40 @@
 .AdminUsersPage__search {
   flex: 1;
   min-width: 200px;
-  padding: 0.55rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text-primary);
+  transition: border-color 0.15s;
+}
+
+.AdminUsersPage__search:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
 }
 
 .AdminUsersPage__roleFilter {
-  padding: 0.55rem 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
 }
 
+/* ── Table ── */
 .AdminUsersPage__tableWrap {
   overflow-x: auto;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  background: white;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
 }
 
 .AdminUsersPage__table {
@@ -60,94 +91,159 @@
   border-collapse: collapse;
 }
 
-.AdminUsersPage__table th,
+.AdminUsersPage__table th {
+  background: var(--background-secondary);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--background-tertiary);
+}
+
 .AdminUsersPage__table td {
   padding: 0.8rem 1rem;
   text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-  color: #000;
+  border-bottom: 1px solid var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
 }
 
-.AdminUsersPage__table th {
-  background: #f5f5f5;
-  font-weight: 600;
+.AdminUsersPage__table tr:last-child td {
+  border-bottom: none;
 }
 
-/* Role badges */
+.AdminUsersPage__table tr:hover td {
+  background: var(--background-primary);
+}
+
+/* ── Role badges ── */
 .AdminUsersPage__role {
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: capitalize;
 }
 
-.AdminUsersPage__role--student  { background: #e3f2fd; color: #1565c0; }
-.AdminUsersPage__role--teacher  { background: #e8f5e9; color: #2e7d32; }
-.AdminUsersPage__role--admin    { background: #fce4ec; color: #c62828; }
+/* Student — sienna tint (was blue) */
+.AdminUsersPage__role--student {
+  background: rgba(160, 82, 45, 0.10);
+  color: var(--sienna);
+}
 
-/* Status chips */
+/* Teacher — green kept (semantic) */
+.AdminUsersPage__role--teacher {
+  background: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
+}
+
+/* Admin — crimson tint */
+.AdminUsersPage__role--admin {
+  background: rgba(178, 34, 52, 0.10);
+  color: var(--crimson);
+}
+
+/* ── Status chips ── */
 .AdminUsersPage__active {
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  background: #e8f5e9;
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(46, 125, 50, 0.10);
   color: #2e7d32;
 }
 
 .AdminUsersPage__inactive {
-  padding: 0.2rem 0.6rem;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  background: #f5f5f5;
-  color: #757575;
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
 }
 
-/* Action buttons */
+/* ── Action buttons ── */
 .AdminUsersPage__actions {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.4rem;
   flex-wrap: wrap;
+  align-items: center;
 }
 
+/* Edit button — outlined sienna */
 .AdminUsersPage__actions button {
-  padding: 0.35rem 0.75rem;
-  border: none;
-  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid var(--sienna);
+  border-radius: var(--radius-sm);
   cursor: pointer;
-  font: inherit;
-  font-size: 0.85rem;
-  background: #e3f2fd;
-  color: #1565c0;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--sienna);
+  transition: all 0.15s;
 }
 
+.AdminUsersPage__actions button:hover {
+  background: var(--sienna);
+  color: #fff;
+}
+
+/* Deactivate — outlined crimson */
 .AdminUsersPage__deactivateBtn {
-  background: #fff3e0 !important;
-  color: #e65100 !important;
+  border-color: var(--crimson) !important;
+  color: var(--crimson) !important;
+  background: transparent !important;
 }
 
+.AdminUsersPage__deactivateBtn:hover {
+  background: var(--crimson) !important;
+  color: #fff !important;
+}
+
+/* Reactivate — outlined green */
 .AdminUsersPage__reactivateBtn {
-  background: #e8f5e9 !important;
+  border-color: #2e7d32 !important;
   color: #2e7d32 !important;
+  background: transparent !important;
 }
 
-/* Pagination */
+.AdminUsersPage__reactivateBtn:hover {
+  background: #2e7d32 !important;
+  color: #fff !important;
+}
+
+/* ── Pagination ── */
 .AdminUsersPage__pagination {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   margin-top: 1rem;
+  padding: 0.25rem 0;
 }
 
 .AdminUsersPage__pagination button {
   padding: 0.4rem 0.9rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background: white;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  background: #fff;
   cursor: pointer;
-  font: inherit;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.AdminUsersPage__pagination button:hover:not(:disabled) {
+  border-color: var(--crimson);
+  color: var(--crimson);
 }
 
 .AdminUsersPage__pagination button:disabled {
@@ -157,22 +253,27 @@
 
 .AdminUsersPage__total {
   margin-left: auto;
-  color: #888;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ── Status messages ── */
+.AdminUsersPage__loading {
+  padding: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.AdminUsersPage__error {
+  color: var(--crimson);
+  background: rgba(178, 34, 52, 0.07);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--crimson);
   font-size: 0.9rem;
 }
 
-.AdminUsersPage__loading,
-.AdminUsersPage__error {
-  padding: 0.75rem;
-  border-radius: 6px;
-}
-
-.AdminUsersPage__error {
-  color: #c33;
-  background: #fdecea;
-}
-
-/* ── Responsive: Mobile ── */
+/* ── Responsive ── */
 @media (max-width: 767px) {
   .AdminUsersPage .users-table-wrapper,
   .AdminUsersPage table {
@@ -182,16 +283,18 @@
     width: 100%;
   }
 
-  .AdminUsersPage .filters,
-  .AdminUsersPage .filter-controls {
-    display: flex;
+  .AdminUsersPage__filters {
     flex-direction: column;
-    gap: 8px;
   }
 
-  .AdminUsersPage .filters input,
-  .AdminUsersPage .filters select {
+  .AdminUsersPage__search,
+  .AdminUsersPage__roleFilter {
     width: 100%;
     box-sizing: border-box;
+  }
+
+  .AdminUsersPage__header {
+    flex-wrap: wrap;
+    gap: 8px;
   }
 }

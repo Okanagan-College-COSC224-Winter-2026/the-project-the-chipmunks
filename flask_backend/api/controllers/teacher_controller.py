@@ -371,7 +371,7 @@ def export_reviews_csv(assignment_id):
     """
     Export all review scores for an assignment as a downloadable CSV file.
 
-    Columns: review_id, reviewer_id, reviewee_id, criterion, score,
+    Columns: review_id, reviewer_name, reviewee_name, criterion, score,
              max_score, comment
 
     Response 200: text/csv attachment
@@ -383,19 +383,29 @@ def export_reviews_csv(assignment_id):
 
     reviews = Review.query.filter_by(assignmentID=assignment_id).all()
 
+    # Build a name lookup so we don't query per row
+    user_ids = set()
+    for rev in reviews:
+        user_ids.add(rev.reviewerID)
+        user_ids.add(rev.revieweeID)
+    users = User.query.filter(User.id.in_(user_ids)).all()
+    name_map = {u.id: u.name for u in users}
+
     output = io.StringIO()
     writer = csv.writer(output)
     writer.writerow([
-        "review_id", "reviewer_id", "reviewee_id",
+        "review_id", "reviewer", "reviewee",
         "criterion", "score", "max_score", "comment",
     ])
 
     for rev in reviews:
+        reviewer_name = name_map.get(rev.reviewerID, f"User #{rev.reviewerID}")
+        reviewee_name = name_map.get(rev.revieweeID, f"User #{rev.revieweeID}")
         for c in rev.criteria.all():
             writer.writerow([
                 rev.id,
-                rev.reviewerID,
-                rev.revieweeID,
+                reviewer_name,
+                reviewee_name,
                 c.criterion_row.question if c.criterion_row else "",
                 c.grade,
                 c.criterion_row.scoreMax if c.criterion_row else "",

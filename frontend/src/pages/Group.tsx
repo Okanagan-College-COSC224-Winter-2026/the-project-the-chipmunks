@@ -93,7 +93,7 @@ export default function Group() {
     }
 
     setGroupTable(newTable)
-    setMemberTable({})
+    setMemberTable({ [-1]: [] })
   }
 
   useEffect(() => {
@@ -258,6 +258,7 @@ export default function Group() {
                                     ].filter((g) => memObj?.userID != g.userID);
                                     memObj.groupID = -1;
 
+                                    if (!localMember[-1]) localMember[-1] = [];
                                     if (memObj) localMember[-1].push(memObj);
                                     else console.log("shouldn't happen?");
 

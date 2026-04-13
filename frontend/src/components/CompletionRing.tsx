@@ -11,8 +11,8 @@ export default function CompletionRing({ pct, submitted, total }: Props) {
   const circ = 2 * Math.PI * r;
   const offset = circ - (pct / 100) * circ;
 
-  // Colour shifts green when high, orange when mid, red when low
-  const colour = pct >= 75 ? '#2e7d32' : pct >= 40 ? '#e65100' : '#c62828';
+  // Crimson when low, sienna when mid, green when high (semantic)
+  const colour = pct >= 75 ? '#2e7d32' : pct >= 40 ? '#BA7792' : '#E10054';
 
   return (
     <div className="CompletionRing">
@@ -20,7 +20,7 @@ export default function CompletionRing({ pct, submitted, total }: Props) {
         {/* Background track */}
         <circle
           cx="70" cy="70" r={r}
-          fill="none" stroke="#e0e0e0" strokeWidth="12"
+          fill="none" stroke="#D2BAC3" strokeWidth="12"
         />
         {/* Progress arc */}
         <circle
@@ -48,7 +48,7 @@ export default function CompletionRing({ pct, submitted, total }: Props) {
           x="70" y="84"
           textAnchor="middle"
           fontSize="12"
-          fill="#555"
+          fill="#764D5D"
         >
           {submitted}/{total}
         </text>

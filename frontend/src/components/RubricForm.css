@@ -1,17 +1,22 @@
 .RubricForm {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
+  width: 100%;
+  margin-top: 1.25rem;
 }
 
 .RubricForm-criterion {
-  padding: 16px;
-  background-color: var(--background-primary);
-  border: 1px solid var(--background-secondary);
-  border-radius: 8px;
+  padding: 18px 20px;
+  background-color: #fff;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
   display: flex;
   flex-direction: column;
   gap: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: var(--shadow-sm);
 }
 
 .RubricForm-question {
@@ -36,7 +41,8 @@
 
 .RubricForm-comment:focus {
   outline: none;
-  border-color: var(--button-primary);
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
 }
 
 .RubricForm-actions {

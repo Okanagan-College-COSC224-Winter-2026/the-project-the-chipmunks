@@ -1,4 +1,4 @@
-/* ── TeamSubmissionsPanel.css ────────────────────────────────────────────── */
+/* ── TeamSubmissionsPanel.css ─────────────────────────────────────────────── */
 
 .tsub-panel {
   padding: 1.5rem 0;
@@ -6,29 +6,32 @@
 
 .tsub-heading {
   font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--color-text-primary, #1a1a2e);
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  color: var(--text-primary);
   margin: 0 0 0.25rem;
 }
 
 .tsub-subheading {
-  font-size: 0.9rem;
-  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
   margin: 0 0 1.5rem;
 }
 
-/* Empty / no-group state */
+/* ── Empty / no-group state ── */
 .tsub-empty {
-  padding: 2.5rem 1rem;
+  padding: 3rem 1.5rem;
   text-align: center;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
   font-size: 0.95rem;
-  background: var(--color-surface-alt, #f9fafb);
-  border: 1px dashed var(--color-border, #e5e7eb);
-  border-radius: 8px;
+  font-style: italic;
+  background: var(--background-primary);
+  border: 1.5px dashed var(--background-tertiary);
+  border-radius: var(--radius-md);
+  margin: 1.5rem;
 }
 
-/* Member cards grid */
+/* ── Member cards ── */
 .tsub-members {
   display: flex;
   flex-direction: column;
@@ -36,19 +39,20 @@
 }
 
 .tsub-card {
-  background: var(--color-surface, #fff);
-  border: 1px solid var(--color-border, #e5e7eb);
-  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
 }
 
 .tsub-card-header {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background: var(--color-surface-alt, #f9fafb);
-  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  padding: 0.9rem 1.25rem;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-tertiary);
 }
 
 .tsub-card-info {
@@ -60,24 +64,25 @@
 .tsub-member-name {
   font-weight: 600;
   font-size: 0.95rem;
-  color: var(--color-text-primary, #1a1a2e);
+  color: var(--text-primary);
 }
 
 .tsub-file-count {
-  font-size: 0.78rem;
-  color: var(--color-text-secondary, #6b7280);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
 }
 
 .tsub-no-files {
   padding: 1rem 1.25rem;
   font-size: 0.875rem;
-  color: var(--color-text-secondary, #9ca3af);
+  color: var(--text-secondary);
+  font-style: italic;
   margin: 0;
 }
 
-/* File list */
+/* ── File list ── */
 .tsub-file-list {
-  padding: 0.5rem 0;
+  padding: 0.25rem 0;
 }
 
 .tsub-file-row {
@@ -86,7 +91,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 0.65rem 1.25rem;
-  border-bottom: 1px solid var(--color-border, #f3f4f6);
+  border-bottom: 1px solid var(--background-secondary);
   transition: background 0.1s;
 }
 
@@ -95,15 +100,21 @@
 }
 
 .tsub-file-row:hover {
-  background: var(--color-hover, #f9fafb);
+  background: var(--background-primary);
 }
 
+/* Group submission row — sienna left accent */
+.tsub-file-row--group {
+  border-left: 3px solid var(--sienna);
+}
+
+/* Conclusion file row — cream tint */
 .tsub-file-row--conclusion {
-  background: var(--color-primary-light, #ede9fe);
+  background: rgba(160, 82, 45, 0.05);
 }
 
 .tsub-file-row--conclusion:hover {
-  background: #ddd6fe;
+  background: rgba(160, 82, 45, 0.09);
 }
 
 .tsub-file-meta {
@@ -116,7 +127,7 @@
 .tsub-file-name {
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--color-text-primary, #1a1a2e);
+  color: var(--text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -124,83 +135,63 @@
 
 .tsub-file-detail {
   font-size: 0.75rem;
-  color: var(--color-text-secondary, #6b7280);
+  color: var(--text-secondary);
 }
 
-/* Download button */
+/* Download button — crimson */
 .tsub-download-btn {
   flex-shrink: 0;
-  padding: 0.35rem 0.85rem;
-  border-radius: 6px;
-  background: var(--color-primary, #4f46e5);
+  padding: 0.32rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--crimson);
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 600;
   text-decoration: none;
-  transition: background 0.15s;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.15s;
   white-space: nowrap;
 }
 
 .tsub-download-btn:hover {
-  background: var(--color-primary-dark, #4338ca);
+  filter: brightness(1.08);
 }
 
-/* ── "You" badge next to your own name ── */
+/* "You" badge */
 .tsub-you-badge {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--button-primary, #1976d2);
-  margin-left: 4px;
-}
-
-/* ── Teacher conclusion files section ── */
-.tsub-conclusion-section {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--background-secondary, #e0e0e0);
-}
-
-.tsub-conclusion-heading {
-  font-size: 1rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  margin: 0 0 12px;
-  color: var(--text-primary);
+  color: var(--sienna);
+  margin-left: 4px;
 }
 
 /* ── Group submission section ── */
 .tsub-group-section {
-  margin-bottom: 8px;
+  margin-bottom: 1rem;
 }
 
 .tsub-section-heading {
-  font-size: 0.95rem;
-  font-weight: 600;
-  margin: 0 0 10px;
-  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.6rem;
 }
 
-.tsub-file-row--group {
-  border-left: 3px solid var(--button-primary, #1976d2);
-}
-
-/* ── "You" badge ── */
-.tsub-you-badge {
-  font-size: 0.78rem;
-  font-weight: 500;
-  color: var(--button-primary, #1976d2);
-  margin-left: 4px;
-}
-
-/* ── Teacher conclusion files section ── */
+/* ── Conclusion files section ── */
 .tsub-conclusion-section {
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid var(--background-secondary, #e0e0e0);
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--background-secondary);
 }
 
 .tsub-conclusion-heading {
-  font-size: 1rem;
-  font-weight: 600;
-  margin: 0 0 12px;
-  color: var(--text-primary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem;
 }
