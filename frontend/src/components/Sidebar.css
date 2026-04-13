@@ -21,9 +21,6 @@
 .SidebarLogo img {
   width: 76px;
   height: 76px;
-  background: rgb(255, 255, 255);
-  border-radius: 50%;
-  padding: 6px;
 }
 
 .SidebarTop {
@@ -74,10 +71,6 @@
 }
 
 .SidebarRow.selected {
-<<<<<<< Updated upstream
-  background-color: var(--background-tertiary);
-}
-=======
   background-color: var(--sidebar-selected);
 }
 
@@ -165,4 +158,3 @@
   }
 
 }
->>>>>>> Stashed changes

@@ -1,9 +1,6 @@
-// import { useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import './Profile.css'
-<<<<<<< Updated upstream
-// import { useEffect, useState } from 'react'
-// import { getProfile } from '../util/api'
-=======
 import { useEffect, useState } from 'react'
 import AvatarInitials from '../components/AvatarInitials'
 import { updateUserProfile } from '../util/api'
@@ -23,34 +20,21 @@ function getCurrentUserId(): number | null {
     return null;
   }
 }
->>>>>>> Stashed changes
 
 export default function Profile() {
-  // const { id } = useParams()
+  const { id } = useParams()
+  const navigate = useNavigate()
+  const [profile, setProfile] = useState<User | null>(null)
+  const [loading, setLoading] = useState(true)
+  const [editing, setEditing] = useState(false)
+  const [form, setForm] = useState({ name: '' })
+  const [saving, setSaving] = useState(false)
+  const [error, setError] = useState('')
+  const [success, setSuccess] = useState(false)
 
-  // const [profile, setProfile] = useState({})
+  const currentUserId = getCurrentUserId()
+  const isOwnProfile = currentUserId !== null && String(currentUserId) === String(id)
 
-<<<<<<< Updated upstream
-  // useEffect(() => {
-  //   const f = async () => {
-  //     setProfile(await getProfile(id))
-  //   }
-
-  //   f()
-  // }, [])
-
-  return (
-    <div className="Profile">
-      <div className="profile-image">
-        <img src={`https://placehold.co/200x200`} alt="profile" />
-      </div>
-
-      <div className="profile-info">
-        <h1>Full Name</h1>
-        <span>Place Holder</span>
-        <h1>Email</h1>
-        <span>placeholder@email.com</span>
-=======
   useEffect(() => {
     ;(async () => {
       try {
@@ -181,7 +165,6 @@ export default function Profile() {
           </div>
         )}
 
->>>>>>> Stashed changes
       </div>
     </div>
   )

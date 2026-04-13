@@ -194,7 +194,7 @@ export default function GroupChat({ groupId, groupName, members, currentUserId }
             {/* Messages */}
             <div className="gc-messages">
               {messages.length === 0 && (
-                <p className="gc-empty">No messages yet. Say hi!</p>
+                <p className="gc-empty">No messages yet. Say hi! 👋</p>
               )}
               {messages.map((msg, i) => {
                 const isMine = msg.sender_id === currentUserId;

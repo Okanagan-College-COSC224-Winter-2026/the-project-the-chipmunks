@@ -1,13 +1,18 @@
-.A_Card{
+.A_Card {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
   align-items: center;
+  gap: 12px;
   color: var(--text-primary);
   padding: 14px 12px;       /* was 8px — more breathing room */
   width: 95%;
   height: auto;
   border-radius: var(--radius-md);
+  font-weight: bold;
+  font-size: 1rem;
+  text-align: left;
+  transition: background 0.15s;
+}
 
 .A_Card img {
   width: 38px;

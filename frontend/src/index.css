@@ -71,6 +71,7 @@ input, textarea, select {
   font-family: 'DM Sans', Arial, sans-serif;
 }
 
+/* Hide the native browser password reveal button — we use our own */
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear,
 input[type="password"]::-webkit-credentials-auto-fill-button {
