@@ -1,30 +1,78 @@
 :root {
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  font-family: 'DM Sans', Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
 
-  color-scheme: light dark;
-  color: #000;
-  background-color: #fff;
+  color-scheme: light;
+  color: #1a0810;
+  background-color: #FAF5F8;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Color vars */
-  --text-primary: #000;
-  --text-secondary: #4d4d4d;
+  /* ── Raw palette ── */
+  --crimson:       #E10054;
+  --crimson-dark:  #764D5D;
+  --sienna:        #BA7792;
+  --cream:         #D2BAC3;
+  --cream-light:   #FAF5F8;
+  --cream-mid:     #F0E8ED;
 
-  --background-primary: #fff;
-  --background-secondary: #dcdcdc;
-  --background-tertiary: #b5b5b5;
+  /* ── Semantic: text ── */
+  --text-primary:   #1a0810;
+  --text-secondary: #6b4558;
+  --text-on-dark:   #FAF5F8;
 
-  --button-primary: #4bd530;
-  --button-secondary: #999;
-  --button-disabled: var(--text-secondary);
+  /* ── Semantic: backgrounds ── */
+  --background-primary:   #FAF5F8;
+  --background-secondary: #F0E8ED;
+  --background-tertiary:  #D2BAC3;
+
+  /* ── Sidebar ── */
+  --sidebar-bg:       #764D5D;
+  --sidebar-hover:    rgba(255, 255, 255, 0.08);
+  --sidebar-selected: rgba(255, 255, 255, 0.14);
+  --sidebar-text:     #FAF5F8;
+  --sidebar-divider:  rgba(255, 255, 255, 0.12);
+
+  /* ── Buttons ── */
+  --button-primary:   #E10054;
+  --button-secondary: #BA7792;
+  --button-disabled:  #c9b0bc;
+
+  /* ── Borders / shadows ── */
+  --border-light:  rgba(186, 119, 146, 0.18);
+  --shadow-sm:     0 1px 3px rgba(60, 20, 40, 0.08);
+  --shadow-md:     0 4px 12px rgba(60, 20, 40, 0.10);
+  --shadow-lg:     0 8px 28px rgba(60, 20, 40, 0.14);
+
+  /* ── Radii ── */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  14px;
+}
+
+/* Headings use the serif display font */
+h1, h2, h3, h4 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  letter-spacing: -0.01em;
 }
 
 body {
   margin: 0;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+}
+
+input, textarea, select {
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear,
+input[type="password"]::-webkit-credentials-auto-fill-button {
+  display: none;
 }

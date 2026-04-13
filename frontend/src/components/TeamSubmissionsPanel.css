@@ -1,0 +1,197 @@
+/* ── TeamSubmissionsPanel.css ─────────────────────────────────────────────── */
+
+.tsub-panel {
+  padding: 1.5rem 0;
+}
+
+.tsub-heading {
+  font-size: 1.3rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 0.25rem;
+}
+
+.tsub-subheading {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin: 0 0 1.5rem;
+}
+
+/* ── Empty / no-group state ── */
+.tsub-empty {
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+  font-style: italic;
+  background: var(--background-primary);
+  border: 1.5px dashed var(--background-tertiary);
+  border-radius: var(--radius-md);
+  margin: 1.5rem;
+}
+
+/* ── Member cards ── */
+.tsub-members {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tsub-card {
+  background: #fff;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.tsub-card-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.9rem 1.25rem;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-tertiary);
+}
+
+.tsub-card-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.tsub-member-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.tsub-file-count {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.tsub-no-files {
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  margin: 0;
+}
+
+/* ── File list ── */
+.tsub-file-list {
+  padding: 0.25rem 0;
+}
+
+.tsub-file-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.65rem 1.25rem;
+  border-bottom: 1px solid var(--background-secondary);
+  transition: background 0.1s;
+}
+
+.tsub-file-row:last-child {
+  border-bottom: none;
+}
+
+.tsub-file-row:hover {
+  background: var(--background-primary);
+}
+
+/* Group submission row — sienna left accent */
+.tsub-file-row--group {
+  border-left: 3px solid var(--sienna);
+}
+
+/* Conclusion file row — cream tint */
+.tsub-file-row--conclusion {
+  background: rgba(160, 82, 45, 0.05);
+}
+
+.tsub-file-row--conclusion:hover {
+  background: rgba(160, 82, 45, 0.09);
+}
+
+.tsub-file-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.tsub-file-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.tsub-file-detail {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+/* Download button — crimson */
+.tsub-download-btn {
+  flex-shrink: 0;
+  padding: 0.32rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background: var(--crimson);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.15s;
+  white-space: nowrap;
+}
+
+.tsub-download-btn:hover {
+  filter: brightness(1.08);
+}
+
+/* "You" badge */
+.tsub-you-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--sienna);
+  margin-left: 4px;
+}
+
+/* ── Group submission section ── */
+.tsub-group-section {
+  margin-bottom: 1rem;
+}
+
+.tsub-section-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.6rem;
+}
+
+/* ── Conclusion files section ── */
+.tsub-conclusion-section {
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--background-secondary);
+}
+
+.tsub-conclusion-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0 0 0.75rem;
+}

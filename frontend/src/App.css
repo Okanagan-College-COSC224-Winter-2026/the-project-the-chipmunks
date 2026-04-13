@@ -1,16 +1,39 @@
 .App {
   display: flex;
   flex-direction: row;
+  min-height: 100vh;
+  background-color: var(--background-primary);
 }
 
 .inner {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-
   width: 100%;
+  min-height: 100vh;
+  background-color: var(--background-primary);
 }
 
 h2 {
   margin: 4px 0;
+<<<<<<< Updated upstream
 }
+=======
+}
+
+
+/* ================= MOBILE APP LAYOUT ================= */
+@media (max-width: 767px) {
+
+  .App {
+    flex-direction: column;
+  }
+
+  .inner {
+    margin-left: 0;
+    padding: 12px;
+    width: 100%;
+  }
+
+}
+>>>>>>> Stashed changes

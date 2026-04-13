@@ -1,0 +1,68 @@
+.announcement-form {
+  background: #fff;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--crimson);
+  padding: 18px 18px 16px;
+  margin-bottom: 20px;
+}
+
+.announcement-form h3 {
+  margin: 0 0 14px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.announcement-form input,
+.announcement-form textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+  font-family: 'DM Sans', Arial, sans-serif;
+  background: var(--background-primary);
+  color: var(--text-primary);
+  transition: border-color 0.15s;
+}
+
+.announcement-form input:focus,
+.announcement-form textarea:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
+}
+
+.announcement-form textarea {
+  resize: vertical;
+  min-height: 72px;
+}
+
+.announcement-form button {
+  padding: 9px 22px;
+  background: var(--crimson);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: 'DM Sans', Arial, sans-serif;
+  letter-spacing: 0.02em;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.announcement-form button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.announcement-form button:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}

@@ -31,19 +31,20 @@ export default function CreateClass() {
 
   return (
     <div className="CreateClass">
-      <h1>Create Class</h1>
+      <div className="CreateClass__card">
+        <h1>Create Class</h1>
 
-      <StatusMessage message={statusMessage} type={statusType} />
+        <StatusMessage message={statusMessage} type={statusType} />
 
-      <h2>Class Name</h2>
-      <Textbox onInput={setName} />
-      
-      <Button onClick={() => {
-        // Send API req
-        attemptCreateClass()
-      }}>
-        Submit
-      </Button>
+        <label className="CreateClass__label">Class Name</label>
+        <Textbox onInput={setName} />
+
+        <div className="CreateClass__actions">
+          <Button onClick={() => attemptCreateClass()}>
+            Submit
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

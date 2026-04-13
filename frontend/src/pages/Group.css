@@ -1,0 +1,51 @@
+<<<<<<< Updated upstream
+=======
+/* Group page shares most styles with Assignment.css.
+   This file only contains Group-specific overrides and mobile rules. */
+
+/* ── Student view: group card wrapper ── */
+.assignment {
+  padding: 0;
+}
+
+/* ── Group chat spacing ── */
+.assignment > div:last-child {
+  margin-top: 1.5rem;
+}
+
+
+/* ================= MOBILE GROUP ================= */
+@media (max-width: 767px) {
+
+  .assignmentTables,
+  .studentTable,
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .table {
+    min-width: 320px;
+    margin-bottom: 12px;
+  }
+
+  .AssignmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px;
+  }
+
+  .groupNameInput {
+    width: 100%;
+  }
+
+  .AssignmentPage button {
+    width: 100%;
+    min-height: 44px;
+  }
+
+}
+>>>>>>> Stashed changes

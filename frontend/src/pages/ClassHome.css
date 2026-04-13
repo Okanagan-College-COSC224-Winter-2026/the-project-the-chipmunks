@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 .Class{
     display:block;
     width: 100%;
@@ -58,3 +59,211 @@
   
     width: 100%;
   }
+=======
+/* ── Root wrapper ── */
+.ClassHome {
+  display: block;
+  width: 100%;
+  padding: 0 1.5rem 2rem;
+  box-sizing: border-box;
+}
+
+/* ── Page header: course title + action buttons ── */
+.ClassHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 0 0.25rem;
+  gap: 1rem;
+}
+
+.ClassHeaderLeft h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.ClassHeaderRight {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Assignment list ── */
+/* The <ul> has inline padding:0/margin:0 so we style the <li> directly */
+.ClassHome ul li {
+  padding: 4px 0;
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.ClassHome ul li:last-child {
+  border-bottom: none;
+}
+
+/* ── New Assignment form ── */
+.NewAssignment {
+  margin: 1.5rem 0 1rem;
+  padding: 1.5rem;
+  background: #fff;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--sienna);
+}
+
+.NewAssignment h3 {
+  margin: 0 0 1rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.NewAssignment label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+  margin-top: 12px;
+}
+
+.NewAssignment label:first-of-type {
+  margin-top: 0;
+}
+
+/* ── Announcements section ── */
+.announcements-section {
+  margin-top: 1.5rem;
+}
+
+.announcements-section h2 {
+  font-size: 1.25rem;
+  margin: 0 0 1rem;
+}
+
+.announcements-empty {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+/* ── Leftover .Assignments / .AssInput selectors kept for safety ── */
+.Assignments {
+  display: flex;
+  flex-direction: row;
+  padding: 0;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.AssInputChunk {
+  margin: 8px;
+  width: 30%;
+  background-color: #fff;
+}
+
+.AssInput {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+
+/* ── Due date DatePicker — crimson theme ── */
+.assignment-due-date-wrapper {
+  display: block;
+  width: 100%;
+  margin-bottom: 14px;
+}
+
+.assignment-due-date-input {
+  width: 100%;
+  padding: 8px 11px;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-family: 'DM Sans', Arial, sans-serif;
+  cursor: pointer;
+}
+
+.assignment-due-date-input:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.12);
+}
+
+.react-datepicker {
+  font-family: 'DM Sans', Arial, sans-serif;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+}
+
+.react-datepicker__header {
+  background-color: var(--crimson);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.react-datepicker__current-month,
+.react-datepicker__day-name,
+.react-datepicker-time__header {
+  color: #fff;
+}
+
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__time-list-item--selected {
+  background-color: var(--crimson) !important;
+  color: #fff !important;
+}
+
+.react-datepicker__day:hover,
+.react-datepicker__time-list-item:hover {
+  background-color: var(--background-secondary);
+}
+
+.react-datepicker__close-icon::after {
+  background-color: var(--crimson);
+}
+
+
+/* ================= MOBILE ================= */
+@media (max-width: 767px) {
+  .ClassHome {
+    padding: 0 0.75rem 1.5rem;
+  }
+
+  .ClassHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0.75rem 0 0.25rem;
+  }
+
+  .ClassHeaderRight {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .AssInputChunk {
+    width: 100%;
+    margin: 4px 0;
+  }
+
+  .AssInput {
+    width: 100%;
+  }
+
+  .NewAssignment {
+    padding: 1rem;
+  }
+}
+>>>>>>> Stashed changes

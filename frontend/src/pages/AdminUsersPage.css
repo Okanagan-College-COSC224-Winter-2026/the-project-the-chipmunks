@@ -1,0 +1,300 @@
+.AdminUsersPage {
+  margin: 1rem;
+  padding: 0 0.5rem;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.AdminUsersPage__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.AdminUsersPage__header h1 {
+  margin: 0;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+  font-size: 1.75rem;
+}
+
+/* "+ New User" button — crimson */
+.AdminUsersPage__newBtn {
+  padding: 0.5rem 1.1rem;
+  background: var(--crimson);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.AdminUsersPage__newBtn:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+/* ── Filters bar ── */
+.AdminUsersPage__filters {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.AdminUsersPage__search {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text-primary);
+  transition: border-color 0.15s;
+}
+
+.AdminUsersPage__search:focus {
+  outline: none;
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
+}
+
+.AdminUsersPage__roleFilter {
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.9rem;
+  background: #fff;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+/* ── Table ── */
+.AdminUsersPage__tableWrap {
+  overflow-x: auto;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: #fff;
+  box-shadow: var(--shadow-sm);
+}
+
+.AdminUsersPage__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.AdminUsersPage__table th {
+  background: var(--background-secondary);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--background-tertiary);
+}
+
+.AdminUsersPage__table td {
+  padding: 0.8rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.AdminUsersPage__table tr:last-child td {
+  border-bottom: none;
+}
+
+.AdminUsersPage__table tr:hover td {
+  background: var(--background-primary);
+}
+
+/* ── Role badges ── */
+.AdminUsersPage__role {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: capitalize;
+}
+
+/* Student — sienna tint (was blue) */
+.AdminUsersPage__role--student {
+  background: rgba(160, 82, 45, 0.10);
+  color: var(--sienna);
+}
+
+/* Teacher — green kept (semantic) */
+.AdminUsersPage__role--teacher {
+  background: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
+}
+
+/* Admin — crimson tint */
+.AdminUsersPage__role--admin {
+  background: rgba(178, 34, 52, 0.10);
+  color: var(--crimson);
+}
+
+/* ── Status chips ── */
+.AdminUsersPage__active {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
+}
+
+.AdminUsersPage__inactive {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  background: var(--background-secondary);
+  color: var(--text-secondary);
+}
+
+/* ── Action buttons ── */
+.AdminUsersPage__actions {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* Edit button — outlined sienna */
+.AdminUsersPage__actions button {
+  padding: 0.3rem 0.7rem;
+  border: 1.5px solid var(--sienna);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  background: transparent;
+  color: var(--sienna);
+  transition: all 0.15s;
+}
+
+.AdminUsersPage__actions button:hover {
+  background: var(--sienna);
+  color: #fff;
+}
+
+/* Deactivate — outlined crimson */
+.AdminUsersPage__deactivateBtn {
+  border-color: var(--crimson) !important;
+  color: var(--crimson) !important;
+  background: transparent !important;
+}
+
+.AdminUsersPage__deactivateBtn:hover {
+  background: var(--crimson) !important;
+  color: #fff !important;
+}
+
+/* Reactivate — outlined green */
+.AdminUsersPage__reactivateBtn {
+  border-color: #2e7d32 !important;
+  color: #2e7d32 !important;
+  background: transparent !important;
+}
+
+.AdminUsersPage__reactivateBtn:hover {
+  background: #2e7d32 !important;
+  color: #fff !important;
+}
+
+/* ── Pagination ── */
+.AdminUsersPage__pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  padding: 0.25rem 0;
+}
+
+.AdminUsersPage__pagination button {
+  padding: 0.4rem 0.9rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  cursor: pointer;
+  font-family: 'DM Sans', Arial, sans-serif;
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.AdminUsersPage__pagination button:hover:not(:disabled) {
+  border-color: var(--crimson);
+  color: var(--crimson);
+}
+
+.AdminUsersPage__pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.AdminUsersPage__total {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+/* ── Status messages ── */
+.AdminUsersPage__loading {
+  padding: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.AdminUsersPage__error {
+  color: var(--crimson);
+  background: rgba(178, 34, 52, 0.07);
+  padding: 0.75rem 1rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--crimson);
+  font-size: 0.9rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .AdminUsersPage .users-table-wrapper,
+  .AdminUsersPage table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .AdminUsersPage__filters {
+    flex-direction: column;
+  }
+
+  .AdminUsersPage__search,
+  .AdminUsersPage__roleFilter {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .AdminUsersPage__header {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+}
