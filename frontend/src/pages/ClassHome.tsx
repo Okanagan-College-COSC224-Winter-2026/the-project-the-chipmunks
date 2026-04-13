@@ -135,7 +135,7 @@ export default function ClassHome() {
           <label>Due Date: <span style={{ fontWeight: "normal", fontSize: "0.85rem", color: "var(--text-secondary)" }}>(optional)</span></label>
           <DatePicker
             selected={newAssignmentDueDate}
-            onChange={(date) => setNewAssignmentDueDate(date)}
+            onChange={(date: Date | null) => setNewAssignmentDueDate(date)}
             showTimeSelect
             dateFormat="MMMM d, yyyy h:mm aa"
             placeholderText="Select a due date..."

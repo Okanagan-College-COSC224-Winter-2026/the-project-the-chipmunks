@@ -11,7 +11,6 @@ import ConclusionSection from "../components/ConclusionSection";
 import RubricForm from "../components/RubricForm";
 import { isTeacher } from "../util/login";
 import ReviewFileUpload from '../components/ReviewFileUpload';
-import SubmissionPanel from '../components/SubmissionPanel';
 
 import {
   listStuGroup,

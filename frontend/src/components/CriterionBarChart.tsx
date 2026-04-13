@@ -41,8 +41,8 @@ export default function CriterionBarChart({ criteria }: Props) {
           />
           <YAxis domain={[0, 'dataMax']} />
           <Tooltip
-            formatter={(value: number, _name: string, props: { payload: { max: number } }) => [
-              `${value.toFixed(2)} / ${props.payload.max}`,
+            formatter={(value: number | undefined, _name: string, props: { payload: { max: number } }) => [
+              `${(value ?? 0).toFixed(2)} / ${props.payload.max}`,
               'Avg Score',
             ]}
           />

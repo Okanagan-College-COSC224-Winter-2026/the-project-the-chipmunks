@@ -53,7 +53,7 @@ export default function StudentProgressPage() {
       });
   }, [courseId]);
 
-  if (loading) return <StatusMessage type="loading" message="Loading student progress..." />;
+  if (loading) return <StatusMessage type="success" message="Loading student progress..." />;
   if (error)   return <StatusMessage type="error"   message={error} />;
   if (!data)   return null;
 

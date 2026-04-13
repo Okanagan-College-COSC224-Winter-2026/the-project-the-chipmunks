@@ -30,7 +30,7 @@ export default function GroupChat({ groupId, groupName, members, currentUserId }
   const [messages, setMessages]     = useState<ChatMessage[]>([]);
   const [input, setInput]           = useState('');
   const [sending, setSending]       = useState(false);
-  const [unread, setUnread]         = useState<Record<ConversationKey, number>>({});
+  const [unread, setUnread]         = useState<Record<ConversationKey, number>>({} as Record<ConversationKey, number>);
   const bottomRef                   = useRef<HTMLDivElement>(null);
   const pollRef                     = useRef<ReturnType<typeof setInterval> | null>(null);
 
