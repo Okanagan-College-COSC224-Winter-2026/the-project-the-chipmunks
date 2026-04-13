@@ -1,0 +1,42 @@
+.CourseSearchBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.CourseSearchBar__input {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid var(--background-secondary);
+  border-radius: 8px;
+  font-size: 14px;
+  background: var(--background-primary);
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.CourseSearchBar__input:focus {
+  border-color: var(--button-primary);
+}
+
+.CourseSearchBar__count {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.CourseSearchBar__clear {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background: var(--background-secondary);
+  color: var(--text-primary);
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.CourseSearchBar__clear:hover {
+  background: var(--background-tertiary);
+}

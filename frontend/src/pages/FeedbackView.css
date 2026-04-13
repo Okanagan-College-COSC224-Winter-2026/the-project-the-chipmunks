@@ -1,0 +1,124 @@
+.FeedbackView {
+  margin: 1rem;
+  width: 100%;
+}
+
+.FeedbackView h1 {
+  border-bottom: 1px solid var(--background-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.FeedbackView h2 {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Summary Card ── */
+
+.FeedbackView__summary {
+  display: flex;
+  gap: 1.5rem;
+  padding: 1rem;
+  background-color: var(--background-primary);
+  border: 1px solid var(--background-secondary);
+  border-radius: 6px;
+  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 1.5rem;
+}
+
+.FeedbackView__summaryItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.FeedbackView__summaryLabel {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.FeedbackView__summaryValue {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.FeedbackView__summaryValue--green {
+  color: #166534;
+}
+
+.FeedbackView__summaryValue--yellow {
+  color: #854d0e;
+}
+
+.FeedbackView__summaryValue--red {
+  color: #991b1b;
+}
+
+/* ── Cards Grid ── */
+
+.FeedbackView__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 700px;
+}
+
+/* ── Empty State ── */
+
+.FeedbackView__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  border: 1px dashed var(--text-secondary);
+  border-radius: 6px;
+  background-color: var(--background-secondary);
+  max-width: 500px;
+}
+
+.FeedbackView__empty h2 {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+  border-bottom: none;
+}
+
+.FeedbackView__empty p {
+  color: var(--text-secondary);
+  text-align: center;
+  margin: 0;
+}
+
+/* ── Error State ── */
+
+.FeedbackView__error {
+  padding: 1rem;
+  background-color: #fef2f2;
+  border: 1px solid #fca5a5;
+  border-radius: 6px;
+  max-width: 500px;
+}
+
+.FeedbackView__error p {
+  color: #991b1b;
+  margin: 0;
+}
+
+/* ── Responsive: Mobile ── */
+@media (max-width: 767px) {
+  .FeedbackView .summary-card,
+  .FeedbackView .summary-grid {
+    flex-direction: column;
+  }
+
+  .FeedbackView .summary-card {
+    width: 100%;
+    box-sizing: border-box;
+  }
+}

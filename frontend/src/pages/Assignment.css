@@ -1,88 +1,198 @@
-.assignmentTables {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
+/* ── Page wrapper ── */
+.AssignmentPage {
+  padding: 0 2rem 2rem 2.25rem;
 }
+
+.AssignmentHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.25rem 1.5rem 0.5rem;
+}
+
+.AssignmentHeader h2 {
+  font-size: 1.75rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+/* ── Teacher group management tables ── */
+.assignmentTables {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
 .table {
-    width: 50%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid var(--background-secondary);
-    /* background-color: var(--background-secondary); */
-    margin: 0 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #fff;
 }
 
 .table .groupNames {
   align-items: center;
   justify-content: center;
-
-  background: #eee;
-  padding: 4px 0;
-}
-
-.AssignmentPage button {
-  padding: 8px;
-  border: none;
-  background-color: var(--button-primary);
-  color: #fff;
-  font-size: 16px;
+  background: var(--background-secondary);
+  padding: 9px 0 9px 36px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: var(--text-primary);
   cursor: pointer;
-
-  transition: all 0.1s ease-in-out;
-}
-
-.AssignmentPage button:hover {
-  filter: brightness(0.9);
-}
-
-.AssignmentPage  button,
-.table .StudentName {
-  margin: 10px;
-  margin-left: 20px;
-}
-
-.table tr {
+  user-select: none;
+  min-height: 38px;
+  display: flex;
   width: 100%;
-  display:flex;
+  box-sizing: border-box;
+}
+
+.table .groupNames.selected {
+  background: var(--background-tertiary);
+  color: var(--text-primary);
+}
+
+/* Header rows (th inside table) */
+.table th {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px 14px;
+  background: var(--background-secondary);
+  border-bottom: 1px solid var(--background-tertiary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+/* Unassigned table: each row is name + Move button side by side */
+.assignmentTables .table:first-child tr {
+  width: 100%;
+  display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-
-  transition: all 0.1s ease-in-out;
+  padding: 2px 0;
+  transition: background 0.1s;
 }
 
-.table tr:not(.groupNames):hover {
-  background-color: var(--background-secondary);
+.assignmentTables .table:first-child tr:hover {
+  background-color: var(--background-primary);
 }
 
-.table th {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    border-bottom: 1px solid var(--background-secondary);
+/* Groups table: each tr wraps a group header + its expanded member rows vertically */
+.assignmentTables .table:last-child tr {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 0;
+  transition: background 0.1s;
 }
 
+/* Each expanded member div inside the groups tr — name + Move button side by side */
+.assignmentTables .table:last-child tr > div:not(.groupNames) {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2px 0;
+  transition: background 0.1s;
+}
+
+.assignmentTables .table:last-child tr > div:not(.groupNames):hover {
+  background-color: var(--background-primary);
+}
+
+.table .StudentName,
+.AssignmentPage button,
+.table tr button {
+  margin: 6px 10px;
+}
+
+.table .StudentName {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* ── Teacher action buttons ── */
+.AssignmentPage button {
+  padding: 8px 14px;
+  border: none;
+  background-color: var(--button-primary);
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  letter-spacing: 0.01em;
+}
+
+.AssignmentPage button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.AssignmentPage button:active {
+  transform: translateY(0);
+}
+
+/* "Move" button inside table rows — smaller, outlined style */
+.table tr button {
+  padding: 5px 10px;
+  font-size: 0.78rem;
+  background: transparent;
+  color: var(--crimson);
+  border: 1.5px solid var(--crimson);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.table tr button:hover {
+  background: var(--crimson);
+  color: #fff;
+  filter: none;
+  transform: none;
+}
+
+/* ── Teacher button row ── */
+.AssignmentPage > div > button {
+  margin: 6px 6px 6px 0;
+}
+
+/* Randomize button (has inline bg override) */
+.AssignmentPage button[style*="background"] {
+  background-color: var(--background-tertiary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Group arrow icon */
 .groupNames {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-
-    position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
 }
 
 .GroupArrow {
   position: absolute;
-  top: 4px;
-  left: 20px;
-  width: 20px;
-  height: 20px;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  opacity: 0.5;
 }
 
 .GroupArrow img {
@@ -91,17 +201,298 @@
 }
 
 .groupNames.selected .GroupArrow {
-  transform: rotate(90deg);
+  transform: translateY(-50%) rotate(90deg);
 }
 
-.AssignmentHeader {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px;
-}
-
-.groupNameInput{
+.groupNameInput {
   width: 15%;
+  min-width: 160px;
+}
+
+/* ── Student view: group member list ── */
+.studentTable {
+  border-collapse: collapse;
+  width: 100%;
+  max-width: 480px;
+}
+
+/* "My group" header cell */
+.studentTable th {
+  text-align: left;
+  padding: 0 0 10px;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--background-tertiary);
+}
+
+/* Each member row */
+.studentTable tr:not(:first-child) {
+  border-bottom: 1px solid var(--background-secondary);
+}
+
+.studentTable td {
+  padding: 10px 4px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+}
+
+/* Subtle left dot for each member */
+.studentTable tr:not(:first-child) td::before {
+  content: '';
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cream);
+  border: 1.5px solid var(--sienna);
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+/* ── Review file upload area ── */
+.review-file-upload {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px dashed var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: var(--background-primary);
+}
+
+.attached-files-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+}
+
+.attached-files-list li {
+  margin: 0.3rem 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+/* ── Assignment edit form ── */
+.assignment-header-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-edit-assignment,
+.btn-delete-assignment {
+  padding: 7px 14px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: filter 0.15s, transform 0.1s;
+}
+
+.btn-edit-assignment {
+  background-color: var(--button-primary);
+  color: #fff;
+}
+
+.btn-delete-assignment {
+  background-color: var(--button-danger, #c0392b);
+  color: #fff;
+}
+
+.btn-edit-assignment:hover,
+.btn-delete-assignment:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}
+
+.btn-delete-assignment:disabled,
+.btn-edit-assignment:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.assignment-edit-form {
+  margin: 0 0 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background-color: #fff;
+}
+
+.assignment-edit-form h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-weight: 400;
+}
+
+.assignment-edit-label {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.assignment-edit-input {
+  display: block;
+  width: 100%;
+  padding: 8px 11px;
+  margin-bottom: 14px;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  box-sizing: border-box;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  font-family: 'DM Sans', Arial, sans-serif;
+}
+
+.assignment-edit-input:focus {
+  outline: none;
+  border-color: var(--crimson);
+}
+
+.assignment-edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.assignment-edit-actions .btn-secondary {
+  background-color: var(--background-secondary);
+  color: var(--text-primary);
+}
+
+
+/* ================= MOBILE ASSIGNMENT ================= */
+@media (max-width: 767px) {
+  .AssignmentPage {
+    padding: 0 0.75rem 1.5rem;
+  }
+
+  .AssignmentHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 0.75rem 0.75rem 0.25rem;
+  }
+
+  .assignmentTables,
+  .studentTable,
+  .table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+  }
+
+  .assignmentTables {
+    margin: 0;
+    flex-direction: column;
+  }
+
+  .table {
+    min-width: 320px;
+    margin: 0 0 12px 0;
+  }
+
+  .groupNameInput {
+    width: 100%;
+    min-width: unset;
+  }
+
+  .AssignmentPage button {
+    min-height: 44px;
+  }
+
+  .assignment-header-actions {
+    flex-wrap: wrap;
+  }
+
+  .btn-edit-assignment,
+  .btn-delete-assignment {
+    min-height: 40px;
+    flex: 1;
+  }
+
+  .assignment-edit-form {
+    padding: 1rem;
+  }
+
+  .assignment-edit-actions {
+    flex-direction: column;
+  }
+
+  .studentTable {
+    max-width: 100%;
+  }
+}
+
+/* ── Student review section ── */
+.assignmentRubricDisplay {
+  margin-bottom: 1.5rem;
+}
+
+.groupMembers {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--background-secondary);
+}
+
+.groupMembers h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  margin: 0 0 1rem;
+}
+
+/* More left breathing room from the sidebar */
+.groupMembers {
+  padding-left: 0.5rem;
+}
+
+/* Radio button rows — only target the raw wrapper divs (they have inline style, no class) */
+.groupMembers > div[style] {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 14px;
+  margin: 3px 0 !important;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.groupMembers > div[style]:hover {
+  background: var(--background-secondary);
+}
+
+.groupMembers input[type="radio"] {
+  accent-color: var(--crimson);
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  cursor: pointer;
+}
+
+.groupMembers label {
+  display: inline;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  margin: 0;
+  padding: 0;
+}
+
+/* RubricForm gap when it appears */
+.assignmentRubric {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--background-secondary);
 }

@@ -540,3 +540,75 @@ def test_enroll_in_class_invalid_email_format(test_client, make_admin):
     )
     assert response.status_code == 400
     assert response.json["msg"] == "Invalid email format: johndoeatexample.com"
+    
+    
+    def test_list_classes_no_filter(test_client, db):
+        # Create a teacher and log in
+        from werkzeug.security import generate_password_hash
+        from api.models import User, Course
+        teacher = User(name="Search Teacher", email="searchteacher@test.com", hash_pass=generate_password_hash("password123"), role="teacher")
+        User.create_user(teacher)
+        
+        login = test_client.post("/auth/login", json={"email": "searchteacher@test.com", "password": "password123"})
+        assert login.status_code == 200
+        
+        response = test_client.get("/class/classes")
+        assert response.status_code == 200
+        data = response.get_json()
+        assert isinstance(data, list)
+
+
+def test_list_classes_search_match(test_client, db):
+    from werkzeug.security import generate_password_hash
+    from api.models import User, Course
+    teacher = User(name="Search Teacher2", email="searchteacher2@test.com", hash_pass=generate_password_hash("password123"), role="teacher")
+    User.create_user(teacher)
+
+    login = test_client.post("/auth/login", json={"email": "searchteacher2@test.com", "password": "password123"})
+    assert login.status_code == 200
+
+    # Create a course with "math" in the name
+    course = Course(teacherID=teacher.id, name="Math 101")
+    Course.create_course(course)
+
+    response = test_client.get("/class/classes?search=math")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert isinstance(data, list)
+    assert any("math" in c["name"].lower() for c in data)
+
+
+def test_list_classes_search_no_match(test_client, db):
+    from werkzeug.security import generate_password_hash
+    from api.models import User
+    teacher = User(name="Search Teacher3", email="searchteacher3@test.com", hash_pass=generate_password_hash("password123"), role="teacher")
+    User.create_user(teacher)
+
+    login = test_client.post("/auth/login", json={"email": "searchteacher3@test.com", "password": "password123"})
+    assert login.status_code == 200
+
+    response = test_client.get("/class/classes?search=zzz999xyz")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert data == []
+
+
+def test_list_classes_search_case_insensitive(test_client, db):
+    from werkzeug.security import generate_password_hash
+    from api.models import User, Course
+    teacher = User(name="Search Teacher4", email="searchteacher4@test.com", hash_pass=generate_password_hash("password123"), role="teacher")
+    User.create_user(teacher)
+
+    login = test_client.post("/auth/login", json={"email": "searchteacher4@test.com", "password": "password123"})
+    assert login.status_code == 200
+
+    # Create a course with lowercase "math"
+    course = Course(teacherID=teacher.id, name="math 202")
+    Course.create_course(course)
+
+    # Search with uppercase "MATH"
+    response = test_client.get("/class/classes?search=MATH")
+    assert response.status_code == 200
+    data = response.get_json()
+    assert isinstance(data, list)
+    assert any("math" in c["name"].lower() for c in data)

@@ -1,0 +1,292 @@
+/* ── StudentProgressPage.css ─────────────────────────────────────────────── */
+
+.progress-page {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* ── Header ── */
+.progress-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.progress-header-left {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.progress-title {
+  font-size: 1.75rem;
+  font-weight: 400;
+  font-family: 'DM Serif Display', Georgia, serif;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.progress-course-name {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* ── Completion badge — crimson instead of purple ── */
+.progress-badge-wrap {
+  display: flex;
+  align-items: center;
+}
+
+.progress-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--crimson);
+  color: #fff;
+  cursor: default;
+  user-select: none;
+  box-shadow: 0 4px 14px rgba(178, 34, 52, 0.35);
+}
+
+.progress-badge-pct {
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.progress-badge-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.88;
+}
+
+/* ── Search / controls ── */
+.progress-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.progress-search {
+  flex: 1;
+  max-width: 360px;
+  padding: 0.5rem 0.85rem;
+  border: 1.5px solid var(--background-tertiary);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-family: 'DM Sans', Arial, sans-serif;
+  background: #fff;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.progress-search:focus {
+  border-color: var(--crimson);
+  box-shadow: 0 0 0 2px rgba(178, 34, 52, 0.10);
+}
+
+.progress-count {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* ── Table wrapper ── */
+.progress-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.progress-empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ── Table ── */
+.progress-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.progress-th {
+  background: var(--background-secondary);
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--background-tertiary);
+  white-space: nowrap;
+}
+
+.progress-th-student {
+  min-width: 180px;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--background-secondary);
+}
+
+.progress-th-assignment {
+  min-width: 160px;
+  text-align: center;
+}
+
+/* ── Rows ── */
+.progress-row:nth-child(even) {
+  background: var(--background-primary);
+}
+
+.progress-row:nth-child(odd) {
+  background: #fff;
+}
+
+.progress-row:hover {
+  background: var(--background-secondary);
+}
+
+/* ── Cells ── */
+.progress-td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--background-secondary);
+  vertical-align: top;
+}
+
+.progress-td-student {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+}
+
+.progress-student-name {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.progress-student-email {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.progress-td-cell {
+  text-align: center;
+}
+
+.progress-td-missing {
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+.progress-no-results {
+  text-align: center;
+  padding: 2rem;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* ── Cell content ── */
+.progress-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* ── Group badges ── */
+.progress-group-badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* Grouped — warm green, kept semantic */
+.progress-group-badge--in {
+  background: rgba(46, 125, 50, 0.10);
+  color: #2e7d32;
+}
+
+/* No group — crimson tint */
+.progress-group-badge--out {
+  background: rgba(178, 34, 52, 0.09);
+  color: var(--crimson);
+}
+
+/* ── Stat chips ── */
+.progress-stats {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.progress-stat {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  background: var(--background-secondary);
+  padding: 0.1rem 0.4rem;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+
+/* Score chip — crimson tint instead of purple */
+.progress-stat-score {
+  color: var(--crimson-dark);
+  font-weight: 700;
+  background: rgba(178, 34, 52, 0.09);
+}
+
+
+/* ── Responsive ── */
+@media (max-width: 767px) {
+  .progress-page {
+    padding: 1rem;
+  }
+
+  .progress-title {
+    font-size: 1.4rem;
+  }
+
+  .progress-badge {
+    width: 68px;
+    height: 68px;
+  }
+
+  .progress-badge-pct {
+    font-size: 1.1rem;
+  }
+
+  .progress-controls {
+    flex-wrap: wrap;
+  }
+
+  .progress-search {
+    max-width: 100%;
+    width: 100%;
+  }
+}

@@ -7,58 +7,107 @@
   height: 100vh;
   width: 100%;
 
-  background-color: #fff;
+  background-color: var(--background-primary);
+  /* Subtle warm radial glow for atmosphere */
+  background-image:
+    radial-gradient(ellipse at 20% 60%, rgba(178, 34, 52, 0.07) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 25%, rgba(160, 82, 45, 0.06) 0%, transparent 45%);
 }
 
 .LoginPage h1 {
-  margin: 16px;
+  margin: 0 0 1.5rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 2rem;
+  color: var(--crimson);
+  text-align: center;
+  letter-spacing: -0.01em;
 }
 
 .LoginBlock {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
 
-  margin: 8px;
-  padding-bottom: 16px;
+  background: #fff;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  border-top: 4px solid var(--crimson);
 
-  height: 50%;
-  width: 30%;
-
-  background-color: #fff;
-
-  min-height: 300px;
-  max-height: 400px;
+  padding: 2.5rem 2.25rem 2rem;
+  width: 340px;
+  box-sizing: border-box;
 }
 
 .LoginInner {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-
-  height: 100%;
+  width: 100%;
 }
 
 .LoginButton {
-  margin-bottom: 16px;
+  margin-bottom: 0;
 }
 
 .LoginInputs {
   display: flex;
   flex-direction: column;
-  align-items: center;
-
-  margin-bottom: 12px;
-
+  align-items: stretch;
+  margin-bottom: 1.25rem;
   width: 100%;
+  gap: 0;
 }
 
 .LoginInputChunk {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: center;
+  margin: 8px 0;
+  width: 100%;
+}
 
-  margin: 12px;
+.LoginInputChunk span {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 5px;
+}
+
+.LoginInputChunk .Textbox,
+.LoginInputChunk .password-toggle-wrapper {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Stretch the login/register buttons to fill */
+.LoginBlock > div:last-child {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+  margin-top: 0.5rem;
+}
+
+.LoginBlock > div:last-child .Button {
+  flex: 1;
+}
+
+/* Brand wordmark above the card */
+.LoginPage::before {
+  content: 'Toodle';
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  opacity: 0.5;
+}
+
+@media (max-width: 480px) {
+  .LoginBlock {
+    width: 90%;
+    padding: 2rem 1.25rem 1.5rem;
+  }
 }
