@@ -4,39 +4,12 @@
   justify-content: flex-start;
   align-items: center;
   color: var(--text-primary);
-<<<<<<< Updated upstream
-
-  padding: 4px;
-
-  width: 95%;
-  height:auto;
-
-  border-radius: 6px;
-
-=======
   padding: 14px 12px;       /* was 8px — more breathing room */
   width: 95%;
   height: auto;
   border-radius: var(--radius-md);
->>>>>>> Stashed changes
-  font-weight: bold;
-  font-size: 1rem;
-  text-align: left;
-  transition: background 0.15s;
-}
 
 .A_Card img {
-<<<<<<< Updated upstream
-  width: 40px;
-  height: 40px;
-}
-
-/*TODO: add disabled functionality */
-.A_Card:hover{
-  cursor: pointer;
-  background-color: var(--background-secondary);
-}
-=======
   width: 38px;
   height: 38px;
   flex-shrink: 0;
@@ -115,4 +88,3 @@
   background-color: var(--background-secondary);
   color: var(--text-secondary);
 }
->>>>>>> Stashed changes

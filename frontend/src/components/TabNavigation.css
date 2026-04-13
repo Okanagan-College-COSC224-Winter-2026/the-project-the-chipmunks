@@ -35,10 +35,6 @@
 }
 
 .TabNav .Tab.active {
-<<<<<<< Updated upstream
-  border-bottom: 2px solid black;
-}
-=======
   border-bottom: 2px solid var(--crimson);
   color: var(--crimson);
   font-weight: 600;
@@ -63,4 +59,3 @@
   }
 
 }
->>>>>>> Stashed changes
