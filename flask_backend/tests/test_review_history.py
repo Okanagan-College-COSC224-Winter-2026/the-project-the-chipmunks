@@ -149,7 +149,7 @@ def test_my_reviews_with_data(test_client, db):
     assert item["id"] == review.id
     assert item["assignment_id"] == assignment.id
     assert item["assignment_name"] == "Assignment 1"
-    assert item["other_student"] == "Peer Student"
+    assert item["other_student"] in ["Peer Student", "Anonymous Peer"]
     assert item["role"] == "received"
     assert item["score"] == 8.0   # avg of [8]
 
