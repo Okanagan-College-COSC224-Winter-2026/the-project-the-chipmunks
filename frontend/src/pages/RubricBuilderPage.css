@@ -1,0 +1,123 @@
+.rubric-builder-page {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.rubric-builder-page h1 {
+  margin: 0 0 1.25rem;
+  font-size: 1.5rem;
+  color: var(--text-primary, #000);
+}
+
+/* ── Template section ──────────────────────────────────────────────────────── */
+
+.rb-template-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 1rem;
+  padding: 12px 14px;
+  background: var(--background-secondary, #dcdcdc);
+  border-radius: 6px;
+}
+
+.rb-template-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary, #4d4d4d);
+  white-space: nowrap;
+}
+
+.rb-template-section select {
+  flex: 1;
+  padding: 6px 10px;
+  border: 1px solid var(--background-tertiary, #b5b5b5);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  background: var(--background-primary, #fff);
+  color: var(--text-primary, #000);
+}
+
+/* ── Rubric name ───────────────────────────────────────────────────────────── */
+
+.rb-name-section {
+  margin-bottom: 1rem;
+}
+
+.rb-name-section label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary, #4d4d4d);
+}
+
+.rb-name-section input {
+  padding: 8px 10px;
+  border: 1px solid var(--background-tertiary, #b5b5b5);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  color: var(--text-primary, #000);
+  background: var(--background-primary, #fff);
+}
+
+.rb-name-section input:focus {
+  outline: none;
+  border-color: var(--button-primary, #4bd530);
+}
+
+/* ── Actions row ───────────────────────────────────────────────────────────── */
+
+.rb-actions {
+  margin-bottom: 1rem;
+}
+
+/* ── Template save ─────────────────────────────────────────────────────────── */
+
+.rb-template-save {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 1rem;
+  padding: 12px 14px;
+  background: var(--background-secondary, #dcdcdc);
+  border-radius: 6px;
+}
+
+.rb-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-primary, #000);
+  cursor: pointer;
+}
+
+.rb-checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+.rb-template-name-input {
+  padding: 8px 10px;
+  border: 1px solid var(--background-tertiary, #b5b5b5);
+  border-radius: 4px;
+  font-size: 0.85rem;
+  color: var(--text-primary, #000);
+  background: var(--background-primary, #fff);
+}
+
+.rb-template-name-input:focus {
+  outline: none;
+  border-color: var(--button-primary, #4bd530);
+}
+
+/* ── Save section ──────────────────────────────────────────────────────────── */
+
+.rb-save-section {
+  margin-top: 0.5rem;
+}

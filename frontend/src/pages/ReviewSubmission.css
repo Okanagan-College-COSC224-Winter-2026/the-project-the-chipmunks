@@ -1,0 +1,19 @@
+.ReviewSubmission {
+  padding: 20px;
+  max-width: 700px;
+}
+
+.ReviewSubmission-header {
+  margin-bottom: 20px;
+}
+
+.ReviewSubmission-header h2 {
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+}
+
+.ReviewSubmission-subtitle {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}

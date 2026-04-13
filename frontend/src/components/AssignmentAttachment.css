@@ -1,0 +1,123 @@
+/**
+ * AssignmentAttachment.css — Dev 5 (Feature A)
+ *
+ * Styles for the attachment section on the Assignment page.
+ * Uses project CSS variables from index.css.
+ *
+ * Place in: frontend/src/components/AssignmentAttachment.css
+ */
+
+.assignment-attachment {
+  margin: 16px 12px;
+  padding: 16px;
+  border: 1px solid var(--background-secondary);
+  border-radius: 8px;
+  background-color: var(--background-primary);
+}
+
+.assignment-attachment h3 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  color: var(--text-primary);
+}
+
+/* Existing attachment row */
+.attachment-existing {
+  margin-bottom: 12px;
+}
+
+.attachment-file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background-color: #f5f5f5;
+  border-radius: 6px;
+}
+
+.attachment-file-icon {
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.attachment-file-name {
+  flex: 1;
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.attachment-download-btn,
+.attachment-delete-btn,
+.attachment-upload-btn {
+  padding: 6px 14px;
+  border: none;
+  border-radius: 4px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+  flex-shrink: 0;
+}
+
+.attachment-download-btn {
+  background-color: var(--button-primary);
+  color: #fff;
+}
+
+.attachment-download-btn:hover {
+  filter: brightness(0.9);
+}
+
+.attachment-download-btn:disabled {
+  background-color: var(--button-disabled);
+  cursor: not-allowed;
+}
+
+.attachment-delete-btn {
+  background-color: transparent;
+  border: 1px solid #c00;
+  color: #c00;
+}
+
+.attachment-delete-btn:hover {
+  background-color: #fee;
+}
+
+.attachment-delete-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.attachment-upload-btn {
+  margin-top: 10px;
+  background-color: var(--button-primary);
+  color: #fff;
+  padding: 8px 20px;
+  font-size: 14px;
+}
+
+.attachment-upload-btn:hover {
+  filter: brightness(0.9);
+}
+
+/* No attachment message */
+.attachment-none {
+  color: var(--text-secondary);
+  font-size: 14px;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .attachment-file-row {
+    flex-wrap: wrap;
+  }
+
+  .attachment-file-name {
+    width: 100%;
+  }
+}
