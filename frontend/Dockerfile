@@ -16,6 +16,10 @@ RUN npm ci
 # Copy source code and configuration files
 COPY . .
 
+# Set API URL to empty so the frontend uses same-origin requests
+# (nginx proxies /api and /auth to the Flask backend container)
+ENV VITE_API_URL=""
+
 # Build the application
 # This runs TypeScript compilation and Vite build
 RUN npm run build

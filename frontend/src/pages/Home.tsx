@@ -106,11 +106,11 @@ export default function Home() {
       )}
       
       {/* US19 — Empty state for students with no enrolled courses */}
-{isStudent() && filteredCourses.length === 0 && !searchQuery && (
-  <p className="Home__noEnrollment">
-    You are not enrolled in any courses yet. Contact your teacher to get started.
-  </p>
-)}
+      {isStudent() && filteredCourses.length === 0 && !searchQuery && (
+        <p className="Home__noEnrollment">
+          You are not enrolled in any courses yet. Contact your teacher to get started.
+        </p>
+      )}
 
       <div className="Classes">
         {
@@ -121,7 +121,7 @@ export default function Home() {
             return (
               <div key={course.id} className="CourseCardWrapper">
                 <ClassCard
-                  image="https://crc.losrios.edu//shared/img/social-1200-630/programs/general-science-social.jpg"
+                  image="/placeholder.jpeg"
                   name={course.name}
                   subtitle={assignmentText}
                   onclick={() => {

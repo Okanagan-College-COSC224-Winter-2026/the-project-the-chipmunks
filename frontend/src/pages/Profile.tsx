@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import AvatarInitials from '../components/AvatarInitials'
 import { updateUserProfile } from '../util/api'
 
-const BASE_URL = 'http://localhost:5000'
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 function splitName(fullName: string): { first: string; last: string } {
   const parts = (fullName || '').trim().split(/\s+/);

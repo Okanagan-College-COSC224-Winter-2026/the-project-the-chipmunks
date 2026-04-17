@@ -11,6 +11,12 @@ if [ "${SKIP_DB_INIT:-false}" != "true" ]; then
     flask --app "$APP_MODULE" init_db
     echo "[entrypoint] Ensuring default admin exists via 'flask ensure_admin' (set DEFAULT_ADMIN_* env vars)..."
     flask --app "$APP_MODULE" ensure_admin
+    echo "[entrypoint] Seeding sample users (admin/teacher/student)..."
+    flask --app "$APP_MODULE" add_users
+    echo "[entrypoint] Seeding sample courses and assignments..."
+    flask --app "$APP_MODULE" add_sample_courses
+    echo "[entrypoint] Seeding sample reviews with grades..."
+    flask --app "$APP_MODULE" add_sample_reviews
 fi
 
 exec gunicorn \
