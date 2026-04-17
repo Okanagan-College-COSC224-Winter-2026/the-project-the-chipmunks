@@ -1,0 +1,74 @@
+.OutlierTable {
+  margin-top: 1.5rem;
+}
+
+.OutlierTable h3 {
+  margin: 0 0 0.6rem;
+  font-family: 'DM Serif Display', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--text-primary);
+}
+
+.OutlierTable__empty {
+  color: var(--sienna);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.OutlierTable__wrap {
+  overflow-x: auto;
+  border: 1px solid var(--background-tertiary);
+  border-radius: var(--radius-md);
+  background: #fff;
+}
+
+.OutlierTable__table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.OutlierTable__table th {
+  background: var(--background-secondary);
+  padding: 0.7rem 1rem;
+  text-align: left;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  border-bottom: 2px solid var(--background-tertiary);
+}
+
+.OutlierTable__table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border-bottom: 1px solid var(--background-secondary);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+}
+
+.OutlierTable__table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Low outlier — warm amber tint (unusually low score) */
+.OutlierTable__row--low {
+  background: rgba(160, 82, 45, 0.06);
+}
+
+/* High outlier — crimson tint (unusually high score) */
+.OutlierTable__row--high {
+  background: rgba(178, 34, 52, 0.06);
+}
+
+/* Deviation text colors */
+.OutlierTable__neg {
+  color: var(--sienna);
+  font-weight: 700;
+}
+
+.OutlierTable__pos {
+  color: var(--crimson);
+  font-weight: 700;
+}
