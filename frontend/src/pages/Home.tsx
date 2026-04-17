@@ -63,6 +63,7 @@ export default function Home() {
             const assignmentText = `${course.assignmentCount || 0} assignments`;
             
             return (
+<<<<<<< Updated upstream
               <ClassCard
                 key={course.id}
                 image="https://crc.losrios.edu//shared/img/social-1200-630/programs/general-science-social.jpg"
@@ -72,6 +73,30 @@ export default function Home() {
                   window.location.href = `/classes/${course.id}/home`
                 }}
               />
+=======
+              <div key={course.id} className="CourseCardWrapper">
+                <ClassCard
+                  image="/placeholder.jpeg"
+                  name={course.name}
+                  subtitle={assignmentText}
+                  onclick={() => {
+                    window.location.href = `/classes/${course.id}/home`
+                  }}
+                />
+                {isStudent() && (
+                  <div className="CourseGradeRow">
+                    <GradeBadge
+                      grade={courseGrade?.grade ?? null}
+                      maxScore={courseGrade?.max_score ?? null}
+                      hasGrades={courseGrade?.has_grades ?? false}
+                      gradedAssignments={courseGrade?.graded_assignments ?? 0}
+                      totalAssignments={courseGrade?.total_assignments ?? 0}
+                      loading={gradesLoading}
+                    />
+                  </div>
+                )}
+              </div>
+>>>>>>> Stashed changes
             )
           })
         }
